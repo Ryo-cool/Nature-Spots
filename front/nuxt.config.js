@@ -44,6 +44,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    'nuxt-i18n'
   ],
   /*
   ** Axios module configuration
@@ -78,6 +79,20 @@ export default {
           error: 'FB8678',
           background: 'f6f6f4'
         }
+      }
+    }
+  },
+  i18n: {
+    locales: ['ja', 'en'],
+    defaultLocale: 'ja',
+    // Doc: https://kazupon.github.io/vue-i18n/api/#properties
+    vueI18n: {
+      fallbackLocale: 'ja',
+      // silentTranslationWarn: true,
+      silentFallbackWarn: true,
+      messages: {
+        ja: require('./locales/ja.json'),
+        en: require('./locales/en.json')
       }
     }
   },
