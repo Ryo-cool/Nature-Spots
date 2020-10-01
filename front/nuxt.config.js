@@ -88,6 +88,7 @@ export default {
     }
   },
   i18n: {
+    strategy: 'no_prefix',
     locales: ['ja', 'en'],
     defaultLocale: 'ja',
     // Doc: https://kazupon.github.io/vue-i18n/api/#properties
