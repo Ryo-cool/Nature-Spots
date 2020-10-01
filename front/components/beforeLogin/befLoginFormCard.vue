@@ -15,6 +15,8 @@
 
       <v-card
         flat
+        tile
+        class="ma-2"
         width="80%"
         max-width="320"
         color="transparent"

@@ -4,7 +4,6 @@
       <user-form-name />
       <user-form-email />
       <user-form-password />
-
       <v-btn
         :disabled="!isValid"
         block
