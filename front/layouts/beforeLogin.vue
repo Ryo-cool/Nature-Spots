@@ -1,7 +1,10 @@
 <template>
   <v-app>
-    beforeLogin.vue
-    <nuxt />
+    <bef-login-app-bar />
+    <v-main>
+      <nuxt />
+    </v-main>
+    <bef-login-footer />
   </v-app>
 </template>
 
