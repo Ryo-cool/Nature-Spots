@@ -2,6 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   mode: 'spa',
+  components: true,
   /*
   ** Headers of the page
   */
@@ -46,6 +47,9 @@ export default {
     '@nuxtjs/axios',
     'nuxt-i18n'
   ],
+  publicRuntimeConfig: {
+    appName: process.env.APP_NAME
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -60,7 +64,7 @@ export default {
     treeShake: true,
     customVariables: ['~/assets/sass/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
@@ -69,7 +73,7 @@ export default {
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          success: colors.green.accent3,
         },
         light: {
           primary: '4080BE',
@@ -77,7 +81,8 @@ export default {
           success: '44D69E',
           warning: 'FEB65E',
           error: 'FB8678',
-          background: 'f6f6f4'
+          background: 'f6f6f4',
+          myblue: '1867C0'
         }
       }
     }

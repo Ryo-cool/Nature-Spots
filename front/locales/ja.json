@@ -1,5 +1,12 @@
 {
-  "title": {
+  "menus": {
+    "about": "サイトについて",
+    "products": "製品",
+    "price": "価格",
+    "contact": "お問合せ",
+    "company": "会社情報"
+  },
+  "pages": {
     "signup": "会員登録",
     "login": "ログイン"
   }
