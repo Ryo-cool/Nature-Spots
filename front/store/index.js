@@ -1,6 +1,6 @@
 // ログインフラグ
 export const state = () => ({
-  loggedIn: false,
+  loggedIn: true,
   styles: {
     beforeLogin: {
       appBarHeight: 56
