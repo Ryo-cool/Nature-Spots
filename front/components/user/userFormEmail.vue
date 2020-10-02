@@ -1,13 +1,24 @@
 <template>
   <v-text-field
+    v-model="setEmail"
+    :rules="rules"
     label="メールアドレスを入力"
     placeholder="your@email.com"
     outlined
-    counter="25"
   />
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      rules: [
+        v => !!v || '',
+        v => /.+@.+\..+/.test(v) || ''
+      ]
+    }
+  },
+  computed: {
+  }
 }
 </script>
