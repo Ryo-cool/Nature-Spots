@@ -7,12 +7,22 @@
     label="パスワードを入力"
     :placeholder="form.placeholder"
     :hide-details="noValidation"
+    :append-icon="toggle.icon"
+    :type="toggle.type"
     outlined
+    autocomplete="on"
+    @click:append="show = !show"
+
   />
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      show: false
+    }
+  },
   props: {
     noValidation: {
       type: Boolean,
@@ -30,6 +40,11 @@ export default {
       const hint = this.noValidation ? undefined : msg
       const placeholder = this.noValidation ? undefined : min
       return { rules, hint, placeholder }
+    },
+    toggle () {
+      const icon = this.show ? 'mdi-eye' : 'mdi-eye-off'
+      const type = this.show ? 'text' : 'password'
+      return { icon, type }
     }
   }
 }
