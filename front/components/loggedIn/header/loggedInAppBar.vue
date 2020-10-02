@@ -66,7 +66,7 @@
               <v-icon size="22" v-text="menu.icon" />
             </v-list-item-icon>
             <v-list-item-title>
-              {{ menu.name }}
+              {{ $my.pageTitle(menu.name) }}
             </v-list-item-title>
           </v-list-item>
         </template>
