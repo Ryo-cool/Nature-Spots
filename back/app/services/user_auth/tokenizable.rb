@@ -23,6 +23,12 @@ module UserAuth
       AuthToken.new(payload: to_token_payload).token
     end
 
+    # 有効期限付きのトークンを返す
+    def to_lifetime_token(lifetime)
+      auth = AuthToken.new(lifetime: lifetime, payload: to_token_payload)
+      { token: auth.token, lifetime_text: auth.lifetime_text }
+    end
+
     private
       def to_token_payload
         { sub: id }
