@@ -16,12 +16,18 @@ module UserAuth
       def token
         token_from_request_headers || cookies[token_access_key]
       end
-      
+
       # トークンからユーザーを取得する
       def fetch_entity_from_token
         AuthToken.new(token: token).entity_for_user
       rescue ActiveRecord::RecordNotFound, JWT::DecodeError, JWT::EncodeError
         nil
+      end
+      
+      # トークンのユーザーを返す
+      def current_user
+        return if token.blank?
+        @_current_user ||= fetch_entity_from_token
       end
   end
 end
