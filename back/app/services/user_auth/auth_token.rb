@@ -16,5 +16,21 @@ module UserAuth
         @token = JWT.encode(@payload, secret_key, algorithm, header_fields)
       end
     end
+    private
+
+      # エンコードキー(config/initializers/user_auth.rb)
+      def secret_key
+        UserAuth.token_secret_signature_key.call
+      end
+
+      # デコードキー(config/initializers/user_auth.rb)
+      def decode_key
+        UserAuth.token_public_key || secret_key
+      end
+      
+      # アルゴリズム(config/initializers/user_auth.rb)
+      def algorithm
+        UserAuth.token_signature_algorithm
+      end
   end
 end
