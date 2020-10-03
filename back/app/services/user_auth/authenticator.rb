@@ -1,6 +1,11 @@
 module UserAuth
   module Authenticator
 
+    # トークンからcurrent_userを検索し、存在しない場合は401を返す
+    def authenticate_user
+      current_user.presence || unauthorized_user
+    end
+    
     # クッキーを削除する
     def delete_cookie
       return if cookies[token_access_key].blank?
@@ -36,7 +41,7 @@ module UserAuth
         return if token.blank?
         @_current_user ||= fetch_entity_from_token
       end
-      
+
       # 401エラーかつ、クッキーを削除する
       def unauthorized_user
         head(:unauthorized) && delete_cookie
