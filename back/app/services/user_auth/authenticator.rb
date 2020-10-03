@@ -1,5 +1,12 @@
 module UserAuth
   module Authenticator
+
+    # クッキーを削除する
+    def delete_cookie
+      return if cookies[token_access_key].blank?
+      cookies.delete(token_access_key)
+    end
+
     private
 
       # リクエストヘッダーからトークンを取得する
@@ -23,11 +30,16 @@ module UserAuth
       rescue ActiveRecord::RecordNotFound, JWT::DecodeError, JWT::EncodeError
         nil
       end
-      
+
       # トークンのユーザーを返す
       def current_user
         return if token.blank?
         @_current_user ||= fetch_entity_from_token
+      end
+      
+      # 401エラーかつ、クッキーを削除する
+      def unauthorized_user
+        head(:unauthorized) && delete_cookie
       end
   end
 end
