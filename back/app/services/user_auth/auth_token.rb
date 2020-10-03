@@ -16,6 +16,12 @@ module UserAuth
         @token = JWT.encode(@payload, secret_key, algorithm, header_fields)
       end
     end
+    
+    # subjectからユーザーを検索する
+    def entity_for_user
+      User.find @payload["sub"]
+    end
+
     private
 
       # エンコードキー(config/initializers/user_auth.rb)
@@ -63,7 +69,7 @@ module UserAuth
         _claims[:aud] = token_audience if verify_audience?
         _claims
       end
-      
+
       # エンコード時のヘッダー
       # Doc: https://openid-foundation-japan.github.io/draft-ietf-oauth-json-web-token-11.ja.html#typHdrDef
       def header_fields
