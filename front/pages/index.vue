@@ -19,7 +19,7 @@
             >
               
               <v-col
-                cols="8"
+                cols="9"
                 sm="6"
               >
                 <!-- コンポーネント化したい -->
@@ -40,35 +40,10 @@
     </v-row>
     <v-row
     class="mt-6"
-    >
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <h1>都道府県から探す</h1>
-        <v-card class="mt-4">
-          <v-img
-            :src="homeImg"
-            aspect-ratio="1.3"
-            contain
-          >
-          </v-img>
-        </v-card>
-      </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <h1>ジャンルから探す</h1>
-        <v-card class="mt-4">
-          <v-img
-            :src="homeImg"
-            aspect-ratio="1.3"
-            contain
-          >
-          </v-img>
-        </v-card>
-      </v-col>
+    > 
+
+      <japan />
+      <category />
     </v-row>
     <v-row>
       <v-col>
