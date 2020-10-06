@@ -13,7 +13,8 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
     "nuxt": "^2.0.0",
-    "nuxt-i18n": "^6.15.1"
+    "nuxt-i18n": "^6.15.1",
+    "nuxt-webfontloader": "^1.1.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0"

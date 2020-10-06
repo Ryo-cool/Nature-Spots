@@ -4,6 +4,7 @@
     <v-main>
       <nuxt />
     </v-main>
+    <logged-in-footer />
   </v-app>
 </template>
 

@@ -46,8 +46,14 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    'nuxt-i18n'
+    'nuxt-i18n',
+    'nuxt-webfontloader'
   ],
+  webfontloader: {
+    google: {
+      families: ['Noto+Sans+JP:300','Kosugi+Maru']
+    }
+  },
   publicRuntimeConfig: {
     appName: process.env.APP_NAME
   },
