@@ -23,17 +23,7 @@
                 sm="9"
                 md="7"
               >
-                <!-- コンポーネント化したい -->
-                <v-form>
-                  
-                  <v-text-field
-                    label="Search"
-                    solo
-                    prepend-inner-icon="mdi-magnify"
-                    height="60"
-                  >
-                  </v-text-field>
-                </v-form>
+                <spot-search />
               </v-col>
             </v-row>
           </v-container>
@@ -46,87 +36,22 @@
 
       <japan />
       <category />
+
     </v-row>
     <v-row>
       <v-col>
         <h1>人気のスポット一覧</h1>
-        <v-item-group mandatory>
-          <v-container>
-            <v-row>
-              <v-col
-                v-for="n in 3"
-                :key="n"
-                cols="12"
-                md="4"
-              >
-                <v-item v-slot:default="{ active, toggle }">
-                  <v-card
-                    :color="active ? 'primary' : ''"
-                    class="d-flex align-center"
-                    dark
-                    height="200"
-                    @click="toggle"
-                  >
-                    <v-scroll-y-transition>
-                      <div
-                        v-if="active"
-                        class="display-3 flex-grow-1 text-center"
-                      >
-                        Active
-                      </div>
-                    </v-scroll-y-transition>
-                  </v-card>
-                </v-item>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-item-group>
+
+        <popular-spots />
+
       </v-col>
     </v-row>
     <v-row>
       <v-col>
         <h1>いきたいリスト</h1>
-          <v-sheet
-            class="mx-auto mt-8 mb-16"
-            elevation="8"
-            
-          >
-            <v-slide-group
-              v-model="model"
-              class="pa-4"
-              center-active
-              show-arrows
-            >
-              <v-slide-item
-                v-for="n in 15"
-                :key="n"
-                v-slot:default="{ active, toggle }"
-              >
-                <v-card
-                  :color="active ? 'primary' : 'grey lighten-1'"
-                  class="ma-4"
-                  height="200"
-                  width="200"
-                  @click="toggle"
-                >
-                  <v-row
-                    class="fill-height"
-                    align="center"
-                    justify="center"
-                  >
-                    <v-scale-transition>
-                      <v-icon
-                        v-if="active"
-                        color="white"
-                        size="48"
-                        v-text="'mdi-close-circle-outline'"
-                      ></v-icon>
-                    </v-scale-transition>
-                  </v-row>
-                </v-card>
-              </v-slide-item>
-            </v-slide-group>
-          </v-sheet>
+
+        <want-list />
+        
       </v-col>
     </v-row>
   </v-container>
