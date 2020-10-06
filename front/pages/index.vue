@@ -19,8 +19,9 @@
             >
               
               <v-col
-                cols="9"
-                sm="6"
+                cols="11"
+                sm="9"
+                md="7"
               >
                 <!-- コンポーネント化したい -->
                 <v-form>
@@ -29,6 +30,7 @@
                     label="Search"
                     solo
                     prepend-inner-icon="mdi-magnify"
+                    height="60"
                   >
                   </v-text-field>
                 </v-form>
