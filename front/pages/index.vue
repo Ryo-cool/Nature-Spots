@@ -5,8 +5,9 @@
         <h1>検索</h1>
         <nuxt-link
           to="newspots"
+          class="text-decoration-none"
         >
-          新規
+          <v-btn class="primary">新規</v-btn>
         </nuxt-link>
         <v-img
           :src="homeImg"
