@@ -3,6 +3,11 @@
     <v-row>
       <v-col>
         <h1>検索</h1>
+        <nuxt-link
+          to="newspots"
+        >
+          新規
+        </nuxt-link>
         <v-img
           :src="homeImg"
           alt="homeImg"

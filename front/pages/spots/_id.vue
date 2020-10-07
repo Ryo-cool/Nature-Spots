@@ -2,7 +2,8 @@
   <v-container>
     <v-row>
       <v-col
-      cols="6"
+      cols="12"
+      md="6"
       >
         <v-card>
           <p>スポット名:{{spot.name}}</p>
@@ -10,7 +11,8 @@
         </v-card>
       </v-col>
       <v-col
-        cols="6"
+        cols="12"
+        md="6"
       >
         <v-btn 
         class="primary"
