@@ -18,7 +18,7 @@ class MyInject {
     return dateTimeFormat.format(new Date(date))
   }
 
-  spotLinkTo (id, name = 'spot-id') {
+  spotLinkTo (id, name = 'spots-id') {
     return { name, params: { id } }
   }
 

@@ -1,14 +1,34 @@
 <template>
-  <div> 
-    <p>スポット名:{{spot.name}}</p>
-    <p>説明:{{spot.introduction}}</p>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col
+      cols="6"
+      >
+        <v-card>
+          <p>スポット名:{{spot.name}}</p>
+          <p>説明:{{spot.introduction}}</p>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="6"
+      >
+        <v-btn 
+        class="primary"
+        >
+          口コミを書く
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
 
 export default {
+  layout ({ store }) {
+    return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  },
   data () {
     return {
       spot: {}
