@@ -1,13 +1,25 @@
 <template>
+
   <v-container>
+    <v-breadcrumbs
+    divider="-"
+    >
+    パンくずリスト
+    </v-breadcrumbs>
+    <v-row>
+      <v-col>
+        <carousel />
+      </v-col>
+    </v-row>
     <v-row>
       <v-col
       cols="12"
-      md="6"
+      md="8"
       >
         <v-card>
-          <p>スポット名:{{spot.name}}</p>
-          <p>説明:{{spot.introduction}}</p>
+          <h1>{{spot.name}}</h1>
+          <v-divider></v-divider>
+          <p>{{spot.name}}の説明:{{spot.introduction}}</p>
           <p>住所:{{spot.address}}</p>
           <p>都道府県:{{prefecture}}</p>
           <p>ジャンル:{{location}}</p>
@@ -15,13 +27,15 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
+        md="4"
       >
-        <v-btn 
-        class="primary"
-        >
-          口コミを書く
-        </v-btn>
+        <v-card>
+          <v-btn 
+          class="primary"
+          >
+            口コミを書く
+          </v-btn>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
