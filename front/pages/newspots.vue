@@ -12,12 +12,14 @@
         v-model="name"
         prepend-icon=""
         type="text"
+        outlined
         />
         <v-text-field
         label="説明"
         v-model="introduction"
         prepend-icon=""
         type="text"
+        outlined
         />
         <img v-if="uploadImageUrl" :src="uploadImageUrl" />
         <v-file-input
@@ -32,19 +34,23 @@
         />
         <v-select
         label="都道府県"
+        v-model= "prefectures"
         item-text="attributes.name"
-        
+        item-value="attributes.id"
         :items="prefecture"
+        outlined
         />
         <v-text-field
         label="住所"
         v-model="address"
         prepend-icon=""
         type="text"
+        outlined
         />
         <v-select
         label="ジャンル"
         v-model="location"
+        outlined
         />
         <v-btn color="primary" @click="createSpot">ADD post</v-btn>
       </v-col>
@@ -111,7 +117,7 @@ export default {
     return {
       name: "",
       introduction: "",
-      photo:null,
+      prefectures: "",
       uploadImageUrl: '',
       spots: [],
       prefecture: []
@@ -143,7 +149,7 @@ export default {
     },
      // スポットをaxiosで登録
     createSpot(){
-      axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction,photo: this.photo}).then(res => {
+      axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction,prefecture_id: this.prefectures}).then(res => {
         if (res.data) {
             this.spots.push(res.data)
         }
