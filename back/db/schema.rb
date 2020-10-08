@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_081439) do
     t.text "introduction"
     t.string "location"
     t.string "photo"
-    t.string "addess"
+    t.string "address"
     t.integer "prefecture_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

@@ -83,19 +83,6 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
-              <v-subheader>都道府県</v-subheader>
-              <v-list-item-group color="primary">
-                <v-list-item
-                  v-for="prefecture in prefecture"
-                  :key="prefecture.id"
-                  @click=""
-                >
-                  <v-list-item-content>
-                    <v-list-item-title v-text="prefecture.attributes.id"></v-list-item-title>
-                    <v-list-item-title v-text="prefecture.attributes.name"></v-list-item-title>
-                    
-                    
-                  </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
             </v-list>
@@ -118,6 +105,7 @@ export default {
       name: "",
       introduction: "",
       prefectures: "",
+      address: "",
       uploadImageUrl: '',
       spots: [],
       prefecture: []
@@ -149,7 +137,9 @@ export default {
     },
      // スポットをaxiosで登録
     createSpot(){
-      axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction,prefecture_id: this.prefectures}).then(res => {
+      axios.post("/api/v1/spots", 
+      {name: this.name,introduction: this.introduction,prefecture_id: this.prefectures,address: this.address})
+      .then(res => {
         if (res.data) {
             this.spots.push(res.data)
         }

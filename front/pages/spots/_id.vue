@@ -8,6 +8,7 @@
         <v-card>
           <p>スポット名:{{spot.name}}</p>
           <p>説明:{{spot.introduction}}</p>
+          <p>住所:{{spot.address}}</p>
         </v-card>
       </v-col>
       <v-col

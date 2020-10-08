@@ -5,7 +5,7 @@ class CreateSpots < ActiveRecord::Migration[6.0]
       t.text :introduction
       t.string :location
       t.string :photo
-      t.string :addess
+      t.string :address
       t.integer :prefecture_id
       t.timestamps
     end

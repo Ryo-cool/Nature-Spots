@@ -17,7 +17,7 @@ class Api::V1::SpotsController < ApplicationController
   # SPOT /spots
   def create
     @spot = Spot.new(spot_params)
-    
+
     if @spot.save
       render json: @spot, status: :created, location: @spot
     else
@@ -47,6 +47,6 @@ class Api::V1::SpotsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def spot_params
-      params.require(:spot).permit(:name,:introduction,:location,:photo,:addess,:prefecture_id)
+      params.require(:spot).permit(:name,:introduction,:location,:photo,:address,:prefecture_id)
     end
 end
