@@ -1,17 +1,16 @@
 class Api::V1::SpotsController < ApplicationController
   before_action :set_spot, only: [:show, :update, :destroy]
-
+  before_action :set_prefecture, only: [:show]
   # GET /spots
   def index
     @spots = Spot.all
     @prefecture = Prefecture.all
-    
     render json: {spots: @spots, prefecture: @prefecture }
   end
 
   # GET /spots/1
   def show
-    render json: @spot
+    render json: {spot: @spot, prefecture: @prefecture }
   end
 
   # SPOT /spots
@@ -43,6 +42,10 @@ class Api::V1::SpotsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_spot
       @spot = Spot.find(params[:id])
+    end
+
+    def set_prefecture
+      @prefecture = Prefecture.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

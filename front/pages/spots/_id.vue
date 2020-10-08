@@ -9,6 +9,7 @@
           <p>スポット名:{{spot.name}}</p>
           <p>説明:{{spot.introduction}}</p>
           <p>住所:{{spot.address}}</p>
+          <p>都道府県:{{prefecture}}</p>
         </v-card>
       </v-col>
       <v-col
@@ -34,7 +35,8 @@ export default {
   },
   data () {
     return {
-      spot: {}
+      spot: {},
+      prefecture: {}
     }
   },
   computed: {
@@ -43,9 +45,8 @@ export default {
     axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
-        const spot = res.data
-        this.spot = spot
-
+        this.spot = res.data.spot
+        this.prefecture = res.data.prefecture.attributes.name
       })
       .catch((error) => {
         console.error(error)
