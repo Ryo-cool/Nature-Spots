@@ -5,12 +5,14 @@ class Api::V1::SpotsController < ApplicationController
   def index
     @spots = Spot.all
     @prefecture = Prefecture.all
-    render json: {spots: @spots, prefecture: @prefecture }
+    @location = Location.all
+    render json: {spots: @spots, prefecture: @prefecture,location: @location }
   end
 
   # GET /spots/1
   def show
-    render json: {spot: @spot, prefecture: @prefecture }
+    @location = Location.find(params[:id])
+    render json: {spot: @spot, prefecture: @prefecture, location: @location}
   end
 
   # SPOT /spots
@@ -50,6 +52,6 @@ class Api::V1::SpotsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def spot_params
-      params.require(:spot).permit(:name,:introduction,:location,:photo,:address,:prefecture_id)
+      params.require(:spot).permit(:name,:introduction,:location_id,:photo,:address,:prefecture_id)
     end
 end

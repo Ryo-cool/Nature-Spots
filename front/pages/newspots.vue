@@ -49,7 +49,10 @@
         />
         <v-select
         label="ジャンル"
-        v-model="location"
+        v-model= "locations"
+        item-text="attributes.name"
+        item-value="attributes.id"
+        :items="location"
         outlined
         />
         <v-btn color="primary" @click="createSpot">ADD post</v-btn>
@@ -78,7 +81,6 @@
                     >
                     <v-list-item-title v-text="spot.id"></v-list-item-title>
                     <v-list-item-title v-text="spot.name"></v-list-item-title>
-                    
                     </nuxt-link>
                   </v-list-item-content>
                 </v-list-item>
@@ -106,9 +108,11 @@ export default {
       introduction: "",
       prefectures: "",
       address: "",
+      locations: "",
       uploadImageUrl: '',
       spots: [],
-      prefecture: []
+      prefecture: [],
+      location: []
     }
   },
   created() {
@@ -117,6 +121,7 @@ export default {
       if (res.data) {
         this.spots = res.data.spots
         this.prefecture = res.data.prefecture
+        this.location = res.data.location
       }
     })
   },
@@ -138,7 +143,7 @@ export default {
      // スポットをaxiosで登録
     createSpot(){
       axios.post("/api/v1/spots", 
-      {name: this.name,introduction: this.introduction,prefecture_id: this.prefectures,address: this.address})
+      {name: this.name,introduction: this.introduction,prefecture_id: this.prefectures,address: this.address,location_id: this.locations})
       .then(res => {
         if (res.data) {
             this.spots.push(res.data)

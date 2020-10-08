@@ -10,6 +10,7 @@
           <p>説明:{{spot.introduction}}</p>
           <p>住所:{{spot.address}}</p>
           <p>都道府県:{{prefecture}}</p>
+          <p>ジャンル:{{location}}</p>
         </v-card>
       </v-col>
       <v-col
@@ -36,7 +37,8 @@ export default {
   data () {
     return {
       spot: {},
-      prefecture: {}
+      prefecture: {},
+      location: {}
     }
   },
   computed: {
@@ -47,6 +49,7 @@ export default {
       .then((res) => {
         this.spot = res.data.spot
         this.prefecture = res.data.prefecture.attributes.name
+        this.location = res.data.location.attributes.name
       })
       .catch((error) => {
         console.error(error)
