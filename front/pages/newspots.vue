@@ -30,6 +30,18 @@
           @change="onImagePicked"
           
         />
+        <v-select
+        label="都道府県"
+        />
+        <v-text-field
+        label="住所"
+        v-model="address"
+        prepend-icon=""
+        type="text"
+        />
+        <v-select
+        label="ジャンル"
+        />
         <v-btn color="primary" @click="createSpot">ADD post</v-btn>
       </v-col>
       <v-col
