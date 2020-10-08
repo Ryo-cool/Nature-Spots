@@ -4,7 +4,9 @@ class Api::V1::SpotsController < ApplicationController
   # GET /spots
   def index
     @spots = Spot.all
-    render json: @spots
+    @prefecture = Prefecture.all
+    
+    render json: {spots: @spots, prefecture: @prefecture }
   end
 
   # GET /spots/1

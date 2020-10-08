@@ -32,6 +32,9 @@
         />
         <v-select
         label="都道府県"
+        item-text="attributes.name"
+        
+        :items="prefecture"
         />
         <v-text-field
         label="住所"
@@ -41,6 +44,7 @@
         />
         <v-select
         label="ジャンル"
+        v-model="location"
         />
         <v-btn color="primary" @click="createSpot">ADD post</v-btn>
       </v-col>
@@ -68,8 +72,23 @@
                     >
                     <v-list-item-title v-text="spot.id"></v-list-item-title>
                     <v-list-item-title v-text="spot.name"></v-list-item-title>
-                    <v-list-item-title v-text="spot.introduction"></v-list-item-title>
+                    
                     </nuxt-link>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+              <v-subheader>都道府県</v-subheader>
+              <v-list-item-group color="primary">
+                <v-list-item
+                  v-for="prefecture in prefecture"
+                  :key="prefecture.id"
+                  @click=""
+                >
+                  <v-list-item-content>
+                    <v-list-item-title v-text="prefecture.attributes.id"></v-list-item-title>
+                    <v-list-item-title v-text="prefecture.attributes.name"></v-list-item-title>
+                    
+                    
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -94,14 +113,16 @@ export default {
       introduction: "",
       photo:null,
       uploadImageUrl: '',
-      spots: []
+      spots: [],
+      prefecture: []
     }
   },
   created() {
     // ユーザーをaxiosで取得
     axios.get("/api/v1/spots").then(res => {
       if (res.data) {
-        this.spots = res.data
+        this.spots = res.data.spots
+        this.prefecture = res.data.prefecture
       }
     })
   },
@@ -120,7 +141,7 @@ export default {
         this.uploadImageUrl = ''
       }
     },
-     // ユーザーをaxiosで登録
+     // スポットをaxiosで登録
     createSpot(){
       axios.post("/api/v1/spots", {name: this.name,introduction: this.introduction,photo: this.photo}).then(res => {
         if (res.data) {
