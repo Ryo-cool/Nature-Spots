@@ -4,14 +4,14 @@
     <v-container>
       <v-row>
         <v-col
-        cols="8"
+        cols="7"
         >
           <h1>
             口コミ
           </h1>
         </v-col>
         <v-col
-          cols="4"
+          cols="5"
         >
           <v-btn 
           class="primary"
