@@ -3,6 +3,12 @@
     <v-row>
       <v-col>
         <h1>検索</h1>
+        <nuxt-link
+          to="newspots"
+          class="text-decoration-none"
+        >
+          <v-btn class="primary">新規</v-btn>
+        </nuxt-link>
         <v-img
           :src="homeImg"
           alt="homeImg"

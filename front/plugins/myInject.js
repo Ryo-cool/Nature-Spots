@@ -10,6 +10,18 @@ class MyInject {
     const title = this.app.i18n.t(jsonPath)
     return (typeof (title) === 'object') ? title.index : title
   }
+  
+  format (date) {
+    const dateTimeFormat = new Intl.DateTimeFormat(
+      'ja', { dateStyle: 'medium', timeStyle: 'short' }
+    )
+    return dateTimeFormat.format(new Date(date))
+  }
+
+  spotLinkTo (id, name = 'spots-id') {
+    return { name, params: { id } }
+  }
+
 }
 
 export default ({ app }, inject) => {
