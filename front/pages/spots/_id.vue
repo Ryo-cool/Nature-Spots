@@ -14,10 +14,74 @@
     <v-row>
       <v-col
       cols="12"
-      md="8"
+      md="7"
       >
         <v-card>
-          <h1>{{spot.name}}</h1>
+          <v-row
+          
+          >
+            <v-col
+            cols="12"
+            md="10"
+            sm="8"
+            >
+              <v-row
+              
+              >
+                <v-col
+                cols="4"
+                >
+                  <h1>{{spot.name}}
+                  </h1>
+                </v-col>
+                <v-col
+                cols="4"
+                >
+                  <v-rating
+                    v-model="rating"
+                    background-color="purple lighten-3"
+                    color="purple"
+                    readonly
+                    half-increments
+                    small
+                  ></v-rating>
+                  
+                </v-col>
+                <v-col cols="4" class="pt-4">
+                  <h4>
+                    {{ rating }}
+                    (<v-icon>mdi-comment-outline</v-icon>
+                    {{ reviews }}件)
+                  </h4>
+                  <!-- <span class="color=myblue">
+                    ({{ rating }})
+                  </span> -->
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col
+            cols="6"
+            md="2"
+            sm="3"
+            >
+              <v-btn
+                icon
+                color="pink"
+              >
+                <v-icon>
+                  mdi-heart
+                </v-icon>
+              </v-btn>
+              <v-btn
+              icon
+              color="myblue"
+              >
+                <v-icon>
+                  mdi-export-variant
+                </v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
           <v-divider></v-divider>
           <p>{{spot.name}}の説明:{{spot.introduction}}</p>
           <p>住所:{{spot.address}}</p>
@@ -27,15 +91,10 @@
       </v-col>
       <v-col
         cols="12"
-        md="4"
+        md="5"
       >
-        <v-card>
-          <v-btn 
-          class="primary"
-          >
-            口コミを書く
-          </v-btn>
-        </v-card>
+        <review-header />
+        <reviews />
       </v-col>
     </v-row>
   </v-container>
@@ -52,7 +111,9 @@ export default {
     return {
       spot: {},
       prefecture: {},
-      location: {}
+      location: {},
+      rating: 2.6,
+      reviews: 300,
     }
   },
   computed: {
@@ -72,3 +133,9 @@ export default {
   
 }
 </script>
+
+<style>
+h2{
+  color:blue
+}
+</style>

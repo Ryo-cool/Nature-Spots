@@ -4,6 +4,7 @@
   show-arrows-on-hover
   cycle
   interval="5000"
+  height="450"
   >
     <v-carousel-item
       v-for="(item,i) in items"
