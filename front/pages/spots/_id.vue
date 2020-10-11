@@ -33,11 +33,13 @@
 import axios from '~/plugins/axios'
 
 export default {
+  data () {
+    return {
+      spot: {}
+    }
+  },
   layout ({ store }) {
     return store.state.loggedIn ? 'loggedIn' : 'welcome'
-  },
-
-  computed: {
   }
   
 }
