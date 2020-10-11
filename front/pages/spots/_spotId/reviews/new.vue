@@ -9,8 +9,8 @@
           v-model="rating"
           background-color="purple lighten-3"
           color="purple"
-          half-increments
           large
+          hover
         ></v-rating>
         <h2>口コミ</h2>
         <v-divider class="mb-4"></v-divider>
@@ -27,11 +27,14 @@
         ></v-textarea>
         <h2>写真</h2>
         <v-divider class="mb-4"></v-divider>
+        <img v-if="uploadImageUrl" :src="uploadImageUrl" />
         <v-file-input
+          v-model="input_image"
+          accept="image/*"
           show-size
           counter
-          multiple
           label="File input"
+          @change="onImagePicked"
         ></v-file-input>
         <h2>行った時期</h2>
         <v-divider class="mb-4"></v-divider>
@@ -42,8 +45,9 @@
             locale="jp"
           ></v-date-picker>
         </v-row>
+        <v-divider class="mb-2"></v-divider>
         <v-row justify="center">
-          <v-btn color="myblue" dark min-width="300" >
+          <v-btn color="success" dark min-width="300" >
             投稿する
           </v-btn>
         </v-row>
@@ -57,11 +61,29 @@ export default {
   data () {
     return {
       picker: new Date().toISOString().substr(0, 10),
+      input_image: null,
+      uploadImageUrl: ''
     }
   },
   layout ({ store }) {
     return store.state.loggedIn ? 'loggedIn' : 'welcome'
   },
+  methods: {
+    onImagePicked(file) {
+      if (file !== undefined && file !== null) {
+        if (file.name.lastIndexOf('.') <= 0) {
+          return
+        }
+        const fr = new FileReader()
+        fr.readAsDataURL(file)
+        fr.addEventListener('load', () => {
+          this.uploadImageUrl = fr.result
+        })
+      } else {
+        this.uploadImageUrl = ''
+      }
+    }
+  }
 }
 </script>
 
