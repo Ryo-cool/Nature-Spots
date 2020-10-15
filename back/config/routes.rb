@@ -9,7 +9,7 @@ Rails.application.routes.draw do
         delete :destroy, on: :collection
       end
       resources :spots
-      
+      resources :reviews
     end
   end
 end
