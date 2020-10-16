@@ -8,8 +8,9 @@ Rails.application.routes.draw do
       resources :user_token, only: [:create] do
         delete :destroy, on: :collection
       end
-      resources :spots
-      resources :reviews
+      resources :spots do
+        resources :reviews
+      end
     end
   end
 end

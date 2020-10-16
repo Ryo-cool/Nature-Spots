@@ -37,7 +37,7 @@
               <h4>
                 {{ rating }}
                 (<v-icon>mdi-comment-outline</v-icon>
-                {{ reviews }}件)
+                {{ reviews.length }}件)
               </h4>
               <!-- <span class="color=myblue">
                 ({{ rating }})
@@ -86,6 +86,7 @@ export default {
       spot: {},
       prefecture: {},
       location: {},
+      reviews: {},
       rating: 2.6,
       reviews: 300,
     }
@@ -97,6 +98,7 @@ export default {
         this.spot = res.data.spot
         this.prefecture = res.data.prefecture.attributes.name
         this.location = res.data.location.attributes.name
+        this.reviews = res.data.review
       })
       .catch((error) => {
         console.error(error)
