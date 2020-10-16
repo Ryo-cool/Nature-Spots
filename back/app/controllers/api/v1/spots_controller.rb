@@ -11,7 +11,7 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots/1
   def show
-    @reviews = @spot.reviews.includes(:spot)
+    @reviews = @spot.reviews.includes(:spot).order('created_at DESC')
     @location = Location.find(params[:id])
     render json: {spot: @spot, prefecture: @prefecture, location: @location, review: @reviews}
   end

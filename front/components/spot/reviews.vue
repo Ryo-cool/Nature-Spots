@@ -3,7 +3,7 @@
   <v-list-item
   v-for="review in reviews"
   :key="reviews.id"
-  @click=""
+  
   >
     <v-container>
 
