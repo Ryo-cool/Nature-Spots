@@ -15,13 +15,13 @@
     <v-row>
       <v-col
       cols="12"
-      md="7"
+      md="6"
       >
       <spot-data />
       </v-col>
       <v-col
         cols="12"
-        md="5"
+        md="6"
       >
         <review-header />
         <reviews />
@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style>
-h2{
+/* h2{
   color:blue
-}
+} */
 </style>

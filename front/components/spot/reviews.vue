@@ -27,7 +27,7 @@
           cols="10"
           
         >
-          <div class="indigo--text caption">木村ヒロシさんが口コミを投稿しました（{{ review.created_at | moment }}）</div>
+          <div class="indigo--text caption d-flex"><h3>木村ヒロシ</h3>さんが口コミを投稿しました（{{ review.created_at | moment }}）</div>
           <div class="blue-grey--text caption">いいね〇〇件</div>
         </v-col>
         <v-col
@@ -50,13 +50,19 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-rating
-            v-model="rating"
-            background-color="purple lighten-3"
-            color="purple"
-            small
-            readonly
-          ></v-rating>
+          <v-row>
+            <v-rating
+              v-model="rating"
+              background-color="purple lighten-3"
+              color="purple"
+              medium
+              readonly
+              half-increments
+            ></v-rating>
+            <span class="grey--text subtitle-1 mt-2 ml-1">
+              ({{ rating }})
+            </span>
+          </v-row>
           <v-card-title>{{review.title}}</v-card-title>
           <v-card-text>{{review.text}}</v-card-text>
           <v-card-subtitle>訪問時期:{{review.wentday}}月</v-card-subtitle>
@@ -84,7 +90,7 @@
 
         </v-col>
       </v-row>
-    <v-divider class="mb-4"></v-divider>
+    <v-divider class="mt-4"></v-divider>
     </v-container>
     </v-list-item>
     
