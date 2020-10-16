@@ -28,14 +28,14 @@
         ></v-textarea>
         <h2>写真</h2>
         <v-divider class="mb-4"></v-divider>
-        <img v-if="uploadImageUrl" :src="uploadImageUrl" />
+        
         <v-file-input
           v-model="input_image"
           accept="image/*"
           show-size
           counter
           label="File input"
-          @change="onImagePicked"
+          
         ></v-file-input>
         <h2>行った時期</h2>
         <v-divider class="mb-4"></v-divider>
@@ -48,7 +48,7 @@
         </v-row>
         <v-divider class="mb-2"></v-divider>
         <v-row justify="center">
-          <v-btn color="success" dark min-width="300" >
+          <v-btn color="success" dark min-width="300" @click="createReview">
             投稿する
           </v-btn>
         </v-row>
@@ -64,13 +64,14 @@ export default {
   data () {
     return {
       // picker: new Date().toISOString().substr(0, 10),
-      input_image: null,
+      input_image: "",
       uploadImageUrl: '',
       rating: "",
       title: "",
       text: "",
       picker: "",
       spots: [],
+      reviews:[],
       id: [],
     }
   },
@@ -106,7 +107,7 @@ export default {
     //   }
     // },
     createReview () {
-      axios.post(`/api/v1/reviews/`,
+      axios.post(`/api/v1/spots/${this.$route.params.id}/reviews/`,
       {
         title: this.title,
         text: this.text,

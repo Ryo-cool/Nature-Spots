@@ -4,7 +4,7 @@
     <v-container>
       <v-row>
         <v-col
-        cols="7"
+        cols="5"
         >
           <h1>
             口コミ

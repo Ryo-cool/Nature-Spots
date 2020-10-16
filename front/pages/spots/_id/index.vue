@@ -6,6 +6,7 @@
     >
     パンくずリスト
     </v-breadcrumbs>
+
     <v-row>
       <v-col>
         <carousel />
@@ -14,13 +15,13 @@
     <v-row>
       <v-col
       cols="12"
-      md="7"
+      md="6"
       >
       <spot-data />
       </v-col>
       <v-col
         cols="12"
-        md="5"
+        md="6"
       >
         <review-header />
         <reviews />
@@ -35,18 +36,31 @@ import axios from '~/plugins/axios'
 export default {
   data () {
     return {
-      spot: {}
+      spot: {},
+      reviews: {}
     }
   },
   layout ({ store }) {
     return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  },
+  mounted () {
+    axios
+      .get(`/api/v1/spots/${this.$route.params.id}`)
+      .then((res) => {
+        const spot = res.data.spot
+        this.spot = spot
+        this.reviews = res.data.review
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
   
 }
 </script>
 
 <style>
-h2{
+/* h2{
   color:blue
-}
+} */
 </style>
