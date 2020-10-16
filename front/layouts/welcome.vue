@@ -6,7 +6,7 @@
     />
     <v-img
       dark
-      src="https://picsum.photos/id/219/1920/1080?blur=2"
+      src="https://picsum.photos/id/235/1920/1080?blur=2"
       gradient="to top right, rgba(80,78,102,.6), rgba(68,218,195,.9)"
       :height="imgHeight"
     >
@@ -20,13 +20,13 @@
           class="text-center"
         >
           <h1 class="display-1 mb-4">
-            未来を作ろう。ワクワクしよう。
+            自然を探そう。ワクワクしよう。
           </h1>
           <h4
             class="subheading"
             :style="{ letterSpacing: '5px' }"
           >
-            中小企業に特化した事業計画策定ツール
+            自然スポットに特化した口コミサイト
           </h4>
         </v-col>
       </v-row>

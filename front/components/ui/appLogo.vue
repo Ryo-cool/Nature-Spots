@@ -5,7 +5,7 @@
     class="my-app-log"
   >
     <span class="white--text text-subtitle-2">
-      <v-icon dark>mdi-store</v-icon>
+      <v-icon dark>mdi-leaf</v-icon>
     </span>
   </v-avatar>
 </template>
