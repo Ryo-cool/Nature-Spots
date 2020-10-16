@@ -23,10 +23,10 @@
           </v-avatar>
         </v-col>
         <v-col
-          cols="9"
+          cols="10"
           
         >
-          <div class="indigo--text caption">木村ヒロシさんが口コミを投稿しました（{{ review.created_at }}）</div>
+          <div class="indigo--text caption">木村ヒロシさんが口コミを投稿しました（{{ review.created_at | moment }}）</div>
           <div class="blue-grey--text caption">いいね〇〇件</div>
         </v-col>
         <v-col
@@ -92,6 +92,9 @@
 
 <script>
 import axios from '~/plugins/axios'
+
+import moment from 'moment'
+
 export default {
   data() {
     return {
@@ -104,6 +107,11 @@ export default {
       ],
       reviews: {}
     }
+  },
+  filters: {
+      moment: function (date) {
+          return moment(date).format('YYYY/MM/DD ');
+      }
   },
   mounted () {
     axios.get(`/api/v1/spots/${this.$route.params.id}`)
