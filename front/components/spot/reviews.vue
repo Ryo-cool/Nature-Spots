@@ -1,17 +1,18 @@
 <template>
   <v-card class="mt-5">
+  
   <v-list-item
   v-for="review in reviews"
   :key="reviews.id"
   
   >
+  
     <v-container>
-
       <v-row>
         <v-col
         cols="1"
         >
-        
+
           <v-avatar
             color="black"
             size="34"
@@ -83,9 +84,10 @@
 
         </v-col>
       </v-row>
-      
+    <v-divider class="mb-4"></v-divider>
     </v-container>
     </v-list-item>
+    
   </v-card>
   
 </template>

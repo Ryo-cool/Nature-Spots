@@ -16,8 +16,8 @@
             cols="12"
             sm="4"
             >
-              <h1>{{spot.name}}
-              </h1>
+              <h1>{{spot.name}}</h1>
+              
             </v-col>
             <v-col
             cols="5"
@@ -67,6 +67,7 @@
             </v-icon>
           </v-btn>
         </v-col>
+        
       </v-row>
       <v-divider></v-divider>
       <p>{{spot.name}}の説明:{{spot.introduction}}</p>
