@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="mb-4">
     <v-container>
       <v-row>
         <v-col
@@ -64,6 +64,17 @@
       <h3>都道府県<div class="body-1">{{prefecture}}</div></h3>
       <h3>住所<div class="body-1">{{spot.address}}</div></h3>
       <h3>ジャンル<div class="body-1">{{location}}</div></h3>
+        <GmapMap 
+        :center="{lat: spot.latitude, lng: spot.longitude}"
+        :zoom="12" 
+        ref="map" 
+        style="width: 500px; height: 300px"
+        >
+          <GmapMarker :key="id" v-for="(m,id) in marker_items"
+            :position="{lat: spot.latitude, lng: spot.longitude}"
+            :title="m.title"
+            :clickable="true" :draggable="false" />
+        </GmapMap>
     </v-container>
   </v-card>
 </template>
@@ -80,6 +91,9 @@ export default {
       reviews: {},
       rating: 2.6,
       reviews: 300,
+      marker_items: [
+      {position: {lat: 35.71, lng: 139.72}, title: 'marker_1'},
+      ]
     }
   },
   mounted () {
