@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 2020_10_14_135945) do
     t.text "introduction"
     t.string "photo"
     t.string "address"
+    t.float "latitude"
+    t.float "longitude"
     t.integer "prefecture_id"
     t.integer "location_id"
     t.datetime "created_at", precision: 6, null: false

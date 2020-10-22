@@ -32,7 +32,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    'plugins/myInject'
+    'plugins/myInject',
+    'plugins/vue2-google-maps.js',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -109,14 +110,20 @@ export default {
       }
     }
   },
-  /*
-  ** Build configuration
-  */
+
   build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend (config, ctx) {
-    }
+    extend(config, ctx) {
+      config.externals = config.externals || [];
+      if (!ctx.isClient) {
+        config.externals.splice(0, 0, function(context, request, callback) {
+          if (/^vue2-google-maps($|\/)/.test(request)) {
+            callback(null, false);
+          } else {
+            callback();
+          }
+        });
+      }
+    },
+    vendor: ['vue2-google-maps'],
   }
 }

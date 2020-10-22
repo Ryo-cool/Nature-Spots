@@ -15,7 +15,8 @@
     "moment": "^2.29.1",
     "nuxt": "^2.0.0",
     "nuxt-i18n": "^6.15.1",
-    "nuxt-webfontloader": "^1.1.0"
+    "nuxt-webfontloader": "^1.1.0",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0"

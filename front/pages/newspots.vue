@@ -13,7 +13,9 @@
         prepend-icon=""
         type="text"
         outlined
+        @change="onChange"
         />
+        <div>緯度{{ lat }}</div>
         <v-text-field
         label="説明"
         v-model="introduction"
@@ -26,7 +28,7 @@
           chips
           small-chips
           show-size
-          v-model="photo"
+          
           accept="image/png, image/jpeg, image/bmp"
           prepend-icon="mdi-camera"
           @change="onImagePicked"
@@ -109,11 +111,19 @@ export default {
       prefectures: "",
       address: "",
       locations: "",
+      lat: "",
+      lng: "",
+      formatted_address: "",
       uploadImageUrl: '',
+      geocoder: {},
       spots: [],
       prefecture: [],
       location: []
     }
+  },
+  mounted() {
+    this.$gmapApiPromiseLazy().then(() => {this.geocoder = new google.maps.Geocoder() })
+    
   },
   created() {
     // ユーザーをaxiosで取得
@@ -140,13 +150,38 @@ export default {
         this.uploadImageUrl = ''
       }
     },
+    // 入力されたスポット名を住所変換
+    onChange() {
+      this.geocoder.geocode({
+        'address': this.name
+      },(results, status) =>{
+        if(status === google.maps.GeocoderStatus.OK) {
+          this.lat = results[0].geometry.location.lat();
+          this.lng = results[0].geometry.location.lng();
+          // this.formatted_address = results[0].formatted_address;
+        }
+        else{
+          alert(地図を取得できません)
+        }
+      }
+      )
+    },
      // スポットをaxiosで登録
     createSpot(){
       axios.post("/api/v1/spots", 
-      {name: this.name,introduction: this.introduction,prefecture_id: this.prefectures,address: this.address,location_id: this.locations})
+      {
+        name: this.name,
+        introduction: this.introduction,
+        prefecture_id: this.prefectures,
+        address: this.address,
+        location_id: this.locations,
+        latitude: this.lat,
+        longitude: this.lng
+      })
       .then(res => {
         if (res.data) {
             this.spots.push(res.data)
+            this.$router.push('/')
         }
       })
     }

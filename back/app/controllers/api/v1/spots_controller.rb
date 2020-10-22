@@ -53,6 +53,16 @@ class Api::V1::SpotsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def spot_params
-      params.require(:spot).permit(:name,:introduction,:location_id,:photo,:address,:prefecture_id)
+      params.require(:spot)
+      .permit(
+        :name,
+        :introduction,
+        :location_id,
+        :photo,
+        :longitude,
+        :latitude,
+        :address,
+        :prefecture_id
+      )
     end
 end
