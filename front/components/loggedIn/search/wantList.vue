@@ -43,6 +43,9 @@
 </template>
 
 <script>
-export default {
-}
+  export default {
+    data: () => ({
+      model: null,
+    }),
+  }
 </script>

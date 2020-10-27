@@ -1,6 +1,7 @@
 class Api::V1::SpotsController < ApplicationController
   before_action :set_spot, only: [:show, :update, :destroy]
-  before_action :set_prefecture, only: [:show]
+  # before_action :set_prefecture, only: [:show]
+  # before_action :set_location, only: [:show]
   # GET /spots
   def index
     @spots = Spot.all
@@ -11,15 +12,15 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots/1
   def show
-    @reviews = @spot.reviews.includes(:spot).order('created_at DESC')
-    @location = Location.find(params[:id])
+    @reviews = @spot.reviews
+    @prefecture = @spot.prefecture
+    @location = @spot.location
     render json: {spot: @spot, prefecture: @prefecture, location: @location, review: @reviews}
   end
 
   # SPOT /spots
   def create
     @spot = Spot.new(spot_params)
-
     if @spot.save
       render json: @spot, status: :created, location: @spot
     else
@@ -49,6 +50,10 @@ class Api::V1::SpotsController < ApplicationController
 
     def set_prefecture
       @prefecture = Prefecture.find(params[:id])
+    end
+
+    def set_location
+      @location = Location.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

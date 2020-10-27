@@ -117,8 +117,10 @@ export default {
         spot_id: this.id
       })
       .then(res => {
+        this.$router.push('/')
         if (res.data) {
             this.reviews.push(res.data)
+            
         }
       })
       .catch(error => console.log(error))

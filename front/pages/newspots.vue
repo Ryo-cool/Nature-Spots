@@ -16,6 +16,8 @@
         @change="onChange"
         />
         <div>緯度{{ lat }}</div>
+        <div>{{ locations }}</div>
+        <div>{{ prefectures }}</div>
         <v-text-field
         label="説明"
         v-model="introduction"
@@ -23,7 +25,7 @@
         type="text"
         outlined
         />
-        <img v-if="uploadImageUrl" :src="uploadImageUrl" />
+        
         <v-file-input
           chips
           small-chips
@@ -31,7 +33,7 @@
           
           accept="image/png, image/jpeg, image/bmp"
           prepend-icon="mdi-camera"
-          @change="onImagePicked"
+          
           
         />
         <v-select
@@ -113,8 +115,8 @@ export default {
       locations: "",
       lat: "",
       lng: "",
-      formatted_address: "",
-      uploadImageUrl: '',
+      // formatted_address: "",
+      // uploadImageUrl: '',
       geocoder: {},
       spots: [],
       prefecture: [],
@@ -122,34 +124,40 @@ export default {
     }
   },
   mounted() {
-    this.$gmapApiPromiseLazy().then(() => {this.geocoder = new google.maps.Geocoder() })
-    
-  },
-  created() {
-    // ユーザーをaxiosで取得
     axios.get("/api/v1/spots").then(res => {
       if (res.data) {
         this.spots = res.data.spots
         this.prefecture = res.data.prefecture
         this.location = res.data.location
       }
-    })
+    }),
+    this.$gmapApiPromiseLazy().then(() => {this.geocoder = new google.maps.Geocoder() })
   },
+  // created() {
+  //   // ユーザーをaxiosで取得
+  //   axios.get("/api/v1/spots").then(res => {
+  //     if (res.data) {
+  //       this.spots = res.data.spots
+  //       this.prefecture = res.data.prefecture
+  //       this.location = res.data.location
+  //     }
+  //   })
+  // },
   methods: {
-    onImagePicked(file) {
-      if (file !== undefined && file !== null) {
-        if (file.name.lastIndexOf('.') <= 0) {
-          return
-        }
-        const fr = new FileReader()
-        fr.readAsDataURL(file)
-        fr.addEventListener('load', () => {
-          this.uploadImageUrl = fr.result
-        })
-      } else {
-        this.uploadImageUrl = ''
-      }
-    },
+    // onImagePicked(file) {
+    //   if (file !== undefined && file !== null) {
+    //     if (file.name.lastIndexOf('.') <= 0) {
+    //       return
+    //     }
+    //     const fr = new FileReader()
+    //     fr.readAsDataURL(file)
+    //     fr.addEventListener('load', () => {
+    //       this.uploadImageUrl = fr.result
+    //     })
+    //   } else {
+    //     this.uploadImageUrl = ''
+    //   }
+    // },
     // 入力されたスポット名を住所変換
     onChange() {
       this.geocoder.geocode({
@@ -180,8 +188,8 @@ export default {
       })
       .then(res => {
         if (res.data) {
-            this.spots.push(res.data)
-            this.$router.push('/')
+          this.spots.push(res.data)
+          this.$router.push('/')
         }
       })
     }

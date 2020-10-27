@@ -33,7 +33,7 @@ export default {
   */
   plugins: [
     'plugins/myInject',
-    'plugins/vue2-google-maps.js',
+    { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -110,7 +110,6 @@ export default {
       }
     }
   },
-
   build: {
     extend(config, ctx) {
       config.externals = config.externals || [];
