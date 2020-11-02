@@ -24,14 +24,20 @@
                 v-for="genre in genre"
                 :key="genre.title"
               >
+              <nuxt-link
+                :to="`location/${genre.attributes.id}`"
+                class="text-decoration-none"
+              >
                 <v-btn
                   outlined
                   color="indigo"
                   width="90%"
                   min-height="100"
                 >
+                  
                     <h1>{{ genre.attributes.name }}</h1>
                 </v-btn>
+              </nuxt-link>
               </v-col>
               <!-- <v-col
                 cols="12"
@@ -87,6 +93,7 @@
 <script>
 import homeImg from '~/assets/images/loggedIn/surfing_monochromatic.png'
 import axios from '~/plugins/axios'
+
 export default {
   data () {
     return {
@@ -98,6 +105,9 @@ export default {
     axios.get("api/v1/locations")
     .then((res) => {
       this.genre = res.data
+    })
+    .catch((error) => {
+      console.error(error)
     })
   }
 }
