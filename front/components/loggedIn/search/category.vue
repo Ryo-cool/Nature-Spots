@@ -21,6 +21,8 @@
                 cols="12"
                 md="6"
                 align="center"
+                v-for="genre in genre"
+                :key="genre.title"
               >
                 <v-btn
                   outlined
@@ -28,10 +30,10 @@
                   width="90%"
                   min-height="100"
                 >
-                    <h1>海</h1>
+                    <h1>{{ genre.attributes.name }}</h1>
                 </v-btn>
               </v-col>
-              <v-col
+              <!-- <v-col
                 cols="12"
                 md="6"
                 align="center"
@@ -74,7 +76,7 @@
                 >
                 <h1>公園</h1>
                 </v-btn>
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-container>
         </v-img>
@@ -84,11 +86,19 @@
 
 <script>
 import homeImg from '~/assets/images/loggedIn/surfing_monochromatic.png'
+import axios from '~/plugins/axios'
 export default {
   data () {
     return {
-      homeImg
+      homeImg,
+      genre: []
     }
+  },
+  mounted() {
+    axios.get("api/v1/locations")
+    .then((res) => {
+      this.genre = res.data
+    })
   }
 }
 </script>
