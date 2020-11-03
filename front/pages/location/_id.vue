@@ -1,8 +1,16 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        {{spot}}
+      {{spot.name}}のスポット一覧
+      <v-col 
+        v-for="jspot in jspots"
+        :key="jspot"
+        >
+        <v-card>
+          <v-card-title>
+            {{ jspot.name}}
+          </v-card-title>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -13,7 +21,8 @@ import axios from '~/plugins/axios'
 export default {
   data () {
     return {
-      spot: {}
+      spot: {},
+      jspots: []
     }
   },
   layout ({ store }) {
@@ -23,7 +32,9 @@ export default {
     axios
       .get(`/api/v1/locations/${this.$route.params.id}`)
       .then((res) => {
-        this.spot = res.data.spots
+        this.spot = res.data.location.attributes
+        this.jspots = res.data.spot
+        
       })
       .catch((error) => {
         console.error(error)
