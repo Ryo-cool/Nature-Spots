@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       resources :spots do
         resources :reviews
       end
+      resources :locations
+      resources :prefectures
     end
   end
 end

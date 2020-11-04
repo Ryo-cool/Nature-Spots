@@ -1,7 +1,7 @@
 <template>
   <v-col
     cols="12"
-    md="6"
+    md="7"
   >
     <h1>都道府県から探す</h1>
     <v-card class="mt-4">
@@ -11,33 +11,24 @@
         contain
       >
         <v-container>
-          <v-row >
-            <v-col
-              cols="4"
-            >
-              <h3>北海道・東北</h3>
-                <div>北海道</div>
-                <div>青森</div>
-                <div>秋田</div>
-                <div>岩手</div>
-                <div>山形</div>
-                <div>宮城</div>
-                <div>福島</div>
-            </v-col>
+          <v-row>
             <v-col
               cols="2"
+              v-for="prefecture in prefectures"
+              :key="prefecture.name"
+              
             >
-              <h3>関東</h3>
-                <div>群馬</div>
-                <div>栃木</div>
-                <div>茨城</div>
-                <div>埼玉</div>
-                <div>千葉</div>
-                <div>東京</div>
-                <div>神奈川</div>
+            <nuxt-link
+            :to="`prefecture/${prefecture.attributes.id}`"
+            class="text-decoration-none"
+            >
+              <v-btn
+                color="green lighten-4"
+                
+              >
+              {{ prefecture.attributes.name }}</v-btn>
+            </nuxt-link>
             </v-col>
-          </v-row>
-        </v-container>
           </v-row>
         </v-container>
       </v-img>
@@ -47,11 +38,29 @@
 
 <script>
 import homeImg from '~/assets/images/loggedIn/japanesemap.png'
+import axios from '~/plugins/axios'
+
 export default {
   data () {
     return {
-      homeImg
+      homeImg,
+      prefectures: []
     }
+  },
+  mounted() {
+    axios.get("api/v1/prefectures")
+    .then((res) => {
+      this.prefectures = res.data
+    })
+    .catch((error) => {
+      console.error(error)
+    })
   }
 }
 </script>
+
+<style>
+.pre {
+  padding: 12px 0px 2px 6px;
+}
+</style>
