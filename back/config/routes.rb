@@ -12,7 +12,7 @@ Rails.application.routes.draw do
         resources :reviews
       end
       resources :locations
-      resources :prefecture
+      resources :prefectures
     end
   end
 end

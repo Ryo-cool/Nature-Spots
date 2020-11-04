@@ -1,7 +1,7 @@
 <template>
     <v-col
       cols="12"
-      md="6"
+      md="5"
     >
       <h1>ジャンルから探す</h1>
       <v-card

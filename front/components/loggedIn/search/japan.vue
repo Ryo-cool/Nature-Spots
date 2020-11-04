@@ -1,7 +1,7 @@
 <template>
   <v-col
     cols="12"
-    md="6"
+    md="7"
   >
     <h1>都道府県から探す</h1>
     <v-card class="mt-4">
@@ -11,16 +11,24 @@
         contain
       >
         <v-container>
-          <v-row >
+          <v-row>
             <v-col
-              cols="6"
-              v-for="prefecture in prefecture"
-              :key="prefecture"
+              cols="2"
+              v-for="prefecture in prefectures"
+              :key="prefecture.name"
+              
             >
-            <div>{{ prefecture.name }}</div>
+            <nuxt-link
+            :to="`prefecture/${prefecture.attributes.id}`"
+            class="text-decoration-none"
+            >
+              <v-btn
+                color="blue lighten-4"
+                
+              >
+              {{ prefecture.attributes.name }}</v-btn>
+            </nuxt-link>
             </v-col>
-          </v-row>
-        </v-container>
           </v-row>
         </v-container>
       </v-img>
@@ -31,6 +39,7 @@
 <script>
 import homeImg from '~/assets/images/loggedIn/japanesemap.png'
 import axios from '~/plugins/axios'
+
 export default {
   data () {
     return {
@@ -49,3 +58,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.pre {
+  padding: 12px 0px 2px 6px;
+}
+</style>

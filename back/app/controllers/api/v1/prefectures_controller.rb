@@ -1,6 +1,7 @@
 class Api::V1::PrefecturesController < ApplicationController
   before_action :set_prefecture, only: [:show]
   before_action :set_spot, only: [:show]
+  
   def index
     @prefectures= Prefecture.all
     render json: @prefectures
