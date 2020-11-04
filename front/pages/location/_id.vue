@@ -3,8 +3,8 @@
     {{spot.name}}のスポット一覧
     <v-row>
       <v-col 
-        v-for="jspot in jspots"
-        :key="jspot"
+        v-for="(jspot, index) in jspots"
+        :key="index"
         cols="12"
         sm="4"
         >
@@ -31,7 +31,6 @@ export default {
   data () {
     return {
       spot: {},
-      review: {},
       jspots: []
     }
   },
@@ -44,7 +43,7 @@ export default {
       .then((res) => {
         this.spot = res.data.location.attributes
         this.jspots = res.data.spot
-        this.review = res.data.review
+        
         
       })
       .catch((error) => {

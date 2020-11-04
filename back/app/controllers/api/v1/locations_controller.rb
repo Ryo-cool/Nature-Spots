@@ -7,9 +7,9 @@ class Api::V1::LocationsController < ApplicationController
   end
 
   def show
-    @reviews = @spot.review
+    
     @jspot= Spot.where(location_id: @location.id)
-    render json:{location: @location,spot: @jspot,review: @reviews} 
+    render json:{location: @location,spot: @jspot} 
   end
 
   private

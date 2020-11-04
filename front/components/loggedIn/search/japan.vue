@@ -23,7 +23,7 @@
             class="text-decoration-none"
             >
               <v-btn
-                color="blue lighten-4"
+                color="green lighten-4"
                 
               >
               {{ prefecture.attributes.name }}</v-btn>
