@@ -13,28 +13,11 @@
         <v-container>
           <v-row >
             <v-col
-              cols="4"
+              cols="6"
+              v-for="prefecture in prefecture"
+              :key="prefecture"
             >
-              <h3>北海道・東北</h3>
-                <div>北海道</div>
-                <div>青森</div>
-                <div>秋田</div>
-                <div>岩手</div>
-                <div>山形</div>
-                <div>宮城</div>
-                <div>福島</div>
-            </v-col>
-            <v-col
-              cols="2"
-            >
-              <h3>関東</h3>
-                <div>群馬</div>
-                <div>栃木</div>
-                <div>茨城</div>
-                <div>埼玉</div>
-                <div>千葉</div>
-                <div>東京</div>
-                <div>神奈川</div>
+            <div>{{ prefecture.name }}</div>
             </v-col>
           </v-row>
         </v-container>
@@ -47,11 +30,22 @@
 
 <script>
 import homeImg from '~/assets/images/loggedIn/japanesemap.png'
+import axios from '~/plugins/axios'
 export default {
   data () {
     return {
-      homeImg
+      homeImg,
+      prefectures: []
     }
+  },
+  mounted() {
+    axios.get("api/v1/prefectures")
+    .then((res) => {
+      this.prefectures = res.data
+    })
+    .catch((error) => {
+      console.error(error)
+    })
   }
 }
 </script>
