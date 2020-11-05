@@ -48,7 +48,7 @@ export default {
     }
   },
   mounted() {
-    axios.get("api/v1/prefectures")
+    this.$axios.get("api/v1/prefectures")
     .then((res) => {
       this.prefectures = res.data
     })

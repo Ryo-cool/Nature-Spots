@@ -33,6 +33,7 @@ export default {
   */
   plugins: [
     'plugins/auth',
+    'plugins/axios',
     'plugins/myInject',
     { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],

@@ -57,8 +57,9 @@ export default {
       this.loading = false
     },
     // ログイン成功
-    authSuccessful (response) {
-      console.log(response)
+    async authSuccessful (response) {
+      await this.$auth.login(response)
+      // console.log(this.$store.state.current.user)
     },
     // ログイン失敗
     authFailure ({ response }) {
