@@ -1,9 +1,11 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*'
+    origins ENV["API_DOMAIN"] || ""
 
     resource '*',
-            headers: :any,
-            methods: %i[get post put patch delete options head]
+      headers: :any,
+      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      # クロスオリジンのCookieを使用するための設定
+      credentials: true
   end
 end
