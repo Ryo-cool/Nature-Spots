@@ -18,6 +18,7 @@ export default {
   },
   data () {
     return {
+      setEmail: "",
       rules: [
         v => !!v || '',
         v => /.+@.+\..+/.test(v) || ''

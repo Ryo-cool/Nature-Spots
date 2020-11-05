@@ -64,5 +64,6 @@ export default {
     authFailure ({ response }) {
       console.log(response)
     }
+  }
 }
 </script>

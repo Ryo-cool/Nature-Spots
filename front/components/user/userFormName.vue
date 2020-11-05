@@ -14,6 +14,7 @@ export default {
   data () {
     const max = 30
     return {
+      setName: "",
       max,
       rules: [
         v => !!v || '',

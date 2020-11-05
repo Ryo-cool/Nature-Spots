@@ -63,6 +63,9 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    // クロスサイトリクエスト時にCookieを使用することを許可する
+    // Doc: https://axios.nuxtjs.org/options/#credentials
+    credentials: true
   },
   /*
   ** vuetify module configuration
