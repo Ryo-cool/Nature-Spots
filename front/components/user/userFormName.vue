@@ -14,7 +14,6 @@ export default {
   data () {
     const max = 30
     return {
-      setName: "",
       max,
       rules: [
         v => !!v || '',
@@ -22,5 +21,11 @@ export default {
       ]
     }
   },
+  computed: {
+    setName: {
+      get () { return this.name },
+      set (newVal) { return this.$emit('update:name', newVal) }
+    }
+  }
 }
 </script>

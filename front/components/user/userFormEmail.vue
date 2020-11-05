@@ -18,7 +18,6 @@ export default {
   },
   data () {
     return {
-      setEmail: "",
       rules: [
         v => !!v || '',
         v => /.+@.+\..+/.test(v) || ''
@@ -26,6 +25,10 @@ export default {
     }
   },
   computed: {
+    setEmail: {
+      get () { return this.email },
+      set (newVal) { return this.$emit('update:email', newVal) }
+    },
     form () {
       const placeholder = this.noValidation ? undefined : 'your@email.com'
       return { placeholder }
