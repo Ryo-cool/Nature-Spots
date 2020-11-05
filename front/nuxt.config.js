@@ -32,6 +32,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    'plugins/auth',
     'plugins/myInject',
     { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],
