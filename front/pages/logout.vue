@@ -3,12 +3,9 @@
 </template>
 <script>
 export default {
-  async middleware ({ store, redirect, from }) {
-    await store.dispatch('logout')
-    if (from.name !== 'index') { return redirect('/') }
-  },
   layout: 'logout',
-  beforeCreate () {
+  async beforeCreate () {
+    await this.$auth.logout()
     this.$router.replace('/')
   }
 }
