@@ -21,6 +21,12 @@ Bundler.require(*Rails.groups)
 
 module App
   class Application < Rails::Application
+
+    # Cookieを処理するmeddlewareを追加(APIモードにはデフォルトで入っていない)
+    config.middleware.use ActionDispatch::Cookies
+
+    config.api_only = true
+    
     # Zeitwerk（ツァイトベルク）にvalidator配下のファイルを読み込ます
     config.autoload_paths += %W(#{config.root}/lib/validator)
     

@@ -27,6 +27,7 @@
 
 <script>
 import axios from '~/plugins/axios'
+
 export default {
   data () {
     return {
@@ -34,17 +35,15 @@ export default {
       jspots: []
     }
   },
-  layout ({ store }) {
-    return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  layout ({ $auth }) {
+    return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },
   mounted () {
-    axios
+    this.$axios
       .get(`/api/v1/locations/${this.$route.params.id}`)
       .then((res) => {
         this.spot = res.data.location.attributes
         this.jspots = res.data.spot
-        
-        
       })
       .catch((error) => {
         console.error(error)

@@ -32,7 +32,10 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    'plugins/auth',
+    'plugins/axios',
     'plugins/myInject',
+    'plugins/nuxtClientInit',
     { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],
   /*
@@ -56,13 +59,17 @@ export default {
     }
   },
   publicRuntimeConfig: {
-    appName: process.env.APP_NAME
+    appName: process.env.APP_NAME,
+    cryptoKey: process.env.CRYPTO_KEY
   },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    // クロスサイトリクエスト時にCookieを使用することを許可する
+    // Doc: https://axios.nuxtjs.org/options/#credentials
+    credentials: true
   },
   /*
   ** vuetify module configuration

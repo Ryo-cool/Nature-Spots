@@ -102,7 +102,7 @@ export default {
     }
   },
   mounted() {
-    axios.get("api/v1/locations")
+    this.$axios.get("api/v1/locations")
     .then((res) => {
       this.genre = res.data
     })

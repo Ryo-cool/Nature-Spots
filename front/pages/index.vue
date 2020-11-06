@@ -3,6 +3,7 @@
     <v-row>
       <v-col>
         <h1>検索</h1>
+        {{ $auth.user.name }}さん
         <nuxt-link
           to="newspots"
           class="text-decoration-none"
@@ -72,8 +73,9 @@ export default {
       homeImg
     }
   },
-  layout ({ store }) {
-    return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  // middleware: 'authenticator',
+  layout ({ $auth }) {
+    return $auth.loggedIn ? 'loggedIn' : 'welcome'
   }
 }
 </script>

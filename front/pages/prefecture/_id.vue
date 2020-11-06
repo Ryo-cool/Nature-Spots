@@ -35,11 +35,11 @@ export default {
       pspots: []
     }
   },
-  layout ({ store }) {
-    return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  layout ({ $auth }) {
+    return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },
   mounted () {
-    axios
+    this.$axios
       .get(`/api/v1/prefectures/${this.$route.params.id}`)
       .then((res) => {
         this.spot = res.data.prefecture.attributes

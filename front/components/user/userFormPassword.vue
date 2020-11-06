@@ -30,6 +30,10 @@ export default {
     }
   },
   computed: {
+    setPassword: {
+      get () { return this.password },
+      set (newVal) { return this.$emit('update:password', newVal) }
+    },
     form () {
       const min = '8文字以上'
       const msg = `${min}。半角英数字•ﾊｲﾌﾝ•ｱﾝﾀﾞｰﾊﾞｰが使えます`

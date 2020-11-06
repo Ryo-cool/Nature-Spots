@@ -21,5 +21,11 @@ export default {
       ]
     }
   },
+  computed: {
+    setName: {
+      get () { return this.name },
+      set (newVal) { return this.$emit('update:name', newVal) }
+    }
+  }
 }
 </script>

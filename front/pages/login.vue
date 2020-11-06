@@ -1,6 +1,8 @@
 <template>
   <bef-login-form-card #form-card-content>
-   <v-form
+    <toaster />
+    {{ $store.state.toast }}
+    <v-form
       ref="form"
       v-model="isValid"
     >
@@ -47,13 +49,25 @@ export default {
     }
   },
   methods: {
-    login () {
+    async login () {
       this.loading = true
-      setTimeout(() => {
-        this.$store.dispatch('login')
-        this.$router.replace('/')
-        this.loading = false
-      }, 1500)
+      if (this.isValid) {
+        await this.$axios.$post('/api/v1/user_token', this.params)
+          .then(response => this.authSuccessful(response))
+          .catch(error => this.authFailure(error))
+      }
+      this.loading = false
+    },
+    // ログイン成功
+    async authSuccessful (response) {
+      await this.$auth.login(response)
+      this.$router.push(this.$store.state.rememberRoute)
+    },
+    // ログイン失敗
+    authFailure ({ response }) {
+      if (response.status === 404) {
+        this.$store.dispatch('getToast', { msg: 'ユーザーが見つかりません😷' })
+      }
     }
   }
 }

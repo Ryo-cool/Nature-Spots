@@ -44,6 +44,7 @@ module UserAuth
       def algorithm
         UserAuth.token_signature_algorithm
       end
+
       # オーディエンスの値がある場合にtrueを返す
       def verify_audience?
         UserAuth.token_audience.present?
@@ -58,6 +59,7 @@ module UserAuth
       def token_lifetime
         @lifetime.from_now.to_i
       end
+      
       # デコード時オプション
       # default: https://www.rubydoc.info/github/jwt/ruby-jwt/master/JWT/DefaultOptions
       def decode_options

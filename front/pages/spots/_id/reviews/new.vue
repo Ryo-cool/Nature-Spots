@@ -75,8 +75,8 @@ export default {
       id: [],
     }
   },
-  layout ({ store }) {
-    return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  layout ({ $auth }) {
+    return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },
   created () {
     axios
