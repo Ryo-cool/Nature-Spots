@@ -59,7 +59,7 @@ export default {
     // ログイン成功
     async authSuccessful (response) {
       await this.$auth.login(response)
-      // console.log(this.$store.state.current.user)
+      this.$router.push(this.$store.state.rememberRoute)
     },
     // ログイン失敗
     authFailure ({ response }) {
