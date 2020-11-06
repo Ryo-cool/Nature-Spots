@@ -10,5 +10,6 @@
 
 <script>
 export default {
+middleware: 'loggedInIsRedirects'
 }
 </script>
