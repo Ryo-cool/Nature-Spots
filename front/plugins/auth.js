@@ -15,6 +15,16 @@ class Authentication {
     const expire = String(exp * 1000)
     return cryptoJs.AES.encrypt(expire, this.$config.cryptoKey).toString()
   }
+
+  // 有効期限を複合化
+  decrypt (exp) {
+    try {
+      const bytes = cryptoJs.AES.decrypt(exp, this.$config.cryptoKey)
+      return bytes.toString(cryptoJs.enc.Utf8) || this.removeStorage()
+    } catch (e) {
+      return this.removeStorage()
+    }
+  }
   // storageに保存
   setStorage (exp) {
     storage.setItem(keys.exp, exp * 1000)
