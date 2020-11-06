@@ -73,6 +73,7 @@ export default {
       homeImg
     }
   },
+  // middleware: 'authenticator',
   layout ({ $auth }) {
     return $auth.loggedIn ? 'loggedIn' : 'welcome'
   }
