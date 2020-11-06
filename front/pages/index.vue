@@ -3,6 +3,7 @@
     <v-row>
       <v-col>
         <h1>検索</h1>
+        {{ $auth.user.name }}さん
         <nuxt-link
           to="newspots"
           class="text-decoration-none"

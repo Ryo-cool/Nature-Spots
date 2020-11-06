@@ -35,6 +35,7 @@ export default {
     'plugins/auth',
     'plugins/axios',
     'plugins/myInject',
+    'plugins/nuxtClientInit',
     { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],
   /*
