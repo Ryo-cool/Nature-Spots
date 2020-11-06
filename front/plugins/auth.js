@@ -7,6 +7,13 @@ class Authentication {
   constructor (ctx) {
     this.store = ctx.store
     this.$axios = ctx.$axios
+    this.error = ctx.error
+    this.$config = ctx.$config
+  }
+  // 有効期限を暗号化
+  encrypt (exp) {
+    const expire = String(exp * 1000)
+    return cryptoJs.AES.encrypt(expire, this.$config.cryptoKey).toString()
   }
   // storageに保存
   setStorage (exp) {
@@ -38,7 +45,10 @@ class Authentication {
     this.store.dispatch('getCurrentUser', null)
   }
 }
-
+// $configを追加
+export default ({ store, $axios, error, $config }, inject) => {
+  inject('auth', new Authentication({ store, $axios, error, $config }))
+}
 export default ({ store, $axios }, inject) => {
   inject('auth', new Authentication({ store, $axios }))
 }
