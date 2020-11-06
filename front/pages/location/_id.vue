@@ -35,8 +35,8 @@ export default {
       jspots: []
     }
   },
-  layout ({ store }) {
-    return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  layout ({ $auth }) {
+    return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },
   mounted () {
     this.$axios

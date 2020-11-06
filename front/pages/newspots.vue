@@ -103,8 +103,8 @@
 import axios from "~/plugins/axios"
 
 export default {
-  layout ({ store }) {
-    return store.state.loggedIn ? 'loggedIn' : 'welcome'
+  layout ({ $auth }) {
+    return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },
   data () {
     return {
