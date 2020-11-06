@@ -39,7 +39,7 @@ export default {
     return store.state.loggedIn ? 'loggedIn' : 'welcome'
   },
   mounted () {
-    axios
+    this.$axios
       .get(`/api/v1/prefectures/${this.$route.params.id}`)
       .then((res) => {
         this.spot = res.data.prefecture.attributes

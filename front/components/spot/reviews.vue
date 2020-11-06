@@ -122,7 +122,7 @@ export default {
       }
   },
   mounted () {
-    axios.get(`/api/v1/spots/${this.$route.params.id}`)
+    this.$axios.get(`/api/v1/spots/${this.$route.params.id}`)
     .then((res) => {
         this.reviews = res.data.review
         

@@ -124,7 +124,7 @@ export default {
     }
   },
   mounted() {
-    axios.get("/api/v1/spots").then(res => {
+    this.$axios.get("/api/v1/spots").then(res => {
       if (res.data) {
         this.spots = res.data.spots
         this.prefecture = res.data.prefecture
@@ -176,7 +176,7 @@ export default {
     },
      // スポットをaxiosで登録
     createSpot(){
-      axios.post("/api/v1/spots", 
+      this.$axios.post("/api/v1/spots", 
       {
         name: this.name,
         introduction: this.introduction,
