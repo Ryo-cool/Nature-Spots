@@ -1,3 +1,5 @@
+// Doc: https://www.npmjs.com/package/crypto-js
+const cryptoJs = require('crypto-js')
 const storage = window.localStorage
 const keys = { exp: 'exp' }
 
