@@ -37,7 +37,8 @@ class Authentication {
   }
   // storageの有効期限を複合して返す
   getExpire () {
-    return storage.getItem(keys.exp)
+    const expire = storage.getItem(keys.exp)
+    return expire ? this.decrypt(expire) : null
   }
   // 有効期限内の場合はtrueを返す
   isAuthenticated () {
