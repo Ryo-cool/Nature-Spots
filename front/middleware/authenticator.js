@@ -18,7 +18,7 @@ export default async ({ $auth, store, route, redirect }) => {
     }
 
     // TODO トースター出力
-    console.log(msg)
+    store.dispatch('getToast', { msg })
     return redirect('/login')
   } else if (!$auth.isUserPresent()) {
     // 有効期限内でユーザーが存在しない場合

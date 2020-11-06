@@ -1,5 +1,7 @@
 <template>
   <bef-login-form-card #form-card-content>
+    <toaster />
+    {{ $store.state.toast }}
     <v-form
       ref="form"
       v-model="isValid"
@@ -63,7 +65,9 @@ export default {
     },
     // ログイン失敗
     authFailure ({ response }) {
-      console.log(response)
+      if (response.status === 404) {
+        this.$store.dispatch('getToast', { msg: 'ユーザーが見つかりません😷' })
+      }
     }
   }
 }
