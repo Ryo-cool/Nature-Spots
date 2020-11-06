@@ -27,7 +27,7 @@ class Authentication {
   }
   // storageに保存
   setStorage (exp) {
-    storage.setItem(keys.exp, exp * 1000)
+    storage.setItem(keys.exp, this.encrypt(exp))
   }
   // storageを削除
   removeStorage () {
