@@ -60,6 +60,3 @@ class Authentication {
 export default ({ store, $axios, error, $config }, inject) => {
   inject('auth', new Authentication({ store, $axios, error, $config }))
 }
-export default ({ store, $axios }, inject) => {
-  inject('auth', new Authentication({ store, $axios }))
-}

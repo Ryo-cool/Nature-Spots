@@ -1,6 +1,6 @@
 <template>
   <bef-login-form-card #form-card-content>
-   <v-form
+    <v-form
       ref="form"
       v-model="isValid"
     >
