@@ -97,7 +97,7 @@ export default {
     }
   },
   mounted () {
-    axios
+    this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
         this.spot = res.data.spot

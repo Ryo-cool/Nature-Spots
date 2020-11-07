@@ -79,7 +79,7 @@ export default {
     return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },
   created () {
-    axios
+    this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
         // const spot = res.data
