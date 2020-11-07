@@ -2,7 +2,6 @@
   <v-container>
     <v-row>
       <v-col>
-        <h1>検索</h1>
         {{ $auth.user.name }}さん
         <nuxt-link
           to="newspots"
@@ -13,7 +12,7 @@
         <v-img
           :src="homeImg"
           alt="homeImg"
-          aspect-ratio="2.8"
+          aspect-ratio="2.3"
           contain
         >
           <v-container
@@ -65,7 +64,7 @@
 </template>
 
 <script>
-import homeImg from '~/assets/images/loggedIn/surfing_monochromatic.png'
+import homeImg from '~/assets/images/loggedIn/adventure__isometric.png'
 
 export default {
   data () {
