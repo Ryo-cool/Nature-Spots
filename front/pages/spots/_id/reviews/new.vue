@@ -1,5 +1,6 @@
 <template>
   <v-container class="my-7">
+    {{ $auth.user.id }}
     <v-row justify="center">
       <v-col cols="11" md="7" sm="8">
         <h1 class="text-center">口コミを投稿する</h1>
@@ -64,9 +65,9 @@ export default {
   data () {
     return {
       // picker: new Date().toISOString().substr(0, 10),
-      input_image: "",
+      input_image: null,
       uploadImageUrl: '',
-      rating: "",
+      rating: null,
       title: "",
       text: "",
       picker: "",
@@ -78,19 +79,19 @@ export default {
   layout ({ $auth }) {
     return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },
-  created () {
-    this.$axios
-      .get(`/api/v1/spots/${this.$route.params.id}`)
-      .then((res) => {
-        // const spot = res.data
-        this.spots = res.data
-        this.id = res.data.id
-        // this.review = res.data.review
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  },
+  // created () {
+  //   this.$axios
+  //     .get(`/api/v1/spots/${this.$route.params.id}`)
+  //     .then((res) => {
+  //       // const spot = res.data
+  //       this.spots = res.data
+  //       this.id = res.data.id
+  //       // this.review = res.data.review
+  //     })
+  //     .catch((error) => {
+  //       console.error(error)
+  //     })
+  // },
   methods: {
     // onImagePicked(file) {
     //   if (file !== undefined && file !== null) {
@@ -107,14 +108,15 @@ export default {
     //   }
     // },
     createReview () {
-      axios.post(`/api/v1/spots/${this.$route.params.id}/reviews/`,
+      this.$axios.post(`/api/v1/spots/${this.$route.params.id}/reviews/`,
       {
         title: this.title,
         text: this.text,
         image: this.input_image,
         wentday: this.picker,
         rating: this.rating,
-        spot_id: this.id
+        spot_id: this.id,
+        user_id: this.$auth.user.id
       })
       .then(res => {
         this.$router.push('/')

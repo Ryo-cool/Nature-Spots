@@ -2,12 +2,14 @@ require "validator/email_validator"
 
 class User < ApplicationRecord
   include UserAuth::Tokenizable
-  before_validation :downcase_email
 
   # アソシエーション
   has_many :reviews, dependent: :destroy
   has_many :likes, dependent: :destroy
-  has_many :liked_posts, through: :likes, source: :post
+  has_many :liked_spots, through: :likes, source: :spot
+
+
+  before_validation :downcase_email
 
   # gem bcrypt
   has_secure_password
