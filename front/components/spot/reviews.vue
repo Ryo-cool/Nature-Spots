@@ -113,7 +113,8 @@ export default {
         { title: 'Click Me' },
         { title: 'Click Me 2' },
       ],
-      reviews: {}
+      reviews: {},
+      users: {}
     }
   },
   filters: {

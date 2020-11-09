@@ -3,7 +3,8 @@ class Api::V1::ReviewsController < ApplicationController
 
   def index
     @reviews= Review.all
-    render json: @reviews
+    @users = User.includes(:reviews)
+    render json: {review: @reviews,user: @users}
   end
 
 

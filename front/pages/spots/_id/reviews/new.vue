@@ -79,19 +79,19 @@ export default {
   layout ({ $auth }) {
     return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },
-  // created () {
-  //   this.$axios
-  //     .get(`/api/v1/spots/${this.$route.params.id}`)
-  //     .then((res) => {
-  //       // const spot = res.data
-  //       this.spots = res.data
-  //       this.id = res.data.id
-  //       // this.review = res.data.review
-  //     })
-  //     .catch((error) => {
-  //       console.error(error)
-  //     })
-  // },
+  created () {
+    this.$axios
+      .get(`/api/v1/spots/${this.$route.params.id}`)
+      .then((res) => {
+        // const spot = res.data
+        this.spots = res.data
+        this.id = res.data.id
+        // this.review = res.data.review
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  },
   methods: {
     // onImagePicked(file) {
     //   if (file !== undefined && file !== null) {

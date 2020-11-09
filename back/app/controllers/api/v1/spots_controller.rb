@@ -1,6 +1,6 @@
 class Api::V1::SpotsController < ApplicationController
   before_action :set_spot, only: [:show, :update, :destroy]
-  # before_action :set_prefecture, only: [:show]
+  before_action :set_prefecture, only: [:show]
   # before_action :set_location, only: [:show]
   # GET /spots
   def index
@@ -13,9 +13,16 @@ class Api::V1::SpotsController < ApplicationController
   # GET /spots/1
   def show
     @reviews = @spot.reviews
+    @users = User.all.includes(:reviews)
     @prefecture = @spot.prefecture
     @location = @spot.location
-    render json: {spot: @spot, prefecture: @prefecture, location: @location, review: @reviews}
+    render json: {
+      spot: @spot,
+      user: @users,
+      prefecture: @prefecture,
+      location: @location,
+      review: @reviews
+    }
   end
 
   # SPOT /spots
@@ -46,6 +53,10 @@ class Api::V1::SpotsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_spot
       @spot = Spot.find(params[:id])
+    end
+
+    def set_user
+      @user = User.find(params[:id])
     end
 
     def set_prefecture
