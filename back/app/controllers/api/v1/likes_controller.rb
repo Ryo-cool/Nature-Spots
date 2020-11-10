@@ -2,8 +2,10 @@ class Api::V1::LikesController < ApplicationController
   before_action :set_review
 
   def create
-    @like = Like.create(user_id: current_user.id, review_id: @review.id)
-    render json: @like
+    like = Like.new(like_params)
+    if like.save
+      render status: :created
+    end
   end
 
   def destroy
@@ -13,6 +15,10 @@ class Api::V1::LikesController < ApplicationController
   end
 
   private
+  def like_params
+    params.require(:like).permit(:review_id, :user_id)
+  end
+
   def set_review
     @review = Review.find(params[:review_id])
   end
