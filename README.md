@@ -1,7 +1,7 @@
 # Nature-Spots
 自然スポットの口コミサイトです。<br >
 旅行先の景色や好きな自然スポットを位置情報付きで共有できます。<br >
-レスポンシブ対応
+レスポンシブ対応<br >
 <img width="733" alt="スクショ2020-10-16 19 16 10" src="https://user-images.githubusercontent.com/58380104/96246943-5b151300-0fe4-11eb-9435-bc4d0c88971e.png">
 # URL
 
