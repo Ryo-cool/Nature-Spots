@@ -9,7 +9,9 @@ Rails.application.routes.draw do
         delete :destroy, on: :collection
       end
       resources :spots do
-        resources :reviews
+        resources :reviews do
+          resources :likes, only: [:create, :destroy]
+        end
       end
       resources :locations
       resources :prefectures

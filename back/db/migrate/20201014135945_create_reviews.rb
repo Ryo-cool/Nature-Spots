@@ -6,6 +6,7 @@ class CreateReviews < ActiveRecord::Migration[6.0]
       t.string :wentday
       t.integer :rating
       t.string :image
+      t.references :user, null: false, foreign_key: true
       t.references :spot, foreign_key: true
       t.timestamps
     end

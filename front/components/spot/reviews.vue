@@ -1,6 +1,5 @@
 <template>
   <v-card class="mt-5">
-  
   <v-list-item
   v-for="review in reviews"
   :key="reviews.id"
@@ -68,12 +67,14 @@
           <v-card-subtitle>訪問時期:{{review.wentday}}月</v-card-subtitle>
         </v-col>
       </v-row>
+      <!-- ライクボタン -->
       <v-row>
         <v-col
           cols="1"
         >
           <v-btn
             icon
+            @click="like(review.id)"
           >
             <v-icon>mdi-thumb-up-outline</v-icon>
           </v-btn>
@@ -84,8 +85,9 @@
         >
           <v-btn
             icon
+            @click="deleteLike(review.id)"
           >
-            <v-icon>mdi-export-variant</v-icon>
+            <v-icon>mdi-thumb-up</v-icon>
           </v-btn>
 
         </v-col>
@@ -113,7 +115,9 @@ export default {
         { title: 'Click Me' },
         { title: 'Click Me 2' },
       ],
-      reviews: {}
+      reviews: {},
+      users: {},
+      likes: []
     }
   },
   filters: {
@@ -130,6 +134,41 @@ export default {
     .catch((error) => {
       console.error(error)
     })
+  },
+
+  methods: {
+    like(reviewId){
+      this.$axios.post(
+        `/api/v1/spots/${this.$route.params.id}/reviews/${reviewId}/likes`,
+      {
+        user_id: this.$auth.user.id,
+        review_id: reviewId
+      })
+      .then(res => {
+        console.log(res)
+        this.$set(this.reviews, "likes", res.data.likes)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    deleteLike(reviewId) {
+      this.$axios
+        .delete(`/api/v1/spots/${this.$route.params.id}/reviews/${reviewId}/likes/${this.$auth.user.id}`, {
+          params: {
+            user_id: this.$auth.user.id,
+            review_id: this.reviewId
+          }
+        })
+        .then(res => {
+          console.log(res)
+          // $set を使って this.topic の要素を更新。
+          this.$set(this.reviews, "likes", res.data.likes)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
   }
 }
 </script>
