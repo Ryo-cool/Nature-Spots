@@ -1,6 +1,5 @@
 <template>
   <v-container class="my-7">
-    {{ $auth.user.id }}
     <v-row justify="center">
       <v-col cols="11" md="7" sm="8">
         <h1 class="text-center">口コミを投稿する</h1>

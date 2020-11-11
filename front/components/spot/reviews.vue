@@ -129,7 +129,7 @@ export default {
     this.$axios.get(`/api/v1/spots/${this.$route.params.id}`)
     .then((res) => {
         this.reviews = res.data.review
-        
+      
     })
     .catch((error) => {
       console.error(error)
