@@ -6,7 +6,7 @@
   :key="review"
   
   >
-  <v-card>
+  <v-card class="mb-2">
     
     <!-- ユーザーの投稿 -->
     <v-container>
@@ -85,7 +85,7 @@
           </v-btn>
         </v-col>
       </v-row>
-      <v-divider class="mt-4"></v-divider>
+      
     </v-container>
   </v-card>
   </v-list-item>

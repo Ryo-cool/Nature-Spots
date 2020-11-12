@@ -1,21 +1,16 @@
 <template>
   <v-container>
-    <v-row  justify="center" align-content="center">
-      <v-col cols="10">
-        {{ $route.fullPath }}
+    <v-row>
+      <v-col cols="4">
         <!-- ユーザー情報 -->
         <v-card>
-            {{ $auth.user.name }}さん
           <v-container>
+            {{ $auth.user.name }}のページ
             <v-row>
-              <v-col cols="2">
-                {{ $auth.user.email}}
-                画像
-              </v-col>
-              <v-col cols="8">
+              <v-col>
                 <v-row>
                   <v-col>
-                    投稿
+                    {{ $auth.user.email}}
                   </v-col>
                   <v-col>
                     フォロー
@@ -31,15 +26,18 @@
             </v-row>
           </v-container>
         </v-card>
-      
+        
+      </v-col>
+      <v-col>
         <v-row>
-          <v-col cols="7">
+          <v-col cols="6">
             <mypage />
           </v-col>
-          <v-col>
-            いきたいリスト
+          <v-col cols="6">
+            いいねした投稿
+            <like-review />
           </v-col>
-        </v-row>   
+        </v-row> 
       </v-col>
     </v-row>
   </v-container>
