@@ -22,8 +22,13 @@
   - bcrypt(パスワード暗号化）
 # 機能一覧
 - ユーザー登録、ログイン機能(JWT)
+  - Cookieにてログイン維持
+- 詳細ページ
+  - 投稿、いいねした投稿、フォロー＆フォロワー、いきたいスポット（お気に入り機能）表示
 - スポット投稿機能
-  - 位置情報登録(GoogleApi)
+  - スポット名入力でGoogle MAP緯度経度取得(Geocording API)
+- 詳細ページ
+  - Google MAP表示（Google Maps Javascript API）
 - 口コミ投稿機能
   - 画像投稿(carrierwave)
   - いいね機能
