@@ -4,8 +4,9 @@ class User < ApplicationRecord
   include UserAuth::Tokenizable
 
   # アソシエーション
-  has_many :reviews, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :liked_reviews, through: :likes, source: :review
+  has_many :reviews, dependent: :destroy
   has_many :liked_spots, through: :likes, source: :spot
 
 
@@ -41,7 +42,7 @@ class User < ApplicationRecord
     users.find_activated(email).present?
   end
 
-  # 共通のJSONレスポンス
+  # 共通のJSONレスポンス。カラムを増やした場合は配列に追加する。
   def my_json
     as_json(only: [:id, :name, :email, :created_at])
   end
