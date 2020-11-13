@@ -6,20 +6,22 @@
       item-text="name"
       prepend-inner-icon="mdi-database-search"
       dense
-      solo
+      solo-inverted
+      background-color="green lighten-4"
+      color="black"
       height="60"
       hide-no-data
-      label="行き先は？"
+      label="入力し、出たスポットをクリック"
     >
       <template v-slot:item="data">
+        
         <nuxt-link
           :to="`spots/${data.item.id}`"
           class="text-decoration-none"
         >
           <template>
-          
             <v-list-item-content>
-              <v-list-item-title>{{ data.item.name }}</v-list-item-title>
+              <h4>{{ data.item.name }}</h4>
               
             </v-list-item-content>
             
@@ -55,3 +57,8 @@ export default {
   }
 }
 </script>
+<style>
+  v-list-item-title{
+    width:100px;
+  }
+</style>
