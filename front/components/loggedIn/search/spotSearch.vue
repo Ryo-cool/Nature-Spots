@@ -10,7 +10,19 @@
       height="60"
       hide-no-data
       label="行き先は？"
-    ></v-autocomplete>
+    >
+      <template v-slot:item="data">
+        <template>
+          
+          <v-list-item-content>
+            <v-list-item-title>{{ data.item.name }}</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-content>
+            <v-list-item-title>{{ data.item.id }}</v-list-item-title>
+          </v-list-item-content>
+        </template>
+      </template>
+    </v-autocomplete>
   </div>
 </template>
 
