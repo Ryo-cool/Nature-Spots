@@ -1,43 +1,48 @@
 <template>
-  <v-item-group mandatory>
-    <v-container>
-      <v-row>
-        <v-col
-          v-for="n in 3"
-          :key="n"
-          cols="12"
-          md="4"
+
+    <v-slide-group
+      v-model="model"
+      class="pa-4"
+      prev-icon="mdi-arrow-left-circle-outline"
+      next-icon="mdi-arrow-right-circle-outline"
+    >
+      <v-slide-item
+        v-for="n in 8"
+        :key="n"
+        v-slot="{ active, toggle }"
+      >
+        <v-card
+          :color="active ? 'primary' : 'grey lighten-1'"
+          class="ma-4"
+          height="200"
+          width="250"
+          @click="toggle"
         >
-          <v-item v-slot:default="{ active, toggle }">
-            <v-card
-              :color="active ? 'primary' : ''"
-              class="d-flex align-center"
-              dark
-              height="200"
-              @click="toggle"
-            >
-              <v-scroll-y-transition>
-                <div
-                  v-if="active"
-                  class="display-3 flex-grow-1 text-center"
-                >
-                  Active
-                </div>
-              </v-scroll-y-transition>
-            </v-card>
-          </v-item>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-item-group>
+          アイテム{{ n }}
+          <v-row
+            class="fill-height"
+            align="center"
+            justify="center"
+          >
+            <v-scale-transition>
+              <v-icon
+                v-if="active"
+                color="white"
+                size="48"
+                v-text="'mdi-close-circle-outline'"
+              ></v-icon>
+            </v-scale-transition>
+          </v-row>
+        </v-card>
+      </v-slide-item>
+    </v-slide-group>
+
 </template>
 
 <script>
-export default {
-  data(){
-    return{
-
-    }
+  export default {
+    data: () => ({
+      model: null,
+    }),
   }
-}
 </script>
