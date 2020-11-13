@@ -1,5 +1,4 @@
 <template>
-
     <v-slide-group
       v-model="model"
       class="pa-4"
