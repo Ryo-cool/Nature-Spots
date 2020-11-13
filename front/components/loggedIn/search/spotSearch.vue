@@ -12,15 +12,21 @@
       label="行き先は？"
     >
       <template v-slot:item="data">
-        <template>
+        <nuxt-link
+          :to="`spots/${data.item.id}`"
+          class="text-decoration-none"
+        >
+          <template>
           
-          <v-list-item-content>
-            <v-list-item-title>{{ data.item.name }}</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-content>
-            <v-list-item-title>{{ data.item.id }}</v-list-item-title>
-          </v-list-item-content>
-        </template>
+            <v-list-item-content>
+              <v-list-item-title>{{ data.item.name }}</v-list-item-title>
+              
+            </v-list-item-content>
+            
+          </template>
+          <v-divider></v-divider>
+        </nuxt-link>
+        
       </template>
     </v-autocomplete>
   </div>
