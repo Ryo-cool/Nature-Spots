@@ -10,6 +10,7 @@
         >
           <v-container
             fill-height
+            class="px-0"
           >
           <h1>行き先は？</h1>
             <v-row

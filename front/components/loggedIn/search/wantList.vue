@@ -1,7 +1,6 @@
 <template>
     <v-slide-group
       v-model="model"
-      class="pa-4"
       prev-icon="mdi-arrow-left-circle-outline"
       next-icon="mdi-arrow-right-circle-outline"
     >
