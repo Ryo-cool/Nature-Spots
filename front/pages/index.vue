@@ -2,13 +2,6 @@
   <v-container>
     <v-row>
       <v-col>
-        {{ $auth.user.name }}さん
-        <nuxt-link
-          to="newspots"
-          class="text-decoration-none"
-        >
-          <v-btn class="primary">新規</v-btn>
-        </nuxt-link>
         <v-img
           :src="homeImg"
           alt="homeImg"
