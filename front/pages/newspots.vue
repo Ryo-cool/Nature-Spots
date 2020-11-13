@@ -67,7 +67,6 @@
       >
         <v-card
           class="mx-auto"
-          
           tile
         >
             <v-list rounded>
@@ -89,11 +88,10 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
-                </v-list-item>
-              </v-list-item-group>
             </v-list>
         </v-card>
       </v-col>
+
     </v-row>
   </v-container>
 </template>
@@ -115,6 +113,7 @@ export default {
       locations: "",
       lat: "",
       lng: "",
+      value: "",
       // formatted_address: "",
       // uploadImageUrl: '',
       geocoder: {},
