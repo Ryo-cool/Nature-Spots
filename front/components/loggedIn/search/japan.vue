@@ -13,7 +13,10 @@
         <v-container>
           <v-row>
             <v-col
-              cols="2"
+              cols="4"
+              sm="2"
+              md="3"
+              lg="2"
               v-for="prefecture in prefectures"
               :key="prefecture.name"
               
