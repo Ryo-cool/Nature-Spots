@@ -73,7 +73,7 @@ export default {
 }
 </script>
 <style>
-h1 {
+* {
   font-family: 'Kosugi Maru', sans-serif;
   font-weight: 100;
 }
