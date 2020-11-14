@@ -33,7 +33,7 @@
     <v-row
     class="mt-6"
     > 
-
+      <japan-list />
       <japan />
       <category />
 

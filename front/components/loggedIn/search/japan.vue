@@ -2,6 +2,7 @@
   <v-col
     cols="12"
     md="7"
+    class="hidden-ipad-and-down"
   >
     <h1>都道府県から探す</h1>
     <v-card class="mt-4">
@@ -37,6 +38,7 @@
       </v-img>
     </v-card>
   </v-col>
+  
 </template>
 
 <script>
