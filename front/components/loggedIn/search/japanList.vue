@@ -10,10 +10,11 @@
         <v-list-group
           :value="true"
           no-action
+          v-model="active"
         >
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title>都道府県</v-list-item-title>
+              <v-list-item-title>都道府県一覧</v-list-item-title>
             </v-list-item-content>
           </template>
           
