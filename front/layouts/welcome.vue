@@ -60,7 +60,7 @@ export default {
       menus: [
 
       ],
-      imgHeight: 500,
+      imgHeight: 690,
     }
   }
 }

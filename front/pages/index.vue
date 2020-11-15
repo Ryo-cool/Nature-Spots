@@ -2,13 +2,6 @@
   <v-container>
     <v-row>
       <v-col>
-        {{ $auth.user.name }}さん
-        <nuxt-link
-          to="newspots"
-          class="text-decoration-none"
-        >
-          <v-btn class="primary">新規</v-btn>
-        </nuxt-link>
         <v-img
           :src="homeImg"
           alt="homeImg"
@@ -17,6 +10,7 @@
         >
           <v-container
             fill-height
+            class="px-0"
           >
           <h1>行き先は？</h1>
             <v-row
@@ -39,7 +33,7 @@
     <v-row
     class="mt-6"
     > 
-
+      <japan-list />
       <japan />
       <category />
 
@@ -79,7 +73,7 @@ export default {
 }
 </script>
 <style>
-h1 {
+* {
   font-family: 'Kosugi Maru', sans-serif;
   font-weight: 100;
 }

@@ -2,6 +2,7 @@
   <v-col
     cols="12"
     md="7"
+    class="hidden-ipad-and-down"
   >
     <h1>都道府県から探す</h1>
     <v-card class="mt-4">
@@ -13,7 +14,10 @@
         <v-container>
           <v-row>
             <v-col
-              cols="2"
+              cols="4"
+              sm="2"
+              md="3"
+              lg="2"
               v-for="prefecture in prefectures"
               :key="prefecture.name"
               
@@ -34,6 +38,7 @@
       </v-img>
     </v-card>
   </v-col>
+  
 </template>
 
 <script>

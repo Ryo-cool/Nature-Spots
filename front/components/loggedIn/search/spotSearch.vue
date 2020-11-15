@@ -14,21 +14,13 @@
       label="入力し、出たスポットをクリック"
     >
       <template v-slot:item="data">
-        
-        <nuxt-link
-          :to="`spots/${data.item.id}`"
-          class="text-decoration-none"
-        >
-          <template>
-            <v-list-item-content>
-              <h4>{{ data.item.name }}</h4>
-              
-            </v-list-item-content>
-            
-          </template>
-          <v-divider></v-divider>
-        </nuxt-link>
-        
+        <v-list-item :to="`spots/${data.item.id}`" link>
+          <v-list-item-icon>
+            <v-icon color="green darken-2">mdi-map-marker</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title v-text="data.item.name"></v-list-item-title>
+          
+        </v-list-item>
       </template>
     </v-autocomplete>
   </div>

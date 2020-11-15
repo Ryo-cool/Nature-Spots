@@ -1,16 +1,15 @@
 <template>
-  <div>
+  <v-card height="150">
     <v-footer
       absolute
-      dark
-      color="black"
+      class="font-weight-medium"
     >
-      befLoginFooter.vue
+      <v-col
+        class="text-center"
+        cols="12"
+      >
+        {{ new Date().getFullYear() }} — <strong>NatureSpots</strong>
+      </v-col>
     </v-footer>
-  </div>
+  </v-card>
 </template>
-
-<script>
-export default {
-}
-</script>

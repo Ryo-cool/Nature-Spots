@@ -15,7 +15,18 @@
 
     <app-title />
     <v-spacer />
-
+    <nuxt-link
+      to="newspots"
+      class="text-decoration-none mr-4"
+    >
+      <v-btn 
+        outlined
+        class="font-weight-bold px-2"
+      >
+        <v-icon>mdi-map-marker-plus-outline</v-icon>
+      スポットを追加
+      </v-btn>
+    </nuxt-link>
     <v-menu
       app
       offset-x
@@ -87,3 +98,6 @@ export default {
   }
 }
 </script>
+<style>
+
+</style>
