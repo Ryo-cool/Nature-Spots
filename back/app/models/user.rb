@@ -8,9 +8,29 @@ class User < ApplicationRecord
   has_many :liked_reviews, through: :likes, source: :review
   has_many :reviews, dependent: :destroy
   has_many :liked_spots, through: :likes, source: :spot
-
+  # フォロー機能関係
+  has_many :relationships
+  has_many :followings, through: :relationships, source: :follow
+  has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: 'follow_id'
+  has_many :followers, through: :reverse_of_relationships, source: :user
 
   before_validation :downcase_email
+
+  # フォロー機能関係メソッド
+  def follow(other_user)
+    unless self == other_user
+      self.relationships.find_or_create_by(follow_id: other_user.id)
+    end
+  end
+
+  def unfollow(other_user)
+    relationship = self.relationships.find_by(follow_id: other_user.id)
+    relationship.destroy if relationship
+  end
+
+  def following?(other_user)
+    self.followings.include?(other_user)
+  end
 
   # gem bcrypt
   has_secure_password
