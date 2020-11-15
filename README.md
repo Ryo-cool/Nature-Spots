@@ -30,13 +30,14 @@
   - スポット名入力でGoogle MAP緯度経度取得(Geocording API)
 - 詳細ページ
   - Google MAP表示（Google Maps Javascript API）
+ - 検索機能
 - 口コミ投稿機能
   - 画像投稿(carrierwave)
   - いいね機能
 ## 実装予定
 - お気に入り機能（行きたいスポットリスト）
 - 通知機能
-- 検索機能
+
 
 **その他使用したライブラリ**
 - moment.js(日付フォーマット)
