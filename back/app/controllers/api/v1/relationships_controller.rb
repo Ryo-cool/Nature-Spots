@@ -20,7 +20,7 @@ class Api::V1::RelationshipsController < ApplicationController
   end
 
   private
-  def
-    @user = User.find(params[:relationship][:follow_id])
+  def set_user
+    @user = User.find(params[:follow_id])
   end
 end
