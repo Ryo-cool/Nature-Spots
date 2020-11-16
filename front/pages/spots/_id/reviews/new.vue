@@ -48,7 +48,7 @@
         </v-row>
         <v-divider class="mb-2"></v-divider>
         <v-row justify="center">
-          <v-btn color="success" dark min-width="300" @click="createReview">
+          <v-btn color="primary" dark min-width="300" @click="createReview" :disabled="!allInput">
             投稿する
           </v-btn>
         </v-row>
@@ -90,6 +90,17 @@ export default {
       .catch((error) => {
         console.error(error)
       })
+  },
+  computed: {
+    allInput () {
+      const required_fields = [
+        this.title,
+        this.text,
+        this.picker,
+        this.rating,
+      ]
+      return required_fields.indexOf('') === -1
+    },
   },
   methods: {
     // onImagePicked(file) {
