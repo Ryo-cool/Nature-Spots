@@ -9,60 +9,66 @@
       >
         <h1 class="mb-4">スポット投稿</h1>
         <div class="red--text">{{ alert }}</div>
-        <v-text-field
-        label="スポット名(必須)"
-        v-model="name"
-        prepend-icon=""
-        type="text"
-        outlined
-        @change="onChange"
-        />
-        <div>緯度{{ lat }}</div>
-        <div>{{ locations }}</div>
-        <div>{{ address }}</div>
-        
-        <v-text-field
-        label="説明(必須)"
-        v-model="introduction"
-        prepend-icon=""
-        type="text"
-        outlined
-        />
-        
-        <v-file-input
-          chips
-          small-chips
-          show-size
-          label="画像(任意)"
-          accept="image/png, image/jpeg, image/bmp"
-          prepend-icon="mdi-camera"
-          
-          
-        />
-        <v-select
-        label="都道府県(必須)"
-        v-model= "prefectures"
-        item-text="attributes.name"
-        item-value="attributes.id"
-        :items="prefecture"
-        outlined
-        />
-        <v-text-field
-        label="住所(必須)"
-        v-model="address"
-        prepend-icon=""
-        type="text"
-        outlined
-        />
-        <v-select
-        label="ジャンル(必須)"
-        v-model= "locations"
-        item-text="attributes.name"
-        item-value="attributes.id"
-        :items="location"
-        outlined
-        />
-        <v-btn color="primary" @click="createSpot">スポットを投稿する</v-btn>
+        <v-form 
+          v-model="isValid"
+          ref="form"
+        >
+          <v-text-field
+          label="スポット名(必須)"
+          v-model="name"
+          prepend-icon=""
+          type="text"
+          outlined
+          @change="onChange"
+          />
+          <div>緯度{{ lat }}</div>
+          <div>{{ locations }}</div>
+          <div>{{ address }}</div>
+
+          <v-text-field
+          label="説明(必須)"
+          v-model="introduction"
+          prepend-icon=""
+          type="text"
+          outlined
+          />
+
+          <v-file-input
+            chips
+            small-chips
+            show-size
+            label="画像(任意)"
+            accept="image/png, image/jpeg, image/bmp"
+            prepend-icon="mdi-camera"
+
+
+          />
+          <v-select
+          label="都道府県(必須)"
+          v-model= "prefectures"
+          item-text="attributes.name"
+          item-value="attributes.id"
+          :items="prefecture"
+          outlined
+          />
+          <v-text-field
+          label="住所(必須)"
+          v-model="address"
+          prepend-icon=""
+          type="text"
+          outlined
+          />
+          <v-select
+          label="ジャンル(必須)"
+          v-model= "locations"
+          item-text="attributes.name"
+          item-value="attributes.id"
+          :items="location"
+          outlined
+          />
+          <v-btn color="primary" @click="createSpot" :disabled="!isValid || loading" 
+          >スポットを投稿する</v-btn>
+        </v-form>
       </v-col>
       <v-col
       cols ="12"
@@ -109,6 +115,8 @@ export default {
   },
   data () {
     return {
+      isValid: false,
+      loading: false,
       name: "",
       introduction: "",
       prefectures: "",
