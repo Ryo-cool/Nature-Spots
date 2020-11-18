@@ -3,7 +3,6 @@
     <v-btn
       outlined
       dark
-      :loading="loading"
       class="font-weight-bold"
       @click="guestLogin"
     >
@@ -16,20 +15,26 @@
 export default {
   data () {
     return {
-      loading: false,
       guestParams: { auth: { email: 'user0@example.com', password: 'password' } },
     }
   },
   methods: {
     async guestLogin () {
-      this.loading = true
       await this.$axios.$post('/api/v1/user_token', this.guestParams)
         .then(response => this.authSuccessful(response))
+        .catch(error => this.authFailure(error))
     },
     // ログイン成功
     async authSuccessful (response) {
       await this.$auth.login(response)
-      this.$router.push(this.$store.state.rememberRoute)
+      this.$router.go({path: this.$router.currentRoute.path, force: true})
+      
+    },
+    // ログイン失敗
+    authFailure ({ response }) {
+      if (response.status === 404) {
+        this.$store.dispatch('getToast', { msg: 'ユーザーが見つかりません😷' })
+      }
     }
   }
 }
