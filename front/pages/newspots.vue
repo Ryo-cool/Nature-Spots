@@ -7,59 +7,66 @@
       class="my-6 text-center"
       align-self="start"
       >
+        <h1 class="mb-4">スポット投稿</h1>
+        <div class="red--text">{{ alert }}</div>
+
         <v-text-field
-        label="スポット名"
+        label="スポット名(必須)"
         v-model="name"
         prepend-icon=""
         type="text"
         outlined
         @change="onChange"
         />
+
         <div>緯度{{ lat }}</div>
         <div>{{ locations }}</div>
-        <div>{{ prefectures }}</div>
+        <div>{{ address }}</div>
+
         <v-text-field
-        label="説明"
+        label="説明(必須)"
         v-model="introduction"
         prepend-icon=""
         type="text"
         outlined
         />
-        
+
         <v-file-input
           chips
           small-chips
           show-size
-          
+          label="画像(任意)"
           accept="image/png, image/jpeg, image/bmp"
           prepend-icon="mdi-camera"
-          
-          
         />
         <v-select
-        label="都道府県"
+        label="都道府県(必須)"
         v-model= "prefectures"
         item-text="attributes.name"
         item-value="attributes.id"
         :items="prefecture"
         outlined
         />
+
         <v-text-field
-        label="住所"
+        label="住所(必須)"
         v-model="address"
         prepend-icon=""
         type="text"
         outlined
         />
+
         <v-select
-        label="ジャンル"
+        label="ジャンル(必須)"
         v-model= "locations"
         item-text="attributes.name"
         item-value="attributes.id"
         :items="location"
         outlined
         />
-        <v-btn color="primary" @click="createSpot">ADD post</v-btn>
+        <v-btn color="primary" @click="createSpot" :disabled="!isValid" 
+        >スポットを投稿する</v-btn>
+        
       </v-col>
       <v-col
       cols ="12"
@@ -106,6 +113,7 @@ export default {
   },
   data () {
     return {
+      
       name: "",
       introduction: "",
       prefectures: "",
@@ -113,14 +121,25 @@ export default {
       locations: "",
       lat: "",
       lng: "",
-      value: "",
-      // formatted_address: "",
+      alert: "",
       // uploadImageUrl: '',
       geocoder: {},
       spots: [],
       prefecture: [],
       location: []
     }
+  },
+  computed: {
+    isValid () {
+      const required_fields = [
+        this.name,
+        this.introduction,
+        this.prefecture,
+        this.address,
+        this.locations,
+      ]
+      return required_fields.indexOf('') === -1
+    },
   },
   mounted() {
     this.$axios.get("/api/v1/spots").then(res => {
@@ -163,12 +182,14 @@ export default {
         'address': this.name
       },(results, status) =>{
         if(status === google.maps.GeocoderStatus.OK) {
+          this.alert = ""
           this.lat = results[0].geometry.location.lat();
           this.lng = results[0].geometry.location.lng();
-          // this.formatted_address = results[0].formatted_address;
+          var ad = results[0].formatted_address.replace('日本、', '');
+          this.address = ad
         }
         else{
-          alert(地図を取得できません)
+          
         }
       }
       )
