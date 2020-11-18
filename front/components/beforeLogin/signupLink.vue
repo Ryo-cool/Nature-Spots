@@ -3,7 +3,7 @@
     outlined
     dark
     color="myblue"
-    class="ml-2 font-weight-bold"
+    class="ml-5 font-weight-bold"
     to="/signup"
   >
     {{ $t('pages.signup') }}

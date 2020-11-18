@@ -1,7 +1,6 @@
 <template>
   <bef-login-form-card #form-card-content>
     <toaster />
-    {{ $store.state.toast }}
     <v-form
       ref="form"
       v-model="isValid"
@@ -33,6 +32,15 @@
         >
           ログインする
         </v-btn>
+        <v-btn
+          block
+          :loading="loading"
+          color="success"
+          class="mt-4"
+          @click="guestLogin"
+        >
+          ゲストログイン
+        </v-btn>
       </v-card-text>
     </v-form>
   </bef-login-form-card>
@@ -45,7 +53,8 @@ export default {
     return {
       isValid: false,
       loading: false,
-      params: { auth: { email: '', password: '' } }
+      params: { auth: { email: '', password: '' } },
+      guestParams: { auth: { email: 'user0@example.com', password: 'password' } },
     }
   },
   methods: {
@@ -57,6 +66,12 @@ export default {
           .catch(error => this.authFailure(error))
       }
       this.loading = false
+    },
+    async guestLogin () {
+      this.loading = true
+      await this.$axios.$post('/api/v1/user_token', this.guestParams)
+        .then(response => this.authSuccessful(response))
+        .catch(error => this.authFailure(error))
     },
     // ログイン成功
     async authSuccessful (response) {
