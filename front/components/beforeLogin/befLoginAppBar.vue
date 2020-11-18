@@ -16,7 +16,6 @@
     />
 
     <v-spacer />
-
     <signup-link />
     <login-link />
   </v-app-bar>

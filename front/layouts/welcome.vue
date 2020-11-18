@@ -6,8 +6,8 @@
     />
     <v-img
       dark
-      src="https://picsum.photos/id/235/1920/1080?blur=2"
-      gradient="to top right, rgba(80,78,102,.6), rgba(68,218,195,.9)"
+      src="https://picsum.photos/id/235/1920/1080?blur=1"
+      gradient="to top right, rgba(113,133,122,.6), rgba(68,218,195,.9)"
       :height="imgHeight"
     >
       <v-row
@@ -28,6 +28,11 @@
           >
             自然スポットに特化した口コミサイト
           </h4>
+          <div class="pt-9">
+            <guest-login class="hidden-ipad-and-up ma-2" />
+            <signup-link class="hidden-ipad-and-up"/>
+            <login-link class="hidden-ipad-and-up" />
+          </div>
         </v-col>
       </v-row>
     </v-img>

@@ -11,7 +11,7 @@
       class="hidden-mobile-and-down"
     />
     <v-spacer />
-
+    
     <v-toolbar-items class="ml-2 hidden-ipad-and-down">
       <v-btn
         v-for="(menu, i) in menus"
@@ -22,10 +22,12 @@
         {{ $t(`menus.${menu.title}`) }}
       </v-btn>
     </v-toolbar-items>
-    <signup-link />
-    <login-link />
+    <guest-login class="hidden-ipad-and-down" />
+    <signup-link class="hidden-ipad-and-down"/>
+    <login-link class="hidden-ipad-and-down" />
     <v-menu
       bottom
+      offset-y
       nudge-left="110"
       nudge-width="100"
     >
@@ -40,14 +42,16 @@
         class="hidden-ipad-and-up"
       >
         <v-list-item
-          v-for="(menu, i) in menus"
-          :key="`menu-list-${i}`"
-          exact
-          @click="goTo(menu.title)"
+          link
+          to="/signup"
         >
-          <v-list-item-title>
-            {{ $t(`menus.${menu.title}`) }}
-          </v-list-item-title>
+        会員登録
+        </v-list-item>
+        <v-list-item
+          link
+          to="/login"
+        >
+        ログイン
         </v-list-item>
       </v-list>
     </v-menu>

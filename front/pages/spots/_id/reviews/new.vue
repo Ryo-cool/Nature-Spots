@@ -48,7 +48,7 @@
         </v-row>
         <v-divider class="mb-2"></v-divider>
         <v-row justify="center">
-          <v-btn color="primary" dark min-width="300" @click="createReview" :disabled="!allInput">
+          <v-btn color="primary" dark min-width="300" @click="createReview" :disabled="!allInput" :loading="loading">
             投稿する
           </v-btn>
         </v-row>
@@ -73,6 +73,7 @@ export default {
       spots: [],
       reviews:[],
       id: [],
+      loading: false,
     }
   },
   layout ({ $auth }) {
@@ -118,6 +119,7 @@ export default {
     //   }
     // },
     createReview () {
+      this.loading = true
       this.$axios.post(`/api/v1/spots/${this.$route.params.id}/reviews/`,
       {
         title: this.title,
