@@ -12,16 +12,16 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots/1
   def show
-    @reviews = @spot.reviews
-    @users = User.all.includes(:reviews)
+    # @reviews = @spot.reviews
+    # @users = User.all.includes(:reviews)
     @prefecture = @spot.prefecture
     @location = @spot.location
     render json: {
       spot: @spot,
-      user: @users,
+      # user: @users,
       prefecture: @prefecture,
       location: @location,
-      review: @reviews
+      # review: @reviews
     }
   end
 
@@ -69,7 +69,7 @@ class Api::V1::SpotsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def spot_params
-      params.require(:spot)
+      params
       .permit(
         :name,
         :introduction,

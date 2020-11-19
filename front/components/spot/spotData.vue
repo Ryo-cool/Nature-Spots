@@ -7,6 +7,8 @@
         sm="3"
         >
           <div class="headline pt-3">{{spot.name}}</div>
+
+          <div class="headline pt-3">{{photo}}</div>
         </v-col>
         <v-col
         cols="5"
@@ -28,7 +30,7 @@
           <h4>
             {{ rating }}
             (<v-icon>mdi-comment-outline</v-icon>
-            {{ reviews.length }}件)
+            
           </h4>
           <!-- <span class="color=myblue">
             ({{ rating }})
@@ -89,6 +91,7 @@ export default {
       prefecture: {},
       location: {},
       reviews: {},
+      photo: "",
       rating: 2.6,
       reviews: 300,
       marker_items: [
@@ -103,7 +106,8 @@ export default {
         this.spot = res.data.spot
         this.prefecture = res.data.prefecture.attributes.name
         this.location = res.data.location.attributes.name
-        this.reviews = res.data.review
+        // this.reviews = res.data.review
+        this.photo = this.spot.photo
       })
       .catch((error) => {
         console.error(error)
