@@ -19,7 +19,9 @@
                     フォロワー　
                   </v-col>
                   <v-col>
-                    プロフィール編集
+                    <nuxt-link to="userEdit">
+                      プロフィール編集
+                    </nuxt-link>
                   </v-col>
                 </v-row>
               </v-col>

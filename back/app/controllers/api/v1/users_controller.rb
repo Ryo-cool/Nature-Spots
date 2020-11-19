@@ -6,6 +6,16 @@ class Api::V1::UsersController < ApplicationController
     render json: @user
   end
 
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      render json: @user
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+    
+  end
+
   def my_page
     # @review =Review.find(params[:id])
     # @reviews= @review.reviews

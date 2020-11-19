@@ -27,7 +27,7 @@
         <v-col cols="6" sm="3" class="pt-6">
           <h4>
             {{ rating }}
-            (<v-icon>mdi-comment-outline</v-icon>
+            <v-icon>mdi-comment-outline</v-icon>()件
             
           </h4>
           <!-- <span class="color=myblue">
