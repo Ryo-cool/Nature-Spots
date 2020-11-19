@@ -31,5 +31,10 @@ class Api::V1::UsersController < ApplicationController
     render json: {review: @reviews, like_reviews: @like_reviews}
   end
 
+  private
+
+  def user_params
+    params.permit(:name, :email, :password_digest,:image,:introduction)
+  end
 
 end

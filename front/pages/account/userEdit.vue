@@ -88,7 +88,7 @@ export default {
       )
       .then(res => {
         if (res.data) {
-          this.spots.push(res.data)
+          
           this.$router.push('/')
         }
       })
