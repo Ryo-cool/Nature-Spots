@@ -8,7 +8,7 @@
         >
           <div class="headline pt-3">{{spot.name}}</div>
 
-          <div class="headline pt-3">{{photo}}</div>
+          <v-img :src="photo"></v-img>
         </v-col>
         <v-col
         cols="5"
@@ -84,6 +84,8 @@
 <script>
 import axios from '~/plugins/axios'
 
+var URL = "http://localhost:3000"
+
 export default {
   data () {
     return {
@@ -107,7 +109,8 @@ export default {
         this.prefecture = res.data.prefecture.attributes.name
         this.location = res.data.location.attributes.name
         // this.reviews = res.data.review
-        this.photo = this.spot.photo
+        var img = this.spot.photo.url
+        this.photo = URL + img
       })
       .catch((error) => {
         console.error(error)

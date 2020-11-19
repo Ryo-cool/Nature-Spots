@@ -172,7 +172,7 @@ export default {
       formData.append("introduction", this.introduction);
       formData.append("prefecture_id", this.prefectures);
       formData.append("latitude", this.lat);
-      formData.append("longtude", this.lng);
+      formData.append("longitude", this.lng);
       formData.append("address", this.address);
       formData.append("location_id", this.locations);
       const config = {
