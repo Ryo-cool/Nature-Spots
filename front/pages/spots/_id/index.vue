@@ -4,7 +4,6 @@
     <v-breadcrumbs
     divider="-"
     >
-    パンくずリスト
     </v-breadcrumbs>
 
     <v-row>

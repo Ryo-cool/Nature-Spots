@@ -9,7 +9,6 @@
       >
         <h1 class="mb-4">スポット投稿</h1>
         <div class="red--text">{{ alert }}</div>
-
         <v-text-field
         label="スポット名(必須)"
         v-model="name"
@@ -30,11 +29,13 @@
         type="text"
         outlined
         />
-
+        <v-img :src="preview"></v-img>
         <v-file-input
           chips
           small-chips
           show-size
+          
+          @change="setImage"
           label="画像(任意)"
           accept="image/png, image/jpeg, image/bmp"
           prepend-icon="mdi-camera"
@@ -64,7 +65,7 @@
         :items="location"
         outlined
         />
-        <v-btn color="primary" @click="createSpot" :disabled="!isValid" 
+        <v-btn color="primary" @click="createSpot" 
         >スポットを投稿する</v-btn>
         
       </v-col>
@@ -113,7 +114,6 @@ export default {
   },
   data () {
     return {
-      
       name: "",
       introduction: "",
       prefectures: "",
@@ -122,24 +122,14 @@ export default {
       lat: "",
       lng: "",
       alert: "",
+      image: null,
+      preview: "",
       // uploadImageUrl: '',
       geocoder: {},
       spots: [],
       prefecture: [],
       location: []
     }
-  },
-  computed: {
-    isValid () {
-      const required_fields = [
-        this.name,
-        this.introduction,
-        this.prefecture,
-        this.address,
-        this.locations,
-      ]
-      return required_fields.indexOf('') === -1
-    },
   },
   mounted() {
     this.$axios.get("/api/v1/spots").then(res => {
@@ -151,31 +141,7 @@ export default {
     }),
     this.$gmapApiPromiseLazy().then(() => {this.geocoder = new google.maps.Geocoder() })
   },
-  // created() {
-  //   // ユーザーをaxiosで取得
-  //   axios.get("/api/v1/spots").then(res => {
-  //     if (res.data) {
-  //       this.spots = res.data.spots
-  //       this.prefecture = res.data.prefecture
-  //       this.location = res.data.location
-  //     }
-  //   })
-  // },
   methods: {
-    // onImagePicked(file) {
-    //   if (file !== undefined && file !== null) {
-    //     if (file.name.lastIndexOf('.') <= 0) {
-    //       return
-    //     }
-    //     const fr = new FileReader()
-    //     fr.readAsDataURL(file)
-    //     fr.addEventListener('load', () => {
-    //       this.uploadImageUrl = fr.result
-    //     })
-    //   } else {
-    //     this.uploadImageUrl = ''
-    //   }
-    // },
     // 入力されたスポット名を住所変換
     onChange() {
       this.geocoder.geocode({
@@ -189,23 +155,35 @@ export default {
           this.address = ad
         }
         else{
-          
+          this.alert = "正しいスポットを入力してください"
         }
       }
       )
     },
+    setImage(e) {
+      this.image = e;
+      this.preview = URL.createObjectURL(e);
+    },
      // スポットをaxiosで登録
-    createSpot(){
+    createSpot(e){
+      const formData = new FormData();
+      formData.append("photo", this.image);
+      formData.append("name", this.name);
+      formData.append("introduction", this.introduction);
+      formData.append("prefecture_id", this.prefectures);
+      formData.append("latitude", this.lat);
+      formData.append("longitude", this.lng);
+      formData.append("address", this.address);
+      formData.append("location_id", this.locations);
+      const config = {
+          headers: {
+              "content-type": "multipart/form-data",
+          }
+      };
       this.$axios.post("/api/v1/spots", 
-      {
-        name: this.name,
-        introduction: this.introduction,
-        prefecture_id: this.prefectures,
-        address: this.address,
-        location_id: this.locations,
-        latitude: this.lat,
-        longitude: this.lng
-      })
+        formData,config
+
+      )
       .then(res => {
         if (res.data) {
           this.spots.push(res.data)
