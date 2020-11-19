@@ -16,7 +16,7 @@
     <app-title />
     <v-spacer />
     <nuxt-link
-      to="newspots"
+      to="/newspots"
       class="text-decoration-none mr-4"
     >
       <v-btn 

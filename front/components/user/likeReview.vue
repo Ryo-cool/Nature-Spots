@@ -2,7 +2,7 @@
   <div>
     <v-list-item
     v-for="review in reviews"
-    :key="review"
+    :key="review.title"
 
     >
       <v-card>

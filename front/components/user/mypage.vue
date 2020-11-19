@@ -3,7 +3,7 @@
   投稿一覧
   <v-list-item
   v-for="review in user"
-  :key="review"
+  :key="`first-${review.id}`"
   
   >
   <v-card class="mb-2">
@@ -98,7 +98,7 @@ import axios from "~/plugins/axios"
 export default {
   data (){
     return{
-      rating: 3,
+      
       user: {}
     }
   },

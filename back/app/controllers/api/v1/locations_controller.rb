@@ -9,8 +9,8 @@ class Api::V1::LocationsController < ApplicationController
 
   def show
     @jspot= Spot.where(location_id: @location.id)
-    @prefecture = Spot.includes(:prefecture)
-    # @prefecture= Prefecture.all
+    # @prefecture = Spot.includes(:prefecture)
+    @prefecture= Prefecture.all
     render json:{
       location: @location,
       spot: @jspot,
