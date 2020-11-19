@@ -1,40 +1,36 @@
 <template>
-  <v-carousel
-  delimiter-icon="mdi-minus"
-  show-arrows-on-hover
-  cycle
-  interval="5000"
-  height="450"
-  >
-    <v-carousel-item
-      v-for="(item,i) in items"
-      :key="i"
-      :src="item.src"
-      
-    ></v-carousel-item>
-  </v-carousel>
+  <v-container>
+    <v-row justify="center">
+      <v-img
+        :src="photo"
+        max-height="460"
+      />
+    </v-row>
+  </v-container>
 </template>
 
 
 <script>
+import axios from '~/plugins/axios'
+
+var URL = "http://localhost:3000"
+
 export default {
   data () {
     return {
-      items: [
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-        },
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-        },
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-        },
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-        },
-      ],
+      photo: null
     }
   },
+  mounted () {
+    this.$axios
+      .get(`/api/v1/spots/${this.$route.params.id}`)
+      .then((res) => {
+        var img = res.data.spot.photo.url
+        this.photo = URL + img
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 }
 </script>

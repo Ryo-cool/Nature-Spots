@@ -7,8 +7,6 @@
         sm="3"
         >
           <div class="headline pt-3">{{spot.name}}</div>
-
-          <v-img :src="photo"></v-img>
         </v-col>
         <v-col
         cols="5"
@@ -108,9 +106,7 @@ export default {
         this.spot = res.data.spot
         this.prefecture = res.data.prefecture.attributes.name
         this.location = res.data.location.attributes.name
-        // this.reviews = res.data.review
-        var img = this.spot.photo.url
-        this.photo = URL + img
+
       })
       .catch((error) => {
         console.error(error)
