@@ -11,20 +11,21 @@
         <v-col
         cols="1"
         >
-
-          <v-avatar
-            color="black"
-            size="34"
-            class="my-app-log"
-          >
-            <!-- <v-img :src="review.image.url" /> -->
-          </v-avatar>
+          <nuxt-link :to="`/user/${review.user.id}`" >
+            <v-avatar
+              color="black"
+              size="34"
+              class="my-app-log"
+            >
+              <v-img :src="review.user.image.url" />
+            </v-avatar>
+          </nuxt-link>
         </v-col>
         <v-col
           cols="10"
           
         >
-          <div>{{ review.user.image.url}}</div>
+        
           <div class="indigo--text caption d-flex"><h3>{{ review.user.name }}</h3>さんが口コミを投稿しました（{{ review.created_at | moment }}）</div>
           <div class="blue-grey--text caption">いいね〇〇件</div>
         </v-col>
@@ -41,9 +42,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-img
-
-        ></v-img>
+        <v-img :src="review.image.url" :aspect-ratio="16/9" />
       </v-row>
       <v-row>
         <v-col>
@@ -88,8 +87,8 @@
             <v-icon>mdi-thumb-up</v-icon>
           </v-btn> -->
 
-        </v-col>
-      </v-row>
+        <!-- </v-col>
+      </v-row> -->
     <v-divider class="mt-4"></v-divider>
     </v-container>
     </v-list-item>
