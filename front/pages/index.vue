@@ -12,6 +12,7 @@
             fill-height
             class="px-0"
           >
+          
           <h1>行き先は？</h1>
             <v-row
               justify="center"
@@ -63,7 +64,8 @@ import homeImg from '~/assets/images/loggedIn/adventure__isometric.png'
 export default {
   data () {
     return {
-      homeImg
+      homeImg,
+    
     }
   },
   // middleware: 'authenticator',

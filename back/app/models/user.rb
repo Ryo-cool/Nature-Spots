@@ -13,6 +13,8 @@ class User < ApplicationRecord
   has_many :followings, through: :relationships, source: :follow
   has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: 'follow_id'
   has_many :followers, through: :reverse_of_relationships, source: :user
+  # 画像アップロード
+  mount_uploader :image, ImageUploader
 
   before_validation :downcase_email
 
@@ -64,7 +66,7 @@ class User < ApplicationRecord
 
   # 共通のJSONレスポンス。カラムを増やした場合は配列に追加する。
   def my_json
-    as_json(only: [:id, :name, :email, :created_at])
+    as_json(only: [:id, :name, :email,:image, :created_at])
   end
   
   private

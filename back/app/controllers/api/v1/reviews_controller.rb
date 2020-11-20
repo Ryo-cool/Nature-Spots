@@ -19,7 +19,7 @@ class Api::V1::ReviewsController < ApplicationController
 
   private
   def review_params
-    params.require(:review).permit(:title,:text,:image,:wentday,:rating).merge(user_id: current_user.id, spot_id: params[:spot_id])
+    params.permit(:title,:text,:image,:wentday,:rating).merge(user_id: current_user.id, spot_id: params[:spot_id])
   end
 
   def set_spot

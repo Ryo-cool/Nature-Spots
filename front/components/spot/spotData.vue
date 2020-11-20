@@ -7,8 +7,6 @@
         sm="3"
         >
           <div class="headline pt-3">{{spot.name}}</div>
-
-          <div class="headline pt-3">{{photo}}</div>
         </v-col>
         <v-col
         cols="5"
@@ -29,7 +27,7 @@
         <v-col cols="6" sm="3" class="pt-6">
           <h4>
             {{ rating }}
-            (<v-icon>mdi-comment-outline</v-icon>
+            <v-icon>mdi-comment-outline</v-icon>()件
             
           </h4>
           <!-- <span class="color=myblue">
@@ -106,8 +104,7 @@ export default {
         this.spot = res.data.spot
         this.prefecture = res.data.prefecture.attributes.name
         this.location = res.data.location.attributes.name
-        // this.reviews = res.data.review
-        this.photo = this.spot.photo
+
       })
       .catch((error) => {
         console.error(error)

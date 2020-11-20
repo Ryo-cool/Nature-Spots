@@ -10,23 +10,24 @@
       <v-row>
         <v-col
         cols="1"
+        class="pt-3 pl-1"
         >
-
-          <v-avatar
-            color="black"
-            size="34"
-            class="my-app-log"
-          >
-            <span class="white--text text-subtitle-2">
-              Biz
-            </span>
-          </v-avatar>
+          <nuxt-link :to="`/user/${review.user.id}`" >
+            <v-avatar
+              color="black"
+              size="42"
+              
+            >
+              <v-img :src="review.user.image.url" />
+            </v-avatar>
+          </nuxt-link>
         </v-col>
         <v-col
           cols="10"
           
         >
-          <div class="indigo--text caption d-flex"><h3>木村ヒロシ</h3>さんが口コミを投稿しました（{{ review.created_at | moment }}）</div>
+        
+          <div class="indigo--text caption d-flex"><h3>{{ review.user.name }}</h3>さんが口コミを投稿しました（{{ review.created_at | moment }}）</div>
           <div class="blue-grey--text caption">いいね〇〇件</div>
         </v-col>
         <v-col
@@ -38,35 +39,26 @@
               
             >
               <v-icon>mdi-dots-horizontal</v-icon>
-              
             </v-btn>
         </v-col>
       </v-row>
+      <v-img :src="review.image.url" :aspect-ratio="16/9" />
       <v-row>
-        <v-img
-        src="https://picsum.photos/id/243/960/540"
-        ></v-img>
+        <v-rating
+          v-model="rating"
+          background-color="purple lighten-3"
+          color="purple"
+          medium
+          readonly
+          half-increments
+        ></v-rating>
+        <span class="grey--text subtitle-1 mt-2 ml-1">
+          {{ review.rating }}
+        </span>
       </v-row>
-      <v-row>
-        <v-col>
-          <v-row>
-            <v-rating
-              v-model="rating"
-              background-color="purple lighten-3"
-              color="purple"
-              medium
-              readonly
-              half-increments
-            ></v-rating>
-            <span class="grey--text subtitle-1 mt-2 ml-1">
-              ({{ rating }})
-            </span>
-          </v-row>
-          <v-card-title>{{review.title}}</v-card-title>
-          <v-card-text>{{review.text}}</v-card-text>
-          <v-card-subtitle>訪問時期:{{review.wentday}}月</v-card-subtitle>
-        </v-col>
-      </v-row>
+      <h2>{{ review.title }}</h2>
+      <div class="my-2">{{ review.text }}</div>
+      <div class="grey--text subtitle-1">訪問時期:{{ review.wentday }}月</div>
       <!-- ライクボタン -->
       <v-row>
         <v-col
@@ -105,6 +97,7 @@ import axios from '~/plugins/axios'
 
 import moment from 'moment'
 
+
 export default {
   data() {
     return {
@@ -117,7 +110,7 @@ export default {
       ],
       reviews: {},
       users: {},
-      likes: []
+      likes: [],
     }
   },
   filters: {
@@ -128,8 +121,7 @@ export default {
   mounted () {
     this.$axios.get(`/api/v1/spots/${this.$route.params.id}`)
     .then((res) => {
-        this.reviews = res.data.review
-      
+        this.reviews = JSON.parse(res.data.review)
     })
     .catch((error) => {
       console.error(error)

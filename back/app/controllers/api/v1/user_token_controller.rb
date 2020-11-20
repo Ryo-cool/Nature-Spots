@@ -49,7 +49,7 @@ class Api::V1::UserTokenController < ApplicationController
     end
 
     def auth_params
-      params.require(:auth).permit(:email, :password)
+      params.require(:auth).permit(:email, :password,:image)
     end
 
     # トークンを発行する

@@ -15,7 +15,8 @@
           class="text-decoration-none"
           >
             <v-img
-            src="https://picsum.photos/id/1036/960/540"
+            :src="jspot.photo.url"
+            :aspect-ratio="16/9"
             ></v-img>
             <!-- <v-card-text>{{ jspot }}</v-card-text> -->
             <v-card-title>{{ jspot.name }}</v-card-title>
@@ -44,7 +45,7 @@ export default {
       jspots: [],
       prefecture:[]
     }
-  },
+  }, 
   layout ({ $auth }) {
     return $auth.loggedIn ? 'loggedIn' : 'welcome'
   },

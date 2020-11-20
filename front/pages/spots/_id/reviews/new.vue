@@ -28,14 +28,14 @@
         ></v-textarea>
         <h2>写真</h2>
         <v-divider class="mb-4"></v-divider>
-        
+        <!-- 画像プレビュー -->
+        <v-img :src="preview" max-width="300"></v-img>
         <v-file-input
-          v-model="input_image"
-          accept="image/*"
+          accept="image/png, image/jpeg, image/bmp"
           show-size
           counter
           label="File input"
-          
+          @change="setImage"
         ></v-file-input>
         <h2>行った時期</h2>
         <v-divider class="mb-4"></v-divider>
@@ -64,12 +64,12 @@ export default {
   data () {
     return {
       // picker: new Date().toISOString().substr(0, 10),
-      input_image: null,
-      uploadImageUrl: '',
       rating: null,
       title: "",
       text: "",
       picker: "",
+      image: null,
+      preview: "",
       spots: [],
       reviews:[],
       id: [],
@@ -81,6 +81,7 @@ export default {
   },
   created () {
     this.$axios
+
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
         // const spot = res.data
@@ -93,6 +94,7 @@ export default {
       })
   },
   computed: {
+    // すべてインプット後に投稿ボタンを押せるようにする
     allInput () {
       const required_fields = [
         this.title,
@@ -104,37 +106,32 @@ export default {
     },
   },
   methods: {
-    // onImagePicked(file) {
-    //   if (file !== undefined && file !== null) {
-    //     if (file.name.lastIndexOf('.') <= 0) {
-    //       return
-    //     }
-    //     const fr = new FileReader()
-    //     fr.readAsDataURL(file)
-    //     fr.addEventListener('load', () => {
-    //       this.uploadImageUrl = fr.result
-    //     })
-    //   } else {
-    //     this.uploadImageUrl = ''
-    //   }
-    // },
+    setImage(e) {
+    this.image = e;
+    this.preview = URL.createObjectURL(e);
+    },
     createReview () {
       this.loading = true
+      const formData = new FormData();
+      formData.append("title", this.title);
+      formData.append("text", this.text);
+      formData.append("image", this.image);
+      formData.append("wentday", this.picker);
+      formData.append("rating", this.rating);
+      formData.append("spot_id", this.id);
+      formData.append("user_id", this.$auth.user.id);
+      const config = {
+          headers: {
+              "content-type": "multipart/form-data",
+          }
+      };
       this.$axios.post(`/api/v1/spots/${this.$route.params.id}/reviews/`,
-      {
-        title: this.title,
-        text: this.text,
-        image: this.input_image,
-        wentday: this.picker,
-        rating: this.rating,
-        spot_id: this.id,
-        user_id: this.$auth.user.id
-      })
+        formData,config
+      )
       .then(res => {
         this.$router.push('/')
         if (res.data) {
             this.reviews.push(res.data)
-            
         }
       })
       .catch(error => console.log(error))

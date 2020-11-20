@@ -6,6 +6,16 @@ class Api::V1::UsersController < ApplicationController
     render json: @user
   end
 
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      render json: @user
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+    
+  end
+
   def my_page
     # @review =Review.find(params[:id])
     # @reviews= @review.reviews
@@ -18,8 +28,13 @@ class Api::V1::UsersController < ApplicationController
     @reviews = @user.reviews
     @like_reviews= @user.liked_reviews
     # 投稿したスポット
-    render json: {review: @reviews, like_reviews: @like_reviews}
+    render json: {review: @reviews, like_reviews: @like_reviews, user: @user}
   end
 
+  private
+
+  def user_params
+    params.permit(:name, :email, :password_digest,:image,:introduction)
+  end
 
 end
