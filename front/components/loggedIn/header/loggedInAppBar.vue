@@ -5,6 +5,7 @@
     elevation="1"
     clipped-left
     color="white"
+
   >
     <nuxt-link
       to="/"
