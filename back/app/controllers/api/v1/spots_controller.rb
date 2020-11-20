@@ -12,7 +12,7 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots/1
   def show
-    # @reviews = @spot.reviews
+    @reviews = @spot.reviews
     # @users = User.all.includes(:reviews)
     @prefecture = @spot.prefecture
     @location = @spot.location
@@ -21,7 +21,7 @@ class Api::V1::SpotsController < ApplicationController
       # user: @users,
       prefecture: @prefecture,
       location: @location,
-      # review: @reviews
+      review: @reviews.to_json(include: [:user])
     }
   end
 

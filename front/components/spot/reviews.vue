@@ -17,16 +17,15 @@
             size="34"
             class="my-app-log"
           >
-            <span class="white--text text-subtitle-2">
-              Biz
-            </span>
+            <!-- <v-img :src="review.image.url" /> -->
           </v-avatar>
         </v-col>
         <v-col
           cols="10"
           
         >
-          <div class="indigo--text caption d-flex"><h3>木村ヒロシ</h3>さんが口コミを投稿しました（{{ review.created_at | moment }}）</div>
+          <div>{{ review.user.image.url}}</div>
+          <div class="indigo--text caption d-flex"><h3>{{ review.user.name }}</h3>さんが口コミを投稿しました（{{ review.created_at | moment }}）</div>
           <div class="blue-grey--text caption">いいね〇〇件</div>
         </v-col>
         <v-col
@@ -38,13 +37,12 @@
               
             >
               <v-icon>mdi-dots-horizontal</v-icon>
-              
             </v-btn>
         </v-col>
       </v-row>
       <v-row>
         <v-img
-        src="https://picsum.photos/id/243/960/540"
+
         ></v-img>
       </v-row>
       <v-row>
@@ -59,16 +57,16 @@
               half-increments
             ></v-rating>
             <span class="grey--text subtitle-1 mt-2 ml-1">
-              ({{ rating }})
+              {{ review.rating }}
             </span>
           </v-row>
-          <v-card-title>{{review.title}}</v-card-title>
-          <v-card-text>{{review.text}}</v-card-text>
-          <v-card-subtitle>訪問時期:{{review.wentday}}月</v-card-subtitle>
+          <v-card-title>{{ review.title }}</v-card-title>
+          <v-card-text>{{ review.text }}</v-card-text>
+          <v-card-subtitle>訪問時期:{{ review.wentday }}月</v-card-subtitle>
         </v-col>
       </v-row>
       <!-- ライクボタン -->
-      <v-row>
+      <!-- <v-row>
         <v-col
           cols="1"
         >
@@ -88,7 +86,7 @@
             @click="deleteLike(review.id)"
           >
             <v-icon>mdi-thumb-up</v-icon>
-          </v-btn>
+          </v-btn> -->
 
         </v-col>
       </v-row>
@@ -104,6 +102,7 @@
 import axios from '~/plugins/axios'
 
 import moment from 'moment'
+var URL = "http://localhost:3000"
 
 export default {
   data() {
@@ -117,7 +116,7 @@ export default {
       ],
       reviews: {},
       users: {},
-      likes: []
+      likes: [],
     }
   },
   filters: {
@@ -128,8 +127,7 @@ export default {
   mounted () {
     this.$axios.get(`/api/v1/spots/${this.$route.params.id}`)
     .then((res) => {
-        this.reviews = res.data.review
-      
+        this.reviews = JSON.parse(res.data.review)
     })
     .catch((error) => {
       console.error(error)
