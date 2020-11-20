@@ -10,12 +10,13 @@
       <v-row>
         <v-col
         cols="1"
+        class="pt-3 pl-1"
         >
           <nuxt-link :to="`/user/${review.user.id}`" >
             <v-avatar
               color="black"
-              size="34"
-              class="my-app-log"
+              size="42"
+              
             >
               <v-img :src="review.user.image.url" />
             </v-avatar>
@@ -41,31 +42,25 @@
             </v-btn>
         </v-col>
       </v-row>
+      <v-img :src="review.image.url" :aspect-ratio="16/9" />
       <v-row>
-        <v-img :src="review.image.url" :aspect-ratio="16/9" />
+        <v-rating
+          v-model="rating"
+          background-color="purple lighten-3"
+          color="purple"
+          medium
+          readonly
+          half-increments
+        ></v-rating>
+        <span class="grey--text subtitle-1 mt-2 ml-1">
+          {{ review.rating }}
+        </span>
       </v-row>
-      <v-row>
-        <v-col>
-          <v-row>
-            <v-rating
-              v-model="rating"
-              background-color="purple lighten-3"
-              color="purple"
-              medium
-              readonly
-              half-increments
-            ></v-rating>
-            <span class="grey--text subtitle-1 mt-2 ml-1">
-              {{ review.rating }}
-            </span>
-          </v-row>
-          <v-card-title>{{ review.title }}</v-card-title>
-          <v-card-text>{{ review.text }}</v-card-text>
-          <v-card-subtitle>訪問時期:{{ review.wentday }}月</v-card-subtitle>
-        </v-col>
-      </v-row>
+      <h2>{{ review.title }}</h2>
+      <div class="my-2">{{ review.text }}</div>
+      <div class="grey--text subtitle-1">訪問時期:{{ review.wentday }}月</div>
       <!-- ライクボタン -->
-      <!-- <v-row>
+      <v-row>
         <v-col
           cols="1"
         >
@@ -85,10 +80,10 @@
             @click="deleteLike(review.id)"
           >
             <v-icon>mdi-thumb-up</v-icon>
-          </v-btn> -->
+          </v-btn>
 
-        <!-- </v-col>
-      </v-row> -->
+        </v-col>
+      </v-row>
     <v-divider class="mt-4"></v-divider>
     </v-container>
     </v-list-item>
@@ -101,7 +96,7 @@
 import axios from '~/plugins/axios'
 
 import moment from 'moment'
-var URL = "http://localhost:3000"
+
 
 export default {
   data() {

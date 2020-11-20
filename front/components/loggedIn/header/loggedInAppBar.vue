@@ -94,7 +94,6 @@
 
 <script>
 
-var URL = "http://localhost:3000"
 
 export default {
   data () {
@@ -109,9 +108,9 @@ export default {
     }
   },
   mounted(){
-    var img = this.$auth.user.image.url
-    this.icon = img
-    this.userIcon = URL + img
+    this.userIcon = this.$auth.user.image.url
+    this.icon = this.userIcon
+    
   }
 }
 </script>

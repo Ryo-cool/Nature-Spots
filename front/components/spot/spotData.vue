@@ -82,8 +82,6 @@
 <script>
 import axios from '~/plugins/axios'
 
-var URL = "http://localhost:3000"
-
 export default {
   data () {
     return {

@@ -61,7 +61,7 @@
 <script>
 import axios from "~/plugins/axios"
 
-var URL = "http://localhost:3000"
+
 
 export default {
   data (){
@@ -76,8 +76,8 @@ export default {
       .then((res) => {
         // const spot = res.data
         this.user = res.data.user
-        var img = res.data.user.image.url
-        this.photo = URL + img
+        this.photo = res.data.user.image.url
+    
         // this.review = res.data.review
       })
       .catch((error) => {

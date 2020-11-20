@@ -13,7 +13,6 @@
 <script>
 import axios from '~/plugins/axios'
 
-var URL = "http://localhost:3000"
 
 export default {
   data () {
@@ -25,8 +24,8 @@ export default {
     this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
-        var img = res.data.spot.photo.url
-        this.photo = URL + img
+        this.photo = res.data.spot.photo.url
+
       })
       .catch((error) => {
         console.error(error)
