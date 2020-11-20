@@ -66,7 +66,7 @@ class User < ApplicationRecord
 
   # 共通のJSONレスポンス。カラムを増やした場合は配列に追加する。
   def my_json
-    as_json(only: [:id, :name, :email, :created_at])
+    as_json(only: [:id, :name, :email,:image, :created_at])
   end
   
   private

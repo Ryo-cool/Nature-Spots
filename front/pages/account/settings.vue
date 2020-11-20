@@ -1,13 +1,23 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="4">
+      <v-col cols="8">
         <!-- ユーザー情報 -->
         <v-card>
           <v-container>
             {{ $auth.user.name }}のページ
             <v-row>
               <v-col>
+                <v-row>
+                  <v-avatar
+                    size="120"
+                  >
+                    <v-img
+                      :src="photo"
+                      
+                    />
+                  </v-avatar>
+                </v-row>
                 <v-row>
                   <v-col>
                     {{ $auth.user.email}}
@@ -22,6 +32,9 @@
                     <nuxt-link to="userEdit">
                       プロフィール編集
                     </nuxt-link>
+                  </v-col>
+                  <v-col>
+                    {{ user.introduction }}
                   </v-col>
                 </v-row>
               </v-col>
@@ -48,10 +61,13 @@
 <script>
 import axios from "~/plugins/axios"
 
+var URL = "http://localhost:3000"
+
 export default {
   data (){
     return{
-      user: {}
+      user: {},
+      photo:null
     }
   },
   mounted(){
@@ -59,7 +75,9 @@ export default {
       .get(`/api/v1/users/user_data`)
       .then((res) => {
         // const spot = res.data
-        this.user = res.data
+        this.user = res.data.user
+        var img = res.data.user.image.url
+        this.photo = URL + img
         // this.review = res.data.review
       })
       .catch((error) => {

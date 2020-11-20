@@ -38,9 +38,15 @@
           icon
           v-on="on"
         >
-          <v-icon>
-            mdi-account-circle
-          </v-icon>
+          <v-avatar size=36 v-if="icon == null">
+            <v-icon>
+              mdi-account-circle
+            </v-icon>
+          </v-avatar>
+          <v-avatar size=36 v-else>
+            <v-img :src="userIcon">
+            </v-img>
+          </v-avatar>
         </v-btn>
       </template>
       <v-list dense>
@@ -86,6 +92,9 @@
 </template>
 
 <script>
+
+var URL = "http://localhost:3000"
+
 export default {
   data () {
     return {
@@ -93,8 +102,15 @@ export default {
         { name: 'account-settings', icon: 'mdi-account-cog' },
         { name: 'account-password', icon: 'mdi-lock-outline' },
         { name: 'logout', icon: 'mdi-logout-variant', divider: true }
-      ]
+      ],
+      userIcon:"",
+      icon:null
     }
+  },
+  mounted(){
+    var img = this.$auth.user.image.url
+    this.icon = img
+    this.userIcon = URL + img
   }
 }
 </script>
