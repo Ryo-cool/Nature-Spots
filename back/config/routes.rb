@@ -12,6 +12,9 @@ Rails.application.routes.draw do
         delete :destroy, on: :collection
       end
       resources :spots do
+        collection do
+          get 'ranking'
+        end
         resources :reviews do
           resources :likes, only: [:create, :destroy]
         end
