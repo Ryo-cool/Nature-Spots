@@ -7,4 +7,8 @@ class Spot < ApplicationRecord
 
   validates :name,presence: true
   validates :photo,presence: true
+  
+  def review_count
+    reviews.count
+  end
 end
