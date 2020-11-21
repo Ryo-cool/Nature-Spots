@@ -24,10 +24,10 @@ class Api::V1::SpotsController < ApplicationController
   end
   # レビュー数順にスポットを表示する
   def ranking
-    @all_ranks = Spot.find(Revirew.group(:spot_id).order('count(spot_id) desc').limit(5).pluck(:spot_id))
-    render json: {
-      rank: @all_ranks
-    }
+    @all_ranks = Spot.find(Review.group(:spot_id).order('count(spot_id) desc').limit(5).pluck(:spot_id))
+
+    render json: @all_ranks.to_json(methods: [:review_count])
+    
   end
 
   # SPOT /spots

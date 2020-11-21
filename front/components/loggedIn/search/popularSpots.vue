@@ -4,43 +4,52 @@
       prev-icon="mdi-arrow-left-circle-outline"
       next-icon="mdi-arrow-right-circle-outline"
     >
+
       <v-slide-item
-        v-for="n in 8"
-        :key="n"
-        v-slot="{ active, toggle }"
+        v-for="(spot, index) in pspots"
+        :key="index"
       >
+
         <v-card
-          :color="active ? 'primary' : 'grey lighten-1'"
           class="ma-4"
-          height="200"
-          width="250"
-          @click="toggle"
+          height="300"
+          width="300"
+          nuxt
+          :to="`/spots/${spot.id}`"
         >
-          アイテム{{ n }}
-          <v-row
-            class="fill-height"
-            align="center"
-            justify="center"
-          >
-            <v-scale-transition>
-              <v-icon
-                v-if="active"
-                color="white"
-                size="48"
-                v-text="'mdi-close-circle-outline'"
-              ></v-icon>
-            </v-scale-transition>
-          </v-row>
+          <v-img 
+            :src="spot.photo.url" 
+            :aspect-ratio="12/9"
+          />
+          <h3>{{ spot.name }}</h3>
+          <div>
+          <v-icon>mdi-comment-text-outline</v-icon>
+          {{ spot.review_count}}件
+          </div>
+          
         </v-card>
+
       </v-slide-item>
     </v-slide-group>
 
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      model: null,
-    }),
+import axios from '~/plugins/axios'
+
+export default {
+  data: () => ({
+    model: null,
+    pspots: {}
+  }),
+  mounted(){
+    this.$axios.get("api/v1/spots/ranking")
+    .then((res) => {
+      this.pspots = res.data
+    })
+    .catch((error) => {
+      console.error(error)
+    })
   }
+}
 </script>
