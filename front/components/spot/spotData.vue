@@ -44,9 +44,20 @@
           <v-btn
             icon
             color="pink"
+            @click="createFavorite(spot.id)"
           >
             <v-icon>
               mdi-heart
+            </v-icon>
+            
+          </v-btn>
+          <v-btn
+            icon
+            color="pink"
+            @click="deleteFavorite(spot.id)"
+          >
+            <v-icon>
+              mdi-heart-outline
             </v-icon>
           </v-btn>
           <v-btn
@@ -109,6 +120,38 @@ export default {
       .catch((error) => {
         console.error(error)
       })
+  },
+  methods:{
+    createFavorite(spotId){
+      this.$axios.post(
+        `/api/v1/spots/${this.$route.params.id}/favorites`,
+      {
+        user_id: this.$auth.user.id,
+        spot_id: spotId
+      })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    deleteFavorite(spotId){
+      this.$axios
+        .delete(`/api/v1/spots/${this.$route.params.id}/favorites/${this.$auth.user.id}`, {
+          params: {
+            user_id: this.$auth.user.id,
+            spot_id: this.spotId
+          }
+        })
+        .then(res => {
+          console.log(res)
+
+        })
+        .catch(error => {
+          console.log(error)
+        }) 
+    }
   }
 }
 </script>
