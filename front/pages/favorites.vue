@@ -5,7 +5,10 @@
       <v-col cols="4"
         v-for="(favorite, index) in fspots" 
         :key="index">
-        <v-card>
+        <v-card
+          :to="`/spots/${favorite.id}`"
+        >
+
           <v-img :src="favorite.photo.url" />
           <v-card-title>{{ favorite.name }}</v-card-title>
         </v-card>
