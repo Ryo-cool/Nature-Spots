@@ -27,8 +27,11 @@ class Api::V1::UsersController < ApplicationController
     @user = User.find(current_user.id)
     @reviews = @user.reviews
     @like_reviews= @user.liked_reviews
+    # お気に入り機能
+    favorites = Favorite.where(user_id: current_user.id).pluck(:spot_id)
+    @favorite_list = Spot.find(favorites)
     # 投稿したスポット
-    render json: {review: @reviews, like_reviews: @like_reviews, user: @user}
+    render json: {review: @reviews, like_reviews: @like_reviews, user: @user, favorite: @favorite_list}
   end
 
   private
