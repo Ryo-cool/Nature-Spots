@@ -4,6 +4,8 @@ class Spot < ApplicationRecord
   belongs_to_active_hash :location
   mount_uploader :photo, ImageUploader
   has_many :reviews
+  belongs_to :user, optional: true
+  has_many :favorites, dependent: :destroy
 
   validates :name,presence: true
   validates :photo,presence: true
