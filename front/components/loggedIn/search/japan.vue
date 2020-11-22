@@ -20,7 +20,6 @@
               lg="2"
               v-for="prefecture in prefectures"
               :key="prefecture.name"
-              
             >
             <nuxt-link
             :to="`prefecture/${prefecture.attributes.id}`"
