@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         collection do
           get 'ranking'
         end
+        resources :favorites, only: [:create, :destroy]
         resources :reviews do
           resources :likes, only: [:create, :destroy]
         end

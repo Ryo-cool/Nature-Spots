@@ -17,6 +17,18 @@
     <app-title />
     <v-spacer />
     <nuxt-link
+      to="/favorites"
+      class="text-decoration-none mr-4"
+    >
+      <v-btn 
+        outlined
+        class="font-weight-bold px-2"
+      >
+        <v-icon>mdi-heart-outline</v-icon>
+      お気に入りスポット
+      </v-btn>
+    </nuxt-link>
+    <nuxt-link
       to="/newspots"
       class="text-decoration-none mr-4"
     >
