@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources :users do
         get :current_user, action: :my_page, on: :collection
         get :user_data, action: :user_data, on: :collection
+        get :favorites, on: :collection
       end
     
       
