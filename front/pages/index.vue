@@ -47,14 +47,6 @@
 
       </v-col>
     </v-row>
-    <v-row>
-      <v-col>
-        <h1>いきたいリスト</h1>
-
-        <want-list />
-        
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
