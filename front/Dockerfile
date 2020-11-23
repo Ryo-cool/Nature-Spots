@@ -16,6 +16,6 @@ RUN apk update && \
 
 
 
-RUN yarn run build
-EXPOSE 3000
-CMD ["yarn", "dev"]
+# RUN yarn run build
+# EXPOSE 3000
+# CMD ["yarn", "dev"]
