@@ -55,3 +55,7 @@
   - 単体テスト(model)
   - 機能テスト(request)
   - 統合テスト(feature)
+
+# ER図
+<img width="915" alt="スクリーンショット 2020-11-23 17 04 53" src="https://user-images.githubusercontent.com/58380104/99939743-21d37e00-2dae-11eb-8ec8-aee6c6f0d63b.png">
+
