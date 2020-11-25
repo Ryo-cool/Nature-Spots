@@ -49,7 +49,7 @@ export default {
         const spot = res.data.spot
         this.spot = spot
         this.reviews = res.data.review
-      })
+      }) 
       .catch((error) => {
         console.error(error)
       })
