@@ -75,17 +75,21 @@
       <h3>都道府県<div class="body-1">{{prefecture}}</div></h3>
       <h3>住所<div class="body-1">{{spot.address}}</div></h3>
       <h3>ジャンル<div class="body-1">{{location}}</div></h3>
-        <GmapMap 
-        :center="{lat: spot.latitude, lng: spot.longitude}"
-        :zoom="12" 
-        ref="map" 
-        style="width: 500px; height: 300px"
-        >
-          <GmapMarker :key="id" v-for="(m,id) in marker_items"
-            :position="{lat: spot.latitude, lng: spot.longitude}"
-            :title="m.title"
-            :clickable="true" :draggable="false" />
-        </GmapMap>
+      <v-row>
+        <v-col>
+          <GmapMap 
+          :center="{lat: spot.latitude, lng: spot.longitude}"
+          :zoom="12" 
+          ref="map" 
+          style="width: 100%; height: 300px"
+          >
+            <GmapMarker :key="id" v-for="(m,id) in marker_items"
+              :position="{lat: spot.latitude, lng: spot.longitude}"
+              :title="m.title"
+              :clickable="true" :draggable="false" />
+          </GmapMap>
+        </v-col>
+      </v-row>
     </v-container>
   </v-card>
 </template>
