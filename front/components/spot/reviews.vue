@@ -9,7 +9,8 @@
     <v-container>
       <v-row>
         <v-col
-        cols="1"
+        cols="2"
+        sm="1"
         class="pt-3 pl-1"
         >
           <nuxt-link :to="`/user/${review.user.id}`" >
@@ -23,8 +24,7 @@
           </nuxt-link>
         </v-col>
         <v-col
-          cols="10"
-          
+          cols="9"
         >
         
           <div class="indigo--text caption d-flex"><h3>{{ review.user.name }}</h3>さんが口コミを投稿しました（{{ review.created_at | moment }}）</div>

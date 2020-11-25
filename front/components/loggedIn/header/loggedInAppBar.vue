@@ -18,19 +18,30 @@
     <v-spacer />
     <nuxt-link
       to="/favorites"
-      class="text-decoration-none mr-4"
+      class="text-decoration-none mr-4 hidden-ipad-and-down"
     >
       <v-btn 
         outlined
         class="font-weight-bold px-2"
       >
-        <v-icon>mdi-heart-outline</v-icon>
+        <v-icon color="pink">mdi-heart</v-icon>
       お気に入りスポット
       </v-btn>
     </nuxt-link>
     <nuxt-link
+      to="/favorites"
+      class="text-decoration-none mr-4 hidden-ipad-and-up"
+    >
+      <v-btn 
+        outlined
+        class="font-weight-bold px-2"
+      >
+        <v-icon color="pink">mdi-heart</v-icon>
+      </v-btn>
+    </nuxt-link>
+    <nuxt-link
       to="/newspots"
-      class="text-decoration-none mr-4"
+      class="text-decoration-none mr-4 hidden-ipad-and-down"
     >
       <v-btn 
         outlined
@@ -38,6 +49,17 @@
       >
         <v-icon>mdi-map-marker-plus-outline</v-icon>
       スポットを追加
+      </v-btn>
+    </nuxt-link>
+    <nuxt-link
+      to="/newspots"
+      class="text-decoration-none mr-4 hidden-ipad-and-up"
+    >
+      <v-btn 
+        outlined
+        class="font-weight-bold px-2"
+      >
+        <v-icon>mdi-map-marker-plus-outline</v-icon>
       </v-btn>
     </nuxt-link>
     <v-menu
