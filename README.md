@@ -8,6 +8,7 @@
 
 # 使用技術
 - フロントエンド
+  - Vue.js
   - Nuxt.js(SPA化)
   - vuetify
 - バックエンド
