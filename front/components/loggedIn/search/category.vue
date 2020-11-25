@@ -13,8 +13,9 @@
             
           >
             <v-col
-              cols="12"
-              md="6"
+              cols="6"
+              
+              
               align="center"
               v-for="genre in genre"
               :key="genre.id"
