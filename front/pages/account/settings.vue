@@ -20,7 +20,6 @@
                 </v-row>
                 <v-row>
                   <v-col>
-                    {{ $auth.user.email}}
                   </v-col>
                   <v-col>
                     フォロー

@@ -1,8 +1,8 @@
 <template>
   <v-container>
+    お気に入りのスポット
     <v-row>
-      お気に入りのスポット
-      <v-col cols="4"
+      <v-col cols="6"
         v-for="(favorite, index) in fspots" 
         :key="index">
         <v-card
