@@ -3,7 +3,28 @@ class Api::V1::UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
-    render json: @user
+    #レビュー
+    @reviews = @user.reviews
+    #お気に入り
+    favorites = Favorite.where(user_id: @user.id).pluck(:spot_id)
+    @favorite_list = Spot.find(favorites)
+    #いいね
+    @likes= Like.where(user_id: @user.id)
+    # フォロー
+    follow = Relationship.where(user_id: @user.id).pluck(:follow_id)
+    @follow_list = User.find(follow)
+    # フォロワー
+    follower = Relationship.where(follow_id: @user.id).pluck(:user_id)
+    @follower_list = User.find(follower)
+    render json: {
+      user: @user,
+      reviews: @reviews.to_json(include: [:spot]),
+      favorite: @favorite_list,
+      like: @likes,
+      follow: @follow_list,
+      follower: @follower_list
+    }
+
   end
 
   def update
@@ -36,7 +57,7 @@ class Api::V1::UsersController < ApplicationController
     # フォロワー
     follower = Relationship.where(follow_id: current_user.id).pluck(:user_id)
     @follower_list = User.find(follower)
-    # 投稿したスポット
+    
     render json: {
       review: @reviews.to_json(include: [:spot]), 
       like_reviews: @like_reviews.to_json(include: [:spot,:user]), 

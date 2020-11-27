@@ -6,26 +6,52 @@
           color="orange"
           size="120"
         >
-          <span class="white--text headline">ユ</span>
+        <v-img :src="userImage"></v-img>
         </v-avatar>
       </v-col>
       <v-col col="4" md="5">
-        <div>名前</div>
+        <div>{{ user.name }}</div>
+        <div>{{ user.introduction }}</div>
         <v-row class="mt-7">
           <v-col>
             <div>投稿</div>
-            <div>1件</div>
+            <div>{{ review.length }}件</div>
           </v-col>
           <v-col>
             <div>フォロー</div>
-            <div>2人</div>
+            <div>{{ follow.length }}人</div>
           </v-col>
           <v-col>
             <div>フォロワー</div>
-            <div>5人</div>
+            <div>{{ follower.length }}人</div>
           </v-col>
         </v-row>
       </v-col>
     </v-row>
   </v-col>
 </template>
+
+<script>
+export default {
+  data(){
+    return{
+      user: {},
+      userImage: null,
+      review: {},
+      follow: {},
+      follower: {}
+    }
+  },
+  mounted(){
+    this.$axios.get(`/api/v1/users/${this.$route.params.id}`)
+    .then((res) => {
+      this.user = res.data.user
+      this.userImage = res.data.user.image.url
+      this.review = JSON.parse(res.data.reviews)
+      this.follow = res.data.follow
+      this.follower = res.data.follower
+    })
+  }
+}
+</script>
+
