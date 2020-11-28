@@ -15,10 +15,14 @@ class Api::V1::SpotsController < ApplicationController
     @reviews = @spot.reviews
     @prefecture = @spot.prefecture
     @location = @spot.location
+    # お気に入り機能
+    favorites = Favorite.where(spot_id: @spot.id).pluck(:user_id)
+    @favorite_user = User.find(favorites)
     render json: {
       spot: @spot,
       prefecture: @prefecture,
       location: @location,
+      favuser: @favorite_user,
       review: @reviews.to_json(include: [:user])
     }
   end

@@ -7,6 +7,22 @@
         sm="3"
         >
           <div class="headline pt-3">{{spot.name}}</div>
+          <v-snackbar
+            :value="alert"
+            color="pink"
+            dark
+            timeout="2000"
+          >
+          お気に入り登録
+          </v-snackbar>
+          <v-snackbar
+            :value="likeDelete"
+            color="pink"
+            dark
+            timeout="2000"
+          >
+          お気に入り解除しました
+          </v-snackbar>
         </v-col>
         <v-col
         cols="5"
@@ -41,24 +57,24 @@
         sm="3"
         class="pt-5"
         >
-          <v-btn
+          <v-btn v-if="favorite"
             icon
-            color="pink"
+            color="pink" 
             @click="createFavorite(spot.id)"
           >
             <v-icon>
-              mdi-heart
+              mdi-heart-outline
             </v-icon>
-            
           </v-btn>
-          <v-btn
+          <v-btn v-else
             icon
             color="pink"
             @click="deleteFavorite(spot.id)"
           >
             <v-icon>
-              mdi-heart-outline
+              mdi-heart
             </v-icon>
+            
           </v-btn>
           <v-btn
           icon
@@ -101,29 +117,40 @@ export default {
   data () {
     return {
       spot: {},
+      favUser: {},
       prefecture: {},
       location: {},
       reviews: {},
       photo: "",
       rating: 2.6,
       reviews: 300,
+      favorite: true,
+      alert: false,
+      likeDelete: false,
       marker_items: [
       {position: {lat: 35.71, lng: 139.72}, title: 'marker_1'},
       ]
     }
   },
-  mounted () {
+  created() {
     this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
         this.spot = res.data.spot
         this.prefecture = res.data.prefecture.attributes.name
         this.location = res.data.location.attributes.name
-
+        this.favUser = res.data.favuser
       })
       .catch((error) => {
         console.error(error)
       })
+    if(this.favUser === this.$auth.user.id){
+      this.favorite = false
+    }else{
+      this.favorite = true
+    }
+
+
   },
   methods:{
     createFavorite(spotId){
@@ -135,6 +162,8 @@ export default {
       })
       .then(res => {
         console.log(res)
+        this.alert = true
+        this.favorite = false
       })
       .catch(error => {
         console.log(error)
@@ -150,7 +179,8 @@ export default {
         })
         .then(res => {
           console.log(res)
-
+          this.likeDelete = true
+          this.favorite = true
         })
         .catch(error => {
           console.log(error)
