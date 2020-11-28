@@ -1,7 +1,7 @@
-import axios from "axios"
 
 export default ({ $axios, isDev }) => {
-  // baseURL: "https://www.nature-spots.work"
+  
+  baseURL: process.env.NODE_ENV === "production" ? "https://www.nature-spots-api.work" : "http://localhost:3000"
   // リクエストログ
   $axios.onRequest((config) => {
     // if (isDev) 追加

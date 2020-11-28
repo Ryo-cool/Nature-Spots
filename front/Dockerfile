@@ -6,6 +6,8 @@ ENV HOME="/app" \
 
 ENV HOST 0.0.0.0
 
+ADD package.json /app/package.json
+
 WORKDIR ${HOME}
 
 RUN apk update && \
@@ -16,6 +18,6 @@ RUN apk update && \
 
 
 
-# RUN yarn run build
-# EXPOSE 3000
-# CMD ["yarn", "dev"]
+RUN yarn run build
+EXPOSE 3000
+CMD ["yarn", "dev"]
