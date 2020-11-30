@@ -8,17 +8,18 @@ ENV HOST 0.0.0.0
 
 WORKDIR ${HOME}
 
+COPY ["yarn.lock", "package.json", "./"]
+
 RUN apk update && \
     apk upgrade && \
     npm install -g n && \
     yarn install &&\
     rm -rf /var/cache/apk/*
 
-
-COPY ["yarn.lock", "package.json", "./"]
-
 RUN yarn install && \
     yarn run build 
+
 EXPOSE 3000
+
 CMD ["yarn", "dev"]
 
