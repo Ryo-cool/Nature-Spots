@@ -15,7 +15,10 @@ RUN apk update && \
     rm -rf /var/cache/apk/*
 
 
+COPY ["yarn.lock", "package.json", "./"]
 
-RUN yarn run build
+RUN yarn install && \
+    yarn run build 
 EXPOSE 3000
 CMD ["yarn", "dev"]
+

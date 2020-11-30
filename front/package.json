@@ -9,7 +9,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
-  },
+  }, 
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
     "crypto-js": "^4.0.0",
