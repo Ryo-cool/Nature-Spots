@@ -6,8 +6,6 @@ ENV HOME="/app" \
 
 ENV HOST 0.0.0.0
 
-ADD package.json /app/package.json
-
 WORKDIR ${HOME}
 
 RUN apk update && \
