@@ -1,7 +1,7 @@
 {
-  "name": "NatureSpots",
+  "name": "nature-spots",
   "version": "1.0.0",
-  "description": "Nuture-Fix",
+  "description": "Nature-Fix",
   "author": "cool",
   "private": true,
   "scripts": {

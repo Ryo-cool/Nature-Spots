@@ -8,7 +8,7 @@ ENV HOST 0.0.0.0
 
 WORKDIR ${HOME}
 
-COPY ["yarn.lock", "package.json", "./"]
+COPY ["package.json", "./"]
 
 RUN apk update && \
     apk upgrade && \
