@@ -87,7 +87,7 @@ Rails.application.configure do
   # middleware. The `delay` is used to determine how long to wait after a write
   # to send a subsequent read to the primary.
   #
-  config.hosts << https://www.nature-spots-api.work/
+  config.hosts << "https://www.nature-spots-api.work/"
   
   # The `database_resolver` class is used by the middleware to determine which
   # database is appropriate to use based on the time delay.
