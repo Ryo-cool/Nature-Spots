@@ -16,7 +16,10 @@ RUN apk update && \
     yarn install &&\
     rm -rf /var/cache/apk/*
 
+RUN yarn install && \
+    yarn run build 
+
 EXPOSE 3000
 
-CMD ["yarn", "build", "start"]
+CMD ["yarn","start"]
 
