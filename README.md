@@ -37,7 +37,7 @@
   - レビュー数順スポット
 - 詳細ページ
   - Google MAP表示（Google Maps Javascript API）
- - 検索機能
+- 検索機能
   - オートコンプリート機能
 - 口コミ投稿機能
   - 画像投稿(carrierwave)
