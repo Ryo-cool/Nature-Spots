@@ -8,7 +8,8 @@ ENV HOST 0.0.0.0
 
 WORKDIR ${HOME}
 
-COPY ["package.json", "./"]
+COPY package.json .
+COPY . .
 
 RUN apk update && \
     apk upgrade && \
