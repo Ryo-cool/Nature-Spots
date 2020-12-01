@@ -16,8 +16,7 @@ RUN apk update && \
     yarn install &&\
     rm -rf /var/cache/apk/*
 
-RUN yarn install && \
-    yarn run build 
+RUN  yarn run build 
 
 EXPOSE 3000
 
