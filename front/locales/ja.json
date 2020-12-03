@@ -12,7 +12,7 @@
     "logout": "ログアウト",
     "account": {
       "settings": "プロフィール",
-      "password": "パスワード変更"
+      "password": "プロフィール編集"
     },
     "prefecture": {
       "id": "都道府県"
