@@ -43,14 +43,15 @@
         </v-col>
       </v-row>
       <v-img :src="review.image.url" :aspect-ratio="16/9" />
-      <v-row>
+      <v-row class="mt-3">
         <v-rating
-          v-model="rating"
+          v-model="review.rating"
           background-color="purple lighten-3"
           color="purple"
           medium
           readonly
           half-increments
+          
         ></v-rating>
         <span class="grey--text subtitle-1 mt-2 ml-1">
           {{ review.rating }}
