@@ -19,6 +19,7 @@ https://www.nature-spots.work/
 - その他
   - Docker/Docker-compose
   - CircleCI(自動テスト・自動ビルド）
+  - AWS (VPC,ECS,ECR,RDS,Route53,ELB,ACM,IAM)
   - axios(APIとのHTTP通信),cors(異なるオリジンの許可）
   - nuxt-i18n（国際化対応)
   - bcrypt(パスワード暗号化）
