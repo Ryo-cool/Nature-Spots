@@ -15,6 +15,8 @@ services:
     command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'" 
     env_file:
       - ./back/environments/db.env
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
     volumes:
       - ./back:/app:cached
     depends_on:
