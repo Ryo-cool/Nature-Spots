@@ -69,7 +69,8 @@ export default {
   axios: {
     // クロスサイトリクエスト時にCookieを使用することを許可する
     // Doc: https://axios.nuxtjs.org/options/#credentials
-    credentials: true
+    credentials: true,
+    baseURL: process.env.NODE_ENV === "production" ? "https://www.nature-spots-api.work" : "http://localhost:3000"
   },
   /*
   ** vuetify module configuration

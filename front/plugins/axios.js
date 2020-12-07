@@ -1,7 +1,6 @@
 
 export default ({ $axios, isDev }) => {
   
-  baseURL: process.env.NODE_ENV === "production" ? "https://www.nature-spots-api.work" : "http://localhost:3000"
   // リクエストログ
   $axios.onRequest((config) => {
     // if (isDev) 追加
