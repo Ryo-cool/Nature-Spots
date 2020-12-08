@@ -18,7 +18,7 @@ https://www.nature-spots.work/
   - MySQL 5.7
 - その他
   - Docker/Docker-compose
-  - CircleCI(自動テスト・自動ビルド）
+  - CircleCI(CI/CD)
   - AWS (VPC,ECS,ECR,RDS,Route53,ELB,ACM,IAM)
   - axios(APIとのHTTP通信),cors(異なるオリジンの許可）
   - nuxt-i18n（国際化対応)
