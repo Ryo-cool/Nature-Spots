@@ -60,4 +60,5 @@ https://www.nature-spots.work/
 <img width="915" alt="スクリーンショット 2020-11-23 17 04 53" src="https://user-images.githubusercontent.com/58380104/99939743-21d37e00-2dae-11eb-8ec8-aee6c6f0d63b.png">
 
 # インフラ構成図
-<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://app.lucidchart.com/documents/embeddedchart/3faacc4a-a017-4644-ace8-4b885645ac6f" id="JLgVMAc9H19x"></iframe></div>
+<img width="704" alt="スクリーンショット 2020-12-08 18 14 39" src="https://user-images.githubusercontent.com/58380104/101463856-4f5d2180-3981-11eb-89df-90e19bd0ed4d.png">
+
