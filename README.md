@@ -59,3 +59,5 @@ https://www.nature-spots.work/
 # ER図
 <img width="915" alt="スクリーンショット 2020-11-23 17 04 53" src="https://user-images.githubusercontent.com/58380104/99939743-21d37e00-2dae-11eb-8ec8-aee6c6f0d63b.png">
 
+# インフラ構成図
+<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://app.lucidchart.com/documents/embeddedchart/3faacc4a-a017-4644-ace8-4b885645ac6f" id="JLgVMAc9H19x"></iframe></div>
