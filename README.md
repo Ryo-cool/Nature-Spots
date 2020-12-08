@@ -60,5 +60,6 @@ https://www.nature-spots.work/
 <img width="915" alt="スクリーンショット 2020-11-23 17 04 53" src="https://user-images.githubusercontent.com/58380104/99939743-21d37e00-2dae-11eb-8ec8-aee6c6f0d63b.png">
 
 # インフラ構成図
-<img width="704" alt="スクリーンショット 2020-12-08 18 14 39" src="https://user-images.githubusercontent.com/58380104/101463856-4f5d2180-3981-11eb-89df-90e19bd0ed4d.png">
+<img width="704" alt="スクリーンショット 2020-12-08 18 28 33" src="https://user-images.githubusercontent.com/58380104/101465370-35244300-3983-11eb-810a-31062e02577e.png">
+
 
