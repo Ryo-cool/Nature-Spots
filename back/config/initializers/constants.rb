@@ -1,5 +1,3 @@
 module Constants
-
-    URL = "https://www.nature-spots-api.work"
-
+    URL = "http://localhost:3000/"
 end
