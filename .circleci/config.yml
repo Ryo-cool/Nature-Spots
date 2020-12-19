@@ -52,7 +52,7 @@ workflows:
             repo:                         ${REPO_NAME_BACK}
             tag:                          "${CIRCLE_SHA1}"
             path:                         './back'
-            dockerfile:                   back/Dockerfile
+            dockerfile:                   back/Dockerfile.pro
             extra-build-args:             '--build-arg RAILS_MASTER_KEY=$RAILS_MASTER_KEY'
             requires:
               - test
@@ -67,7 +67,7 @@ workflows:
             repo:                         ${REPO_NAME_FRONT}
             tag:                          "${CIRCLE_SHA1}"
             path:                         './front'
-            dockerfile:                   front/Dockerfile
+            dockerfile:                   front/Dockerfile.pro
             requires:
               - test
             filters:
