@@ -4,10 +4,9 @@
 レスポンシブ対応<br >
 <img width="733" alt="スクショ2020-10-16 19 16 10" src="https://user-images.githubusercontent.com/58380104/96246943-5b151300-0fe4-11eb-9435-bc4d0c88971e.png">
 # URL
-https://www.nature-spots.work/
-
-# 使用技術
-- フロントエンド
+https://www.nature-spots.work/  （現在停止中)
+＃使用技術）
+-フロント
   - Vue.js
   - Nuxt.js(SPA化)
   - vuetify
