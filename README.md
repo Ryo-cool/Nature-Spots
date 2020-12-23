@@ -7,7 +7,7 @@
 https://www.nature-spots.work/  （現在停止中)
 
 # 使用技術
--フロント
+- フロント
   - Vue.js
   - Nuxt.js(SPA化)
   - vuetify
