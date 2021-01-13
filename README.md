@@ -3,17 +3,17 @@
 旅行先の景色や好きな自然スポットを位置情報付きで共有できます。<br >
 レスポンシブ対応<br >
 <img width="733" alt="スクショ2020-10-16 19 16 10" src="https://user-images.githubusercontent.com/58380104/96246943-5b151300-0fe4-11eb-9435-bc4d0c88971e.png">
-<h3 align="center">Frontend</h3>
+<h3 align="left">Frontend</h3>
 
-<p align="center">
+<p align="left">
   <a href="https://jp.vuejs.org/index.html"><img src="https://user-images.githubusercontent.com/39142850/71645835-a98d4580-2d21-11ea-9693-348d12101bb4.png" width="80px;" /></a>
   <a>　</a>
   <a href="https://ja.nuxtjs.org/guide/"><img src="https://user-images.githubusercontent.com/59280290/80292478-f645d200-8791-11ea-9a0b-57ec5a7ec487.png" height="80px" /></a>
 <a>　</a>
 </p>
 
-<h3 align="center">Backend</h3>
-<p align="center">
+<h3 align="left">Backend</h3>
+<p align="left">
 <a>　</a>
   <a href="https://rubyonrails.org/"><img src="https://user-images.githubusercontent.com/59280290/80292396-7a4b8a00-8791-11ea-8d8a-effea8a1f485.png" height="45px;" /></a>
 <a>　</a>
