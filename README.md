@@ -22,6 +22,19 @@
   <a href="https://www.mysql.com/jp/"><img src="https://user-images.githubusercontent.com/59280290/80302176-6cbef000-87e3-11ea-9643-1f4b446dfaa8.png" height="45px;" /></a>
     <a href="https://circleci.com/ja/"><img src="https://user-images.githubusercontent.com/58380104/104709632-85e94180-5762-11eb-8ccc-c3bc2d0f1be1.jpg" height="45px;" /></a>
 
+# 特に見ていただきたい点
+- ## インフラ面
+- Dockerを使い、ECS(EC2)/ECRで本番環境をサーバーレスで運用している点
+- CircleCIを使い、CD/CDパイプラインを構築している点
+- ## フロントエンド面
+- Nuxt.jsを使用しSPA化することでUX向上している点
+- Vuetilyを使用し、UIの整形を行っている点
+- ## バックエンド面
+- RailsのAPIモードで開発し、フロントと分けて疎結合な構成にしている点
+- 外部API(Google Maps Javascript API,Geocording API)を利用し、機能を追加している点
+- JWTを使用したログイン認証を実装している点
+- ##その他
+- チーム開発を意識したGitHubの活用をしている点
 
 # URL
 https://www.nature-spots.work/  （現在停止中)
