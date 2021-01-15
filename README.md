@@ -20,7 +20,7 @@
   <a href="https://aws.amazon.com/jp/?nc2=h_lg"><img src="https://user-images.githubusercontent.com/59280290/80302130-2ec1cc00-87e3-11ea-813c-dcdb51a02af5.png" height="45px;" /></a>
 <a>　</a>
   <a href="https://www.mysql.com/jp/"><img src="https://user-images.githubusercontent.com/59280290/80302176-6cbef000-87e3-11ea-9643-1f4b446dfaa8.png" height="45px;" /></a>
-    <a href="https://www.mysql.com/jp/"><img src="https://user-images.githubusercontent.com/58380104/104709632-85e94180-5762-11eb-8ccc-c3bc2d0f1be1.jpg" height="45px;" /></a>
+    <a href="https://circleci.com/ja/"><img src="https://user-images.githubusercontent.com/58380104/104709632-85e94180-5762-11eb-8ccc-c3bc2d0f1be1.jpg" height="45px;" /></a>
 
 
 # URL
