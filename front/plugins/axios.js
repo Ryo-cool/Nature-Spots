@@ -1,6 +1,7 @@
 
 export default ({ $axios, isDev }) => {
   
+  baseURL: "http://localhost:3000"
   // リクエストログ
   $axios.onRequest((config) => {
     // if (isDev) 追加
