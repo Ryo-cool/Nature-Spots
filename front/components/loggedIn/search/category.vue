@@ -69,16 +69,7 @@ export default {
       ],
       // genre:{}
     }
-  },
-  // mounted() {
-  //   this.$axios.get("api/v1/locations")
-  //   .then((res) => {
-  //     this.genre = res.data
-  //   })
-  //   .catch((error) => {
-  //     console.error(error)
-  //   })
-  // }
+  }
 }
 </script>
 

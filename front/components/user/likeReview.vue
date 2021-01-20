@@ -103,9 +103,7 @@ export default {
     this.$axios
       .get(`/api/v1/users/user_data`)
       .then((res) => {
-        // const spot = res.data
         this.reviews = res.data.like_reviews
-        // this.review = res.data.review
       })
       .catch((error) => {
         console.error(error)

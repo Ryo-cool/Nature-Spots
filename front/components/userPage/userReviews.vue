@@ -72,8 +72,6 @@ export default {
     this.$axios.get(`/api/v1/users/${this.$route.params.id}`)
     .then((res) => {
       this.review = JSON.parse(res.data.reviews)
-      // this.follow = res.data.follow
-      // this.follower = res.data.follower
     })
   }
 }
