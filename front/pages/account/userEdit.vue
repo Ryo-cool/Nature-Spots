@@ -89,7 +89,7 @@ export default {
       .then(res => {
         if (res.data) {
           
-          this.$router.push('/')
+          this.$router.push('/') 
         }
       })
     }

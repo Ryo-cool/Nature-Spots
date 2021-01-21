@@ -67,7 +67,6 @@ export default {
         { id: '5',name: "池",img: pond},
         { id: '6',name: "湖",img: lake},
       ],
-      // genre:{}
     }
   }
 }
