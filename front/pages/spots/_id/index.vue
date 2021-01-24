@@ -1,13 +1,8 @@
 <template>
-
   <v-container  class="grey lighten-2">
-    <v-breadcrumbs
-    divider="-"
-    >
-    </v-breadcrumbs>
-
     <v-row>
       <v-col>
+        <breadcrumbs />
         <carousel />
       </v-col>
     </v-row>

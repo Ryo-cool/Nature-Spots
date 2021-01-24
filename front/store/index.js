@@ -54,4 +54,4 @@ export const actions = {
     toast.timeout = toast.timeout || 4000
     commit('setToast', toast)
   }
-}
+} 

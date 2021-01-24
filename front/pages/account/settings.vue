@@ -31,7 +31,7 @@
         <v-icon left>
           mdi-heart
         </v-icon>
-        いいねしたレビュー({{ myReview.length}})
+        いいねしたレビュー({{ reviews.length}})
       </v-tab>
       <v-tab>
         <v-icon left>

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <breadcrumbs />
+    <breadcrumbs /> 
     {{spot.name}}のスポット一覧
     <v-row>
       <v-col 
