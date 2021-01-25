@@ -30,8 +30,8 @@
                   class="fill-height ma-0"
                   align="center"
                   justify="center"
-                  <div class="white--text display-3"
                 >
+                <div class="white--text display-3">
                   {{ genre.name }}
                   </div>
                 </v-row>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+
 // 画像インポート
 import sea from "~/assets/images/loggedIn/sea.jpg"
 import mountain from "~/assets/images/loggedIn/mountain.jpg"

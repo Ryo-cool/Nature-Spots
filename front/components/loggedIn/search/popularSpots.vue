@@ -7,13 +7,14 @@
     <v-slide-item
       v-for="(spot, index) in pspots"
       :key="index"
+    >
       <v-card
       class="ma-4"
       height="300"
       width="300"
       nuxt
       :to="`/spots/${spot.id}`"
-    >
+      >
       <v-img :src="spot.photo.url" :aspect-ratio="12 / 9" />
       <h3>{{ spot.name }}</h3>
       <div>
