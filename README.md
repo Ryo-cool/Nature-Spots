@@ -83,6 +83,7 @@ https://www.nature-spots.work/  （現在停止中)
 **その他使用したライブラリ**
 - moment.js(日付フォーマット)
 - active_hash
+- Eslint(静的コード解析)
 # テスト
 - RSpec,FactoryBot
   - 単体テスト(model)
