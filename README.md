@@ -3,6 +3,8 @@
 旅行先の景色や好きな自然スポットを位置情報付きで共有できます。<br >
 レスポンシブ対応<br >
 <img width="733" alt="スクショ2020-10-16 19 16 10" src="https://user-images.githubusercontent.com/58380104/96246943-5b151300-0fe4-11eb-9435-bc4d0c88971e.png">
+![スポット投稿](https://user-images.githubusercontent.com/58380104/105680382-ffd3b480-5f32-11eb-825f-09d0ac525728.gif)
+![レビュー投稿](https://user-images.githubusercontent.com/58380104/105680428-11b55780-5f33-11eb-9b4f-9466e74fd08d.gif)
 <h2 align="left">Frontend</h2>
 
 <p align="left">
