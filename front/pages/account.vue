@@ -6,9 +6,11 @@
 
 <script>
 export default {
-  layout: 'loggedIn',
-  middleware ({ route, redirect }) {
-    if (route.name === 'account') { return redirect('/') }
-  }
+  layout: "loggedIn",
+  middleware({ route, redirect }) {
+    if (route.name === "account") {
+      return redirect("/")
+    }
+  },
 }
 </script>

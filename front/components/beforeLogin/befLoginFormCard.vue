@@ -1,16 +1,10 @@
 <template>
   <v-container fluid>
-    <v-row
-      align="center"
-      justify="center"
-    >
-      <v-col
-        cols="12"
-        class="my-8 text-center"
-      >
+    <v-row align="center" justify="center">
+      <v-col cols="12" class="my-8 text-center">
         <h1 class="text-h5 font-weight-bold">
-          {{ appName }}に{{ pageTitle }}
-        </h1>
+{{ appName }}に{{ pageTitle }}
+</h1>
       </v-col>
 
       <v-card
@@ -30,11 +24,11 @@
 
 <script>
 export default {
-  data ({ $route, $config: { appName } }) {
+  data({ $route, $config: { appName } }) {
     return {
       appName,
-      pageTitle: this.$t(`pages.${$route.name}`)
+      pageTitle: this.$t(`pages.${$route.name}`),
     }
-  }
+  },
 }
 </script>

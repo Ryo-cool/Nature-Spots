@@ -1,47 +1,30 @@
 <template>
   <div>
-    <v-list-item
-    v-for="review in reviews"
-    :key="review.title"
-
-    >
+    <v-list-item v-for="review in reviews" :key="review.title">
       <v-card>
         <!-- ユーザーの投稿 -->
         <v-container>
           <v-row>
-            <v-col
-            cols="1"
-            >
-              <v-avatar
-                color="black"
-                size="34"
-                class="my-app-log"
-              >
-                <span class="white--text text-subtitle-2">
-                  Biz
-                </span>
+            <v-col cols="1">
+              <v-avatar color="black" size="34" class="my-app-log">
+                <span class="white--text text-subtitle-2"> Biz </span>
               </v-avatar>
             </v-col>
-            <v-col
-              cols="10"
-            >
-              <div class="indigo--text caption d-flex"><h3>山口</h3>さんの口コミ（{{ review.created_at }})</div>
+            <v-col cols="10">
+              <div class="indigo--text caption d-flex">
+                <h3>山口</h3>
+                さんの口コミ（{{ review.created_at }})
+              </div>
               <div class="blue-grey--text caption">いいね〇〇件</div>
             </v-col>
-            <v-col
-              cols="1"
-            >
-                <v-btn
-                  icon
-                >
-                  <v-icon>mdi-dots-horizontal</v-icon>
-                </v-btn>
+            <v-col cols="1">
+              <v-btn icon>
+                <v-icon>mdi-dots-horizontal</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
           <v-row>
-            <v-img
-            src="https://picsum.photos/id/243/960/540"
-            ></v-img>
+            <v-img src="https://picsum.photos/id/243/960/540" />
           </v-row>
           <v-row>
             <v-col>
@@ -53,7 +36,7 @@
                   medium
                   readonly
                   half-increments
-                ></v-rating>
+                />
                 <span class="grey--text subtitle-1 mt-2 ml-1">
                   {{ review.rating }}
                 </span>
@@ -64,26 +47,17 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col
-              cols="1"
-            >
-              <v-btn
-                icon
-              >
+            <v-col cols="1">
+              <v-btn icon>
                 <v-icon>mdi-thumb-up-outline</v-icon>
               </v-btn>
             </v-col>
-            <v-col
-              cols="1"
-            >
-              <v-btn
-                icon
-              >
+            <v-col cols="1">
+              <v-btn icon>
                 <v-icon>mdi-export-variant</v-icon>
               </v-btn>
             </v-col>
           </v-row>
-          
         </v-container>
       </v-card>
     </v-list-item>
@@ -94,12 +68,12 @@
 import axios from "~/plugins/axios"
 
 export default {
-  data (){
-    return{
-      reviews: {}
+  data() {
+    return {
+      reviews: {},
     }
   },
-  mounted(){
+  mounted() {
     this.$axios
       .get(`/api/v1/users/user_data`)
       .then((res) => {
@@ -108,6 +82,6 @@ export default {
       .catch((error) => {
         console.error(error)
       })
-  }
+  },
 }
 </script>

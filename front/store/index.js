@@ -6,52 +6,50 @@ export const state = () => ({
 
   styles: {
     beforeLogin: {
-      appBarHeight: 56
-    }
+      appBarHeight: 56,
+    },
   },
 
   rememberRoute: {
-    name: 'index',
-    params: {}
+    name: "index",
+    params: {},
   },
 
   toast: {
     msg: null,
-    color: 'error',
-    timeout: 4000
-  }
+    color: "error",
+    timeout: 4000,
+  },
 })
 
 export const getters = {}
 
 export const mutations = {
-
-  setCurrentUser (state, payload) {
+  setCurrentUser(state, payload) {
     state.current.user = payload
   },
-  setRememberRoute (state, payload) {
+  setRememberRoute(state, payload) {
     state.rememberRoute = payload
   },
-  setToast (state, payload) {
+  setToast(state, payload) {
     state.toast = payload
-  }
-
+  },
 }
 
 export const actions = {
   // 現在のユーザーを設定する
-  getCurrentUser ({ commit }, user) {
-    commit('setCurrentUser', user)
+  getCurrentUser({ commit }, user) {
+    commit("setCurrentUser", user)
   },
   // ログイン前にアクセスしたルートを記憶する
-  getRememberRoute ({ commit }, route) {
-    route = route || { name: 'index', params: {} }
-    commit('setRememberRoute', { name: route.name, params: route.params })
+  getRememberRoute({ commit }, route) {
+    route = route || { name: "index", params: {} }
+    commit("setRememberRoute", { name: route.name, params: route.params })
   },
   // トーストデータをセットする
-  getToast ({ commit }, toast) {
-    toast.color = toast.color || 'error'
+  getToast({ commit }, toast) {
+    toast.color = toast.color || "error"
     toast.timeout = toast.timeout || 4000
-    commit('setToast', toast)
-  }
-} 
+    commit("setToast", toast)
+  },
+}

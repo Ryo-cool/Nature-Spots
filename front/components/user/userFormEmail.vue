@@ -13,26 +13,27 @@ export default {
   props: {
     noValidation: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
-      rules: [
-        v => !!v || '',
-        v => /.+@.+\..+/.test(v) || ''
-      ]
+      rules: [(v) => !!v || "", (v) => /.+@.+\..+/.test(v) || ""],
     }
   },
   computed: {
     setEmail: {
-      get () { return this.email },
-      set (newVal) { return this.$emit('update:email', newVal) }
+      get() {
+        return this.email
+      },
+      set(newVal) {
+        return this.$emit("update:email", newVal)
+      },
     },
-    form () {
-      const placeholder = this.noValidation ? undefined : 'your@email.com'
+    form() {
+      const placeholder = this.noValidation ? undefined : "your@email.com"
       return { placeholder }
-    }
-  }
+    },
+  },
 }
 </script>

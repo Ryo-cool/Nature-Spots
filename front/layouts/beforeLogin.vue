@@ -10,6 +10,6 @@
 
 <script>
 export default {
-middleware: 'loggedInIsRedirects'
+  middleware: "loggedInIsRedirects",
 }
 </script>

@@ -2,11 +2,8 @@
   <v-col cols="12" sm="8">
     <v-row>
       <v-col cols="4" md="3">
-        <v-avatar
-          color="orange"
-          size="120"
-        >
-        <v-img :src="userImage"></v-img>
+        <v-avatar color="orange" size="120">
+          <v-img :src="userImage" />
         </v-avatar>
       </v-col>
       <v-col col="4" md="5">
@@ -33,25 +30,23 @@
 
 <script>
 export default {
-  data(){
-    return{
+  data() {
+    return {
       user: {},
       userImage: null,
       review: {},
       follow: {},
-      follower: {}
+      follower: {},
     }
   },
-  mounted(){
-    this.$axios.get(`/api/v1/users/${this.$route.params.id}`)
-    .then((res) => {
+  mounted() {
+    this.$axios.get(`/api/v1/users/${this.$route.params.id}`).then((res) => {
       this.user = res.data.user
       this.userImage = res.data.user.image.url
       this.review = JSON.parse(res.data.reviews)
       this.follow = res.data.follow
       this.follower = res.data.follower
     })
-  }
+  },
 }
 </script>
-

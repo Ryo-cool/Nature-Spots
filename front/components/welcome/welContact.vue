@@ -1,10 +1,7 @@
 <template>
-  <div>
-    welAContact.vue
-  </div>
+  <div>welAContact.vue</div>
 </template>
 
 <script>
-export default {
-}
+export default {}
 </script>

@@ -8,8 +8,10 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt build && nuxt start",
-    "generate": "nuxt generate"
-  }, 
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
+  },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
     "crypto-js": "^4.0.0",
@@ -20,6 +22,13 @@
     "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.0.0"
+    "@nuxtjs/vuetify": "^1.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.5.0",
+    "prettier": "^2.2.1"
   }
 }

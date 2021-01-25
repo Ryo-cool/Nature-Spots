@@ -2,13 +2,8 @@
   <v-container>
     お気に入りのスポット
     <v-row>
-      <v-col cols="6"
-        v-for="(favorite, index) in fspots" 
-        :key="index">
-        <v-card
-          :to="`/spots/${favorite.id}`"
-        >
-
+      <v-col v-for="(favorite, index) in fspots" :key="index" cols="6">
+        <v-card :to="`/spots/${favorite.id}`">
           <v-img :src="favorite.photo.url" />
           <v-card-title>{{ favorite.name }}</v-card-title>
         </v-card>
@@ -19,21 +14,20 @@
 
 <script>
 export default {
-  layout ({ $auth }) {
-    return $auth.loggedIn ? 'loggedIn' : 'welcome'
+  layout({ $auth }) {
+    return $auth.loggedIn ? "loggedIn" : "welcome"
   },
-  data(){
+  data() {
     return {
-      fspots:{}
+      fspots: {},
     }
   },
   mounted() {
-    this.$axios.get("/api/v1/users/user_data").then(res => {
+    this.$axios.get("/api/v1/users/user_data").then((res) => {
       if (res.data) {
         this.fspots = res.data.favorite
-
       }
     })
-  }
+  },
 }
 </script>

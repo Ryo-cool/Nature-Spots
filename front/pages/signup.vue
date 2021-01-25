@@ -20,26 +20,26 @@
 
 <script>
 export default {
-  layout: 'beforeLogin',
-  data () {
+  layout: "beforeLogin",
+  data() {
     return {
       isValid: false,
       loading: false,
-      params: { user: { name: '', email: '', password: '' } }
+      params: { user: { name: "", email: "", password: "" } },
     }
   },
   methods: {
-    signup () {
+    signup() {
       this.loading = true
       setTimeout(() => {
         this.formReset()
         this.loading = false
       }, 1500)
     },
-    formReset () {
+    formReset() {
       this.$refs.form.reset()
-      this.params = { user: { name: '', email: '', password: '' } }
-    }
-  }
+      this.params = { user: { name: "", email: "", password: "" } }
+    },
+  },
 }
 </script>

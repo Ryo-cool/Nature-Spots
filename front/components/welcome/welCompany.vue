@@ -1,10 +1,7 @@
 <template>
-  <div>
-    welCompany.vue
-  </div>
+  <div>welCompany.vue</div>
 </template>
 
 <script>
-export default {
-}
+export default {}
 </script>

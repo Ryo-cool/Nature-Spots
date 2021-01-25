@@ -1,5 +1,5 @@
 <template>
-  <v-container  class="grey lighten-2">
+  <v-container class="grey lighten-2">
     <v-row>
       <v-col>
         <breadcrumbs />
@@ -7,16 +7,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col
-      cols="12"
-      md="6"
-      >
-      <spot-data />
+      <v-col cols="12" md="6">
+        <spot-data />
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <review-header />
         <reviews />
       </v-col>
@@ -25,30 +19,29 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
+import axios from "~/plugins/axios"
 
 export default {
-  data () {
+  layout({ $auth }) {
+    return $auth.loggedIn ? "loggedIn" : "welcome"
+  },
+  data() {
     return {
       spot: {},
-      reviews: {}
+      reviews: {},
     }
   },
-  layout ({ $auth }) {
-    return $auth.loggedIn ? 'loggedIn' : 'welcome'
-  },
-  mounted () {
+  mounted() {
     this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
         const spot = res.data.spot
         this.spot = spot
         this.reviews = res.data.review
-      }) 
+      })
       .catch((error) => {
         console.error(error)
       })
-  }
-  
+  },
 }
 </script>

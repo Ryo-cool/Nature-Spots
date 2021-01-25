@@ -1,31 +1,20 @@
 <template>
-  <v-card
-  >
+  <v-card>
     <v-container>
       <v-row>
-        <v-col
-        cols="5"
-        >
-          <h1>
-            口コミ
-          </h1>
+        <v-col cols="5">
+          <h1>口コミ</h1>
         </v-col>
-        <v-col
-          cols="5"
-        >
-        <nuxt-link
-        :to="`${spot.id}/reviews/new`"
-        class="text-decoration-none"
-        >
-          <v-btn 
-          class="primary"
+        <v-col cols="5">
+          <nuxt-link
+            :to="`${spot.id}/reviews/new`"
+            class="text-decoration-none"
           >
-            口コミを書く
-          </v-btn>
-        </nuxt-link>
+            <v-btn class="primary"> 口コミを書く </v-btn>
+          </nuxt-link>
         </v-col>
       </v-row>
-      <v-divider></v-divider>
+      <v-divider />
       <v-row>
         <v-col>
           <h4>評価</h4>
@@ -37,9 +26,9 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
+import axios from "~/plugins/axios"
 export default {
-  data () {
+  data() {
     return {
       spot: {},
       prefecture: {},
@@ -48,7 +37,7 @@ export default {
       reviews: 300,
     }
   },
-  mounted () {
+  mounted() {
     this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
@@ -59,6 +48,6 @@ export default {
       .catch((error) => {
         console.error(error)
       })
-  }
+  },
 }
 </script>

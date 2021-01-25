@@ -1,10 +1,9 @@
-import Vue from 'vue';
-import * as VueGoogleMaps from '~/node_modules/vue2-google-maps/src/main';
+import Vue from "vue"
+import * as VueGoogleMaps from "~/node_modules/vue2-google-maps/src/main"
 
 Vue.use(VueGoogleMaps, {
-  load: 
-  {
+  load: {
     key: `AIzaSyAPUmpeW10m-A686TfTWSen-EflFYIIFKw`,
-    libraries: 'places',
+    libraries: "places",
   },
-});
+})
