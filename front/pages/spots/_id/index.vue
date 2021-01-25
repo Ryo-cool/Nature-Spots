@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
 
 export default {
+  middleware: 'authenticator',
   layout({ $auth }) {
     return $auth.loggedIn ? "loggedIn" : "welcome"
   },

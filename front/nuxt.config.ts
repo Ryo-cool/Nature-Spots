@@ -128,7 +128,8 @@ export default {
           enforce: 'pre',
           test: , //.(js|vue)$/ 
           loader: 'eslint-loader',
-          exclude: /(node_modules)/,
+          exclude: /(node_modules)/
+        })
         config.externals.splice(0, 0, function (context, request, callback) {
           if (/^vue2-google-maps($|\/)/.test(request)) {
             callback(null, false)
