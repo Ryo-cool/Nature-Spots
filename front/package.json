@@ -20,6 +20,8 @@
     "nuxt-i18n": "^6.15.1",
     "nuxt-webfontloader": "^1.1.0",
     "ts-node": "^9.1.1",
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.1.2",
     "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
