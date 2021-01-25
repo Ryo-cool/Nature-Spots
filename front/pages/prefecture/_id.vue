@@ -9,7 +9,7 @@
             :to="$my.spotLinkTo(jspot.id)"
             class="text-decoration-none"
           >
-            <v-img src="https://picsum.photos/id/1036/960/540" />
+            <v-img :src="jspot.photo.url" :aspect-ratio="12 / 9" />
             <v-card-title>{{ jspot.name }}</v-card-title>
             <v-card-text v-text="jspot.introduction" />
           </nuxt-link>

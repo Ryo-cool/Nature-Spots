@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12" sm="6" class="my-6 text-center" align-self="start">
+    <v-row justify="center">
+      <v-col cols="12" sm="6" class="my-6 text-center" align-self="center">
         <h1 class="mb-4">スポット投稿</h1>
         <div class="red--text">
           {{ alert }}
@@ -15,9 +15,9 @@
           @change="onChange"
         />
 
-        <div>緯度{{ lat }}</div>
+        <!-- <div>緯度{{ lat }}</div>
         <div>{{ locations }}</div>
-        <div>{{ address }}</div>
+        <div>{{ address }}</div> -->
 
         <v-text-field
           v-model="introduction"
@@ -63,7 +63,7 @@
         />
         <v-btn color="primary" @click="createSpot"> スポットを投稿する </v-btn>
       </v-col>
-      <v-col cols="12" sm="6">
+      <!-- <v-col cols="12" sm="6">
         <v-card class="mx-auto" tile>
           <v-list rounded>
             <v-subheader>SPOTS</v-subheader>
@@ -82,7 +82,7 @@
             </v-list-item-group>
           </v-list>
         </v-card>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>
@@ -106,7 +106,6 @@ export default {
       alert: "",
       image: null,
       preview: "",
-      // uploadImageUrl: '',
       geocoder: {},
       spots: [],
       prefecture: [],
