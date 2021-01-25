@@ -1,0 +1,22 @@
+{
+  "eslint.validate": [
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    "javascriptreact",
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "vue",
+      "autoFix": true
+    }
+  ],
+  "eslint.autoFixOnSave": true,
+  "vetur.format.defaultFormatter.html": "prettier",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

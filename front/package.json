@@ -19,9 +19,11 @@
     "nuxt": "^2.0.0",
     "nuxt-i18n": "^6.15.1",
     "nuxt-webfontloader": "^1.1.0",
+    "ts-node": "^9.1.1",
     "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
+    "@nuxt/typescript": "^2.8.1",
     "@nuxtjs/vuetify": "^1.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.18.0",
