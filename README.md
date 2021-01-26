@@ -37,7 +37,7 @@
 - RailsのAPIモードで開発し、フロントと分けて疎結合な構成にしている点
 - 外部API(Google Maps Javascript API,Geocording API)を利用し、機能を追加している点
 - JWTを使用したログイン認証を実装している点
-- ##その他
+- ## その他
 - チーム開発を意識したGitHubの活用をしている点
 
 # URL
