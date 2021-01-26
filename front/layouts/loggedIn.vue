@@ -10,6 +10,6 @@
 
 <script>
 export default {
-  // middleware: 'authenticator'
+  middleware: "authenticator",
 }
 </script>

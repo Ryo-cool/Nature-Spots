@@ -6,7 +6,8 @@ module.exports = {
     mocha: true,
   },
   parserOptions: {
-    parser: "babel-eslint",
+    // parser: "babel-eslint",
+    parser: "@typescript-eslint/parser",
   },
   extends: [
     "eslint:recommended",
@@ -15,12 +16,13 @@ module.exports = {
     "plugin:prettier/recommended",
   ],
   // *.vue ファイルを lint にかけるために必要
-  plugins: ["vue"],
+  plugins: ["vue", "@typescript-eslint"],
   // ここにカスタムルールを追加します。
   rules: {
     semi: [2, "never"],
     "no-console": "off",
     "vue/max-attributes-per-line": "off",
     "prettier/prettier": ["error", { semi: false }],
+    "@typescript-eslint/no-unused-vars": "error",
   },
 }

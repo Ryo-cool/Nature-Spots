@@ -66,7 +66,7 @@ mdi-repeat
 
 <script>
 export default {
-  // middleware: 'authenticator',
+  middleware: 'authenticator',
   data() {
     return {
       clipped: false,
