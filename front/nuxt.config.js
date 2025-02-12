@@ -38,6 +38,7 @@ export default {
     "plugins/nuxtClientInit",
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
     "~/plugins/image-optimization",
+    { src: "~/plugins/service-worker.client", mode: "client" },
   ],
   /*
    ** Nuxt.js dev-modules
