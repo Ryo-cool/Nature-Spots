@@ -1,3 +1,5 @@
 back/public/uploads/*
 milestone_checklist.md
+.env
+.env.*
 

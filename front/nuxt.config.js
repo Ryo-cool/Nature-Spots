@@ -61,6 +61,7 @@ export default {
   publicRuntimeConfig: {
     appName: process.env.APP_NAME,
     cryptoKey: process.env.CRYPTO_KEY,
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
   },
   /*
    ** Axios module configuration
