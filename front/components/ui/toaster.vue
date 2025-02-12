@@ -13,27 +13,27 @@
 export default {
   computed: {
     toast() {
-      return this.$store.state.toast
+      return this.$store.state.toast;
     },
     setSnackbar: {
       get() {
-        return !!this.toast.msg
+        return !!this.toast.msg;
       },
       set(val) {
         // timeout: -1の場合は通過しない
-        this.resetToast()
-        return val
+        this.resetToast();
+        return val;
       },
     },
   },
   beforeDestroy() {
     // ページ遷移前に削除する(-1に対応)
-    this.resetToast()
+    this.resetToast();
   },
   methods: {
     resetToast() {
-      return this.$store.dispatch("getToast", { msg: null })
+      return this.$store.dispatch("getToast", { msg: null });
     },
   },
-}
+};
 </script>

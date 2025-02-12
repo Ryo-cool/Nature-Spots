@@ -55,29 +55,29 @@ export default {
     return {
       scrollY: 0,
       appBarHeight: $store.state.styles.beforeLogin.appBarHeight,
-    }
+    };
   },
   computed: {
     isScrollPoint() {
-      return this.scrollY > this.imgHeight - this.appBarHeight
+      return this.scrollY > this.imgHeight - this.appBarHeight;
     },
     toolbarStyle() {
-      const color = this.isScrollPoint ? "white" : "transparent"
-      const elevation = this.isScrollPoint ? 4 : 0
-      return { color, elevation }
+      const color = this.isScrollPoint ? "white" : "transparent";
+      const elevation = this.isScrollPoint ? 4 : 0;
+      return { color, elevation };
     },
   },
   mounted() {
-    window.addEventListener("scroll", this.onScroll)
+    window.addEventListener("scroll", this.onScroll);
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", this.onScroll)
+    window.removeEventListener("scroll", this.onScroll);
   },
 
   methods: {
     onScroll() {
-      this.scrollY = window.scrollY
+      this.scrollY = window.scrollY;
     },
   },
-}
+};
 </script>

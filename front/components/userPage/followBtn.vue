@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   data() {
     return {
       follows: "",
-    }
+    };
   },
   methods: {
     follow() {
@@ -22,12 +22,12 @@ export default {
           follow_id: this.$route.params.id,
         })
         .then((res) => {
-          console.log(res)
-          this.$set(this.follow, "likes", res.data.follow_id)
+          console.log(res);
+          this.$set(this.follow, "likes", res.data.follow_id);
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     unFollow() {
       this.$axios
@@ -38,14 +38,14 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res)
+          console.log(res);
           // $set を使って this.topic の要素を更新。
           // this.$set(this.reviews, "likes", res.data.likes)
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
   },
-}
+};
 </script>

@@ -176,23 +176,23 @@ export default {
       follower: {},
       user: {},
       photo: null,
-    }
+    };
   },
   mounted() {
     this.$axios
       .get(`/api/v1/users/user_data`)
       .then((res) => {
-        this.user = res.data.user
-        this.photo = res.data.user.image.url
-        this.reviews = JSON.parse(res.data.like_reviews)
-        this.myReview = JSON.parse(res.data.review)
-        this.likeSpot = res.data.favorite
-        this.followUser = res.data.follow
-        this.follower = res.data.follower
+        this.user = res.data.user;
+        this.photo = res.data.user.image.url;
+        this.reviews = JSON.parse(res.data.like_reviews);
+        this.myReview = JSON.parse(res.data.review);
+        this.likeSpot = res.data.favorite;
+        this.followUser = res.data.follow;
+        this.follower = res.data.follower;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
-}
+};
 </script>

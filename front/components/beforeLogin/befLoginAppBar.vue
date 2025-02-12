@@ -17,7 +17,7 @@ export default {
   data({ $store }) {
     return {
       appBarHeight: $store.state.styles.beforeLogin.appBarHeight,
-    }
+    };
   },
-}
+};
 </script>

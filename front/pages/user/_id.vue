@@ -22,7 +22,7 @@
 <script>
 export default {
   layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome"
+    return $auth.loggedIn ? "loggedIn" : "welcome";
   },
-}
+};
 </script>

@@ -66,7 +66,7 @@ mdi-repeat
 
 <script>
 export default {
-  middleware: 'authenticator',
+  middleware: "authenticator",
   data() {
     return {
       clipped: false,
@@ -88,7 +88,7 @@ export default {
       right: true,
       rightDrawer: false,
       title: "Vuetify.js",
-    }
+    };
   },
-}
+};
 </script>

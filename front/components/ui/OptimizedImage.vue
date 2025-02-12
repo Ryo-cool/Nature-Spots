@@ -6,7 +6,7 @@
       :sizes="sizes"
       type="image/webp"
     />
-    <source :srcset="originalSrcset" :sizes="sizes" :type="originalType" >
+    <source :srcset="originalSrcset" :sizes="sizes" :type="originalType" />
     <img
       :src="fallbackSrc"
       :alt="alt"
@@ -20,39 +20,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator"
-import { ImageProps } from "~/types/components/common"
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { ImageProps } from "~/types/components/common";
 
 @Component
 export default class OptimizedImage extends Vue implements ImageProps {
-  @Prop({ required: true }) src!: string
-  @Prop({ default: "" }) alt!: string
-  @Prop() width?: number
-  @Prop() height?: number
-  @Prop({ default: "lazy" }) loading!: "lazy" | "eager"
-  @Prop() className?: string
-  @Prop() webpSrc?: string
-  @Prop() srcset?: string
-  @Prop() webpSrcset?: string
-  @Prop() sizes?: string
-  @Prop() originalType?: string
+  @Prop({ required: true }) src!: string;
+  @Prop({ default: "" }) alt!: string;
+  @Prop() width?: number;
+  @Prop() height?: number;
+  @Prop({ default: "lazy" }) loading!: "lazy" | "eager";
+  @Prop() className?: string;
+  @Prop() webpSrc?: string;
+  @Prop() srcset?: string;
+  @Prop() webpSrcset?: string;
+  @Prop() sizes?: string;
+  @Prop() originalType?: string;
 
-  private webpSupported = false
+  private webpSupported = false;
 
   mounted() {
-    this.checkWebPSupport()
+    this.checkWebPSupport();
   }
 
   get fallbackSrc(): string {
-    return this.src
+    return this.src;
   }
 
   get originalSrcset(): string {
-    return this.srcset || this.src
+    return this.srcset || this.src;
   }
 
   private async checkWebPSupport() {
-    this.webpSupported = await this.$imageOptimization.checkWebPSupport()
+    this.webpSupported = await this.$imageOptimization.checkWebPSupport();
   }
 }
 </script>

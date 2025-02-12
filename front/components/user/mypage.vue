@@ -66,23 +66,23 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   data() {
     return {
       user: {},
-    }
+    };
   },
   mounted() {
     this.$axios
       .get(`/api/v1/users/user_data`)
       .then((res) => {
-        this.user = res.data.review
+        this.user = res.data.review;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
-}
+};
 </script>

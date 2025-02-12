@@ -30,27 +30,28 @@
 </template>
 
 <script>
-import homeImg from "~/assets/images/loggedIn/japanesemap.png"
-import axios from "~/plugins/axios"
+import homeImg from "~/assets/images/loggedIn/japanesemap.png";
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
 
 export default {
   data() {
     return {
       homeImg,
       prefectures: [],
-    }
+    };
   },
   mounted() {
     this.$axios
       .get("api/v1/prefectures")
       .then((res) => {
-        this.prefectures = res.data
+        this.prefectures = res.data;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
-}
+};
 </script>
 
 <style>

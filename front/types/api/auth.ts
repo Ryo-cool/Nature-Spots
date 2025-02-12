@@ -1,28 +1,28 @@
 // リクエスト型
 export interface LoginRequest {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 export interface RegisterRequest extends LoginRequest {
-  name: string
+  name: string;
 }
 
 // レスポンス型
 export interface AuthResponse {
-  token: string
+  token: string;
   user: {
-    id: number
-    email: string
-    name: string
-    createdAt: string
-    updatedAt: string
-  }
+    id: number;
+    email: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 export interface ErrorResponse {
-  message: string
+  message: string;
   errors?: {
-    [key: string]: string[]
-  }
+    [key: string]: string[];
+  };
 }

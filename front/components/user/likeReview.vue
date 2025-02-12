@@ -65,23 +65,23 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   data() {
     return {
       reviews: {},
-    }
+    };
   },
   mounted() {
     this.$axios
       .get(`/api/v1/users/user_data`)
       .then((res) => {
-        this.reviews = res.data.like_reviews
+        this.reviews = res.data.like_reviews;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
-}
+};
 </script>

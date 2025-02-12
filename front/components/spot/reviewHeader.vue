@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 export default {
   data() {
     return {
@@ -35,19 +35,19 @@ export default {
       location: {},
       rating: 2.6,
       reviews: 300,
-    }
+    };
   },
   mounted() {
     this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
-        this.spot = res.data.spot
-        this.prefecture = res.data.prefecture.attributes.name
-        this.location = res.data.location.attributes.name
+        this.spot = res.data.spot;
+        this.prefecture = res.data.prefecture.attributes.name;
+        this.location = res.data.location.attributes.name;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
-}
+};
 </script>

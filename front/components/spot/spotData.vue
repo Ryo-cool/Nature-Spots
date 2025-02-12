@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   data() {
@@ -118,24 +118,24 @@ export default {
       marker_items: [
         { position: { lat: 35.71, lng: 139.72 }, title: "marker_1" },
       ],
-    }
+    };
   },
   created() {
     this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
-        this.spot = res.data.spot
-        this.prefecture = res.data.prefecture.attributes.name
-        this.location = res.data.location.attributes.name
-        this.favUser = res.data.favuser
+        this.spot = res.data.spot;
+        this.prefecture = res.data.prefecture.attributes.name;
+        this.location = res.data.location.attributes.name;
+        this.favUser = res.data.favuser;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
     if (this.favUser === this.$auth.user.id) {
-      this.favorite = false
+      this.favorite = false;
     } else {
-      this.favorite = true
+      this.favorite = true;
     }
   },
   methods: {
@@ -146,13 +146,13 @@ export default {
           spot_id: spotId,
         })
         .then((res) => {
-          console.log(res)
-          this.alert = true
-          this.favorite = false
+          console.log(res);
+          this.alert = true;
+          this.favorite = false;
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     deleteFavorite(spotId) {
       this.$axios
@@ -166,14 +166,14 @@ export default {
           }
         )
         .then((res) => {
-          console.log(res)
-          this.likeDelete = true
-          this.favorite = true
+          console.log(res);
+          this.likeDelete = true;
+          this.favorite = true;
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
   },
-}
+};
 </script>

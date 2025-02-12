@@ -1,123 +1,142 @@
-import { Module } from "vuex"
-import { RootState, SpotState, Spot } from "./types"
+import { Module, ActionContext } from "vuex";
+import { RootState, SpotState } from "./types";
+import { NuxtAxiosInstance } from '@nuxtjs/axios';
+
+interface SpotActionContext extends ActionContext<SpotState, RootState> {
+  $axios?: NuxtAxiosInstance;
+}
+
+interface SpotData {
+  id: number;
+  name: string;
+  description: string;
+  location: string;
+  images: string[];
+}
 
 const state = (): SpotState => ({
   spots: [],
   currentSpot: null,
   loading: false,
   error: null,
-})
+});
 
 const getters = {
-  allSpots: (state: SpotState): Spot[] => state.spots,
-  currentSpot: (state: SpotState): Spot | null => state.currentSpot,
+  allSpots: (state: SpotState): SpotData[] => state.spots,
+  currentSpot: (state: SpotState): SpotData | null => state.currentSpot,
   isLoading: (state: SpotState): boolean => state.loading,
   error: (state: SpotState): string | null => state.error,
-}
+};
 
 const mutations = {
-  SET_SPOTS(state: SpotState, spots: Spot[]) {
-    state.spots = spots
+  SET_SPOTS(state: SpotState, spots: SpotData[]) {
+    state.spots = spots;
   },
-  SET_CURRENT_SPOT(state: SpotState, spot: Spot | null) {
-    state.currentSpot = spot
+  SET_CURRENT_SPOT(state: SpotState, spot: SpotData | null) {
+    state.currentSpot = spot;
   },
   SET_LOADING(state: SpotState, loading: boolean) {
-    state.loading = loading
+    state.loading = loading;
   },
   SET_ERROR(state: SpotState, error: string | null) {
-    state.error = error
+    state.error = error;
   },
-}
+};
 
 const actions = {
-  async fetchSpots({ commit }) {
-    commit("SET_LOADING", true)
+  async fetchSpots({ commit, $axios }: SpotActionContext) {
+    if (!$axios) throw new Error('$axios is not available');
+    commit("SET_LOADING", true);
     try {
-      const response = await this.$axios.get("/spots")
-      commit("SET_SPOTS", response.data)
-      commit("SET_ERROR", null)
+      const { data } = await $axios.get("/spots");
+      commit("SET_SPOTS", data);
+      commit("SET_ERROR", null);
     } catch (error) {
-      commit("SET_ERROR", error.message)
-      throw error
+      const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+      commit("SET_ERROR", errorMessage);
     } finally {
-      commit("SET_LOADING", false)
+      commit("SET_LOADING", false);
     }
   },
 
-  async fetchSpot({ commit }, id: number) {
-    commit("SET_LOADING", true)
+  async fetchSpot({ commit, $axios }: SpotActionContext, id: number) {
+    if (!$axios) throw new Error('$axios is not available');
+    commit("SET_LOADING", true);
     try {
-      const response = await this.$axios.get(`/spots/${id}`)
-      commit("SET_CURRENT_SPOT", response.data)
-      commit("SET_ERROR", null)
+      const { data } = await $axios.get(`/spots/${id}`);
+      commit("SET_CURRENT_SPOT", data);
+      commit("SET_ERROR", null);
     } catch (error) {
-      commit("SET_ERROR", error.message)
-      throw error
+      const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+      commit("SET_ERROR", errorMessage);
     } finally {
-      commit("SET_LOADING", false)
+      commit("SET_LOADING", false);
     }
   },
 
-  async createSpot({ commit }, spot: Partial<Spot>) {
-    commit("SET_LOADING", true)
+  async createSpot({ commit, $axios }: SpotActionContext, spot: Partial<SpotData>) {
+    if (!$axios) throw new Error('$axios is not available');
+    commit("SET_LOADING", true);
     try {
-      const response = await this.$axios.post("/spots", spot)
-      const newSpot = response.data
-      commit("SET_SPOTS", [...state().spots, newSpot])
-      commit("SET_ERROR", null)
-      return newSpot
+      const { data } = await $axios.post("/spots", spot);
+      commit("SET_SPOTS", [...state().spots, data]);
+      commit("SET_ERROR", null);
+      return data;
     } catch (error) {
-      commit("SET_ERROR", error.message)
-      throw error
+      const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+      commit("SET_ERROR", errorMessage);
+      throw error;
     } finally {
-      commit("SET_LOADING", false)
+      commit("SET_LOADING", false);
     }
   },
 
   async updateSpot(
-    { commit },
-    { id, spot }: { id: number; spot: Partial<Spot> }
+    { commit, $axios }: SpotActionContext,
+    { id, spot }: { id: number; spot: Partial<SpotData> }
   ) {
-    commit("SET_LOADING", true)
+    if (!$axios) throw new Error('$axios is not available');
+    commit("SET_LOADING", true);
     try {
-      const response = await this.$axios.put(`/spots/${id}`, spot)
-      const updatedSpot = response.data
-      const spots = state().spots.map((s) => (s.id === id ? updatedSpot : s))
-      commit("SET_SPOTS", spots)
-      commit("SET_CURRENT_SPOT", updatedSpot)
-      commit("SET_ERROR", null)
-      return updatedSpot
+      const { data } = await $axios.put(`/spots/${id}`, spot);
+      const spots = state().spots.map((s) => (s.id === id ? data : s));
+      commit("SET_SPOTS", spots);
+      commit("SET_CURRENT_SPOT", data);
+      commit("SET_ERROR", null);
+      return data;
     } catch (error) {
-      commit("SET_ERROR", error.message)
-      throw error
+      const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+      commit("SET_ERROR", errorMessage);
+      throw error;
     } finally {
-      commit("SET_LOADING", false)
+      commit("SET_LOADING", false);
     }
   },
 
-  async deleteSpot({ commit }, id: number) {
-    commit("SET_LOADING", true)
+  async deleteSpot({ commit, $axios }: SpotActionContext, id: number) {
+    if (!$axios) throw new Error('$axios is not available');
+    commit("SET_LOADING", true);
     try {
-      await this.$axios.delete(`/spots/${id}`)
-      const spots = state().spots.filter((s) => s.id !== id)
-      commit("SET_SPOTS", spots)
-      commit("SET_CURRENT_SPOT", null)
-      commit("SET_ERROR", null)
+      await $axios.delete(`/spots/${id}`);
+      const spots = state().spots.filter((s) => s.id !== id);
+      commit("SET_SPOTS", spots);
+      commit("SET_CURRENT_SPOT", null);
+      commit("SET_ERROR", null);
     } catch (error) {
-      commit("SET_ERROR", error.message)
-      throw error
+      const errorMessage = error instanceof Error ? error.message : '不明なエラーが発生しました';
+      commit("SET_ERROR", errorMessage);
+      throw error;
     } finally {
-      commit("SET_LOADING", false)
+      commit("SET_LOADING", false);
     }
   },
-}
+};
 
 const spotModule: Module<SpotState, RootState> = {
   state,
   getters,
   mutations,
   actions,
-}
+};
 
-export default spotModule
+export default spotModule;

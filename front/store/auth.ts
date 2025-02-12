@@ -1,81 +1,81 @@
-import { Module } from "vuex"
-import { RootState, AuthState, User } from "./types"
+import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { AuthState, User } from './types/index';
+import { NuxtAxiosInstance } from '@nuxtjs/axios';
 
-const state = (): AuthState => ({
-  user: null,
-  token: null,
-  isAuthenticated: false,
+interface Context {
+  $axios: NuxtAxiosInstance;
+}
+
+@Module({
+  name: 'auth',
+  stateFactory: true,
+  namespaced: true,
+  dynamic: true
 })
+export default class Auth extends VuexModule implements AuthState {
+  private _user: User | null = null;
+  private _token: string | null = null;
+  private _isAuthenticated = false;
 
-const getters = {
-  isAuthenticated: (state: AuthState): boolean => state.isAuthenticated,
-  user: (state: AuthState): User | null => state.user,
-}
+  get user(): User | null {
+    return this._user;
+  }
 
-const mutations = {
-  SET_USER(state: AuthState, user: User | null) {
-    state.user = user
-  },
-  SET_TOKEN(state: AuthState, token: string | null) {
-    state.token = token
-  },
-  SET_AUTH(state: AuthState, isAuth: boolean) {
-    state.isAuthenticated = isAuth
-  },
-}
+  get token(): string | null {
+    return this._token;
+  }
 
-const actions = {
-  async login({ commit }, credentials: { email: string; password: string }) {
+  get isAuthenticated(): boolean {
+    return this._isAuthenticated;
+  }
+
+  @Mutation
+  SET_USER(user: User | null): void {
+    this._user = user;
+  }
+
+  @Mutation
+  SET_TOKEN(token: string | null): void {
+    this._token = token;
+  }
+
+  @Mutation
+  SET_AUTH(isAuth: boolean): void {
+    this._isAuthenticated = isAuth;
+  }
+
+  @Action({ commit: 'SET_TOKEN' })
+  async login(credentials: { email: string; password: string }): Promise<string | null> {
     try {
-      // APIリクエストの実装
-      const response = await this.$axios.post("/auth/login", credentials)
-      const { user, token } = response.data
-
-      commit("SET_USER", user)
-      commit("SET_TOKEN", token)
-      commit("SET_AUTH", true)
-
-      // トークンをlocalStorageに保存
-      localStorage.setItem("token", token)
+      const response = await (this.context as unknown as Context).$axios.post('/api/v1/user_token', credentials);
+      this.context.commit('SET_AUTH', true);
+      await this.fetchUser();
+      return response.data.token;
     } catch (error) {
-      commit("SET_ERROR", error.message)
-      throw error
+      this.context.commit('SET_AUTH', false);
+      return null;
     }
-  },
+  }
 
-  async logout({ commit }) {
+  @Action
+  async logout(): Promise<void> {
     try {
-      await this.$axios.post("/auth/logout")
-      commit("SET_USER", null)
-      commit("SET_TOKEN", null)
-      commit("SET_AUTH", false)
-      localStorage.removeItem("token")
+      await (this.context as unknown as Context).$axios.delete('/api/v1/user_token');
+      this.context.commit('SET_TOKEN', null);
+      this.context.commit('SET_USER', null);
+      this.context.commit('SET_AUTH', false);
     } catch (error) {
-      commit("SET_ERROR", error.message)
-      throw error
+      throw error;
     }
-  },
+  }
 
-  async fetchUser({ commit }) {
+  @Action({ commit: 'SET_USER' })
+  async fetchUser(): Promise<User | null> {
     try {
-      const response = await this.$axios.get("/auth/user")
-      const user = response.data
-      commit("SET_USER", user)
-      commit("SET_AUTH", true)
+      const response = await (this.context as unknown as Context).$axios.get('/api/v1/users/me');
+      return response.data;
     } catch (error) {
-      commit("SET_USER", null)
-      commit("SET_AUTH", false)
-      commit("SET_ERROR", error.message)
-      throw error
+      return null;
     }
-  },
+  }
 }
-
-const authModule: Module<AuthState, RootState> = {
-  state,
-  getters,
-  mutations,
-  actions,
-}
-
-export default authModule

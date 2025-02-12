@@ -19,7 +19,7 @@
           </nuxt-link>
         </v-card>
       </v-col>
-      <v-col v-for="p in prefecture" :key="prefecture.id">
+      <v-col v-for="(p, index) in prefecture" :key="index">
         <div>{{ p.name }}</div>
       </v-col>
     </v-row>
@@ -27,30 +27,30 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome"
+    return $auth.loggedIn ? "loggedIn" : "welcome";
   },
   data() {
     return {
       spot: {},
       jspots: [],
       prefecture: [],
-    }
+    };
   },
   mounted() {
     this.$axios
       .get(`/api/v1/locations/${this.$route.params.id}`)
       .then((res) => {
-        this.spot = res.data.location.attributes
-        this.jspots = res.data.spot
-        this.prefecture = res.data.prefecture
+        this.spot = res.data.location.attributes;
+        this.jspots = res.data.spot;
+        this.prefecture = res.data.prefecture;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
-}
+};
 </script>

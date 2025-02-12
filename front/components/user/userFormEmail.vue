@@ -19,21 +19,21 @@ export default {
   data() {
     return {
       rules: [(v) => !!v || "", (v) => /.+@.+\..+/.test(v) || ""],
-    }
+    };
   },
   computed: {
     setEmail: {
       get() {
-        return this.email
+        return this.email;
       },
       set(newVal) {
-        return this.$emit("update:email", newVal)
+        return this.$emit("update:email", newVal);
       },
     },
     form() {
-      const placeholder = this.noValidation ? undefined : "your@email.com"
-      return { placeholder }
+      const placeholder = this.noValidation ? undefined : "your@email.com";
+      return { placeholder };
     },
   },
-}
+};
 </script>

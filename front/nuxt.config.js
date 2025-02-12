@@ -1,4 +1,4 @@
-import colors from "vuetify/es5/util/colors"
+import colors from "vuetify/es5/util/colors";
 
 export default {
   ssr: false,
@@ -123,17 +123,17 @@ export default {
   },
   build: {
     extend(config, ctx) {
-      config.externals = config.externals || []
+      config.externals = config.externals || [];
       if (!ctx.isClient) {
         config.externals.splice(0, 0, function (context, request, callback) {
           if (/^vue2-google-maps($|\/)/.test(request)) {
-            callback(null, false)
+            callback(null, false);
           } else {
-            callback()
+            callback();
           }
-        })
+        });
       }
     },
     vendor: ["vue2-google-maps"],
   },
-}
+};

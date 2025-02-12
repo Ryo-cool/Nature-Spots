@@ -7,23 +7,23 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   data() {
     return {
       photo: null,
-    }
+    };
   },
   mounted() {
     this.$axios
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
-        this.photo = res.data.spot.photo.url
+        this.photo = res.data.spot.photo.url;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
-}
+};
 </script>
