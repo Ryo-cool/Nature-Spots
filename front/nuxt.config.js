@@ -37,6 +37,7 @@ export default {
     "plugins/myInject",
     "plugins/nuxtClientInit",
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
+    "~/plugins/image-optimization",
   ],
   /*
    ** Nuxt.js dev-modules
