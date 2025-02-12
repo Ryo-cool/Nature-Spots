@@ -15,7 +15,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
     "crypto-js": "^4.0.0",
-    "moment": "^2.29.1",
+    "date-fns": "^4.1.0",
     "nuxt": "^2.0.0",
     "nuxt-i18n": "^6.15.1",
     "nuxt-webfontloader": "^1.1.0",

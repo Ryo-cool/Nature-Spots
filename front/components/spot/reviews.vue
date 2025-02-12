@@ -1,6 +1,6 @@
 <template>
   <v-card class="mt-5">
-    <v-list-item v-for="review in reviews" :key="reviews.id">
+    <v-list-item v-for="review in reviews" :key="review.id">
       <v-container>
         <v-row>
           <v-col cols="2" sm="1" class="pt-3 pl-1">
@@ -13,7 +13,7 @@
           <v-col cols="9">
             <div class="indigo--text caption d-flex">
               <h3>{{ review.user.name }}</h3>
-              さんが口コミを投稿しました（{{ review.created_at | moment }}）
+              さんが口コミを投稿しました（{{ formatDate(review.created_at) }}）
             </div>
             <div class="blue-grey--text caption">いいね〇〇件</div>
           </v-col>
@@ -63,15 +63,10 @@
 
 <script>
 import axios from "~/plugins/axios"
-
-import moment from "moment"
+import { format } from "date-fns"
+import { ja } from "date-fns/locale"
 
 export default {
-  filters: {
-    moment: function (date) {
-      return moment(date).format("YYYY/MM/DD ")
-    },
-  },
   data() {
     return {
       rating: 3.6,
@@ -98,6 +93,9 @@ export default {
   },
 
   methods: {
+    formatDate(date) {
+      return format(new Date(date), "yyyy/MM/dd", { locale: ja })
+    },
     like(reviewId) {
       this.$axios
         .post(
