@@ -36,51 +36,51 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome"
+    return $auth.loggedIn ? "loggedIn" : "welcome";
   },
   data() {
     return {
       user: "",
       preview: null,
-    }
+    };
   },
   mounted() {
     this.$axios
       .get(`/api/v1/users/${this.$auth.user.id}`)
       .then((res) => {
-        this.user = res.data
+        this.user = res.data;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
   methods: {
     setImage(e) {
-      this.image = e
-      this.preview = URL.createObjectURL(e)
+      this.image = e;
+      this.preview = URL.createObjectURL(e);
     },
     editSpot() {
-      const formData = new FormData()
-      formData.append("name", this.user.name)
-      formData.append("introduction", this.user.introduction)
-      formData.append("image", this.user.image)
+      const formData = new FormData();
+      formData.append("name", this.user.name);
+      formData.append("introduction", this.user.introduction);
+      formData.append("image", this.user.image);
       const config = {
         headers: {
           "content-type": "multipart/form-data",
         },
-      }
+      };
       this.$axios
         .put(`/api/v1/users/${this.$auth.user.id}`, formData, config)
         .then((res) => {
           if (res.data) {
-            this.$router.push("/")
+            this.$router.push("/");
           }
-        })
+        });
     },
   },
-}
+};
 </script>

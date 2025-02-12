@@ -20,28 +20,28 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome"
+    return $auth.loggedIn ? "loggedIn" : "welcome";
   },
   data() {
     return {
       spot: {},
       pspots: [],
-    }
+    };
   },
   mounted() {
     this.$axios
       .get(`/api/v1/prefectures/${this.$route.params.id}`)
       .then((res) => {
-        this.spot = res.data.prefecture.attributes
-        this.pspots = res.data.spot
+        this.spot = res.data.prefecture.attributes;
+        this.pspots = res.data.spot;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
-}
+};
 </script>

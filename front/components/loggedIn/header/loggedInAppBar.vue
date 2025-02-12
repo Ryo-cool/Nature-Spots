@@ -94,12 +94,12 @@ export default {
       ],
       userIcon: "",
       icon: null,
-    }
+    };
   },
   mounted() {
-    this.userIcon = this.$auth.user.image.url
-    this.icon = this.userIcon
+    this.userIcon = this.$auth.user.image.url;
+    this.icon = this.userIcon;
   },
-}
+};
 </script>
 <style></style>

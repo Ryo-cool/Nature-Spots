@@ -1,22 +1,10 @@
 <template>
-  <v-col
-    cols="12"
-    md="5"
-  >
+  <v-col cols="12" md="5">
     <h1>ジャンルから探す</h1>
-    <v-card
-      class="mt-4"
-    >
+    <v-card class="mt-4">
       <v-container>
-        <v-row 
-          justify="space-between"
-        >
-          <v-col
-            v-for="genre in genre"
-            :key="genre.id"
-            cols="6"
-            align="center"
-          >
+        <v-row justify="space-between">
+          <v-col v-for="genre in genre" :key="genre.id" cols="6" align="center">
             <nuxt-link
               :to="`location/${genre.id}`"
               class="text-decoration-none"
@@ -26,13 +14,9 @@
                 gradient="to top right, rgba(44,44,160,.1), rgba(120,178,189,.6)"
                 contain
               >
-                <v-row
-                  class="fill-height ma-0"
-                  align="center"
-                  justify="center"
-                >
-                <div class="white--text display-3">
-                  {{ genre.name }}
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <div class="white--text display-3">
+                    {{ genre.name }}
                   </div>
                 </v-row>
               </v-img>
@@ -45,14 +29,13 @@
 </template>
 
 <script>
-
 // 画像インポート
-import sea from "~/assets/images/loggedIn/sea.jpg"
-import mountain from "~/assets/images/loggedIn/mountain.jpg"
-import river from "~/assets/images/loggedIn/river.jpg"
-import park from "~/assets/images/loggedIn/park.jpg"
-import pond from "~/assets/images/loggedIn/pond.jpg"
-import lake from "~/assets/images/loggedIn/lake.jpg"
+import sea from "~/assets/images/loggedIn/sea.jpg";
+import mountain from "~/assets/images/loggedIn/mountain.jpg";
+import river from "~/assets/images/loggedIn/river.jpg";
+import park from "~/assets/images/loggedIn/park.jpg";
+import pond from "~/assets/images/loggedIn/pond.jpg";
+import lake from "~/assets/images/loggedIn/lake.jpg";
 
 export default {
   data() {
@@ -65,7 +48,7 @@ export default {
         { id: "5", name: "池", img: pond },
         { id: "6", name: "湖", img: lake },
       ],
-    }
+    };
   },
-}
+};
 </script>

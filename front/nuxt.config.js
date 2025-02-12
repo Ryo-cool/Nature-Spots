@@ -1,4 +1,4 @@
-import colors from "vuetify/es5/util/colors"
+import colors from "vuetify/es5/util/colors";
 
 export default {
   ssr: false,
@@ -37,6 +37,8 @@ export default {
     "plugins/myInject",
     "plugins/nuxtClientInit",
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
+    "~/plugins/image-optimization",
+    { src: "~/plugins/service-worker.client", mode: "client" },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -121,17 +123,17 @@ export default {
   },
   build: {
     extend(config, ctx) {
-      config.externals = config.externals || []
+      config.externals = config.externals || [];
       if (!ctx.isClient) {
         config.externals.splice(0, 0, function (context, request, callback) {
           if (/^vue2-google-maps($|\/)/.test(request)) {
-            callback(null, false)
+            callback(null, false);
           } else {
-            callback()
+            callback();
           }
-        })
+        });
       }
     },
     vendor: ["vue2-google-maps"],
   },
-}
+};

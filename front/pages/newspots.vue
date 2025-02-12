@@ -88,11 +88,11 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome"
+    return $auth.loggedIn ? "loggedIn" : "welcome";
   },
   data() {
     return {
@@ -110,19 +110,19 @@ export default {
       spots: [],
       prefecture: [],
       location: [],
-    }
+    };
   },
   mounted() {
     this.$axios.get("/api/v1/spots").then((res) => {
       if (res.data) {
-        this.spots = res.data.spots
-        this.prefecture = res.data.prefecture
-        this.location = res.data.location
+        this.spots = res.data.spots;
+        this.prefecture = res.data.prefecture;
+        this.location = res.data.location;
       }
     }),
       this.$gmapApiPromiseLazy().then(() => {
-        this.geocoder = new google.maps.Geocoder()
-      })
+        this.geocoder = new google.maps.Geocoder();
+      });
   },
   methods: {
     // 入力されたスポット名を住所変換
@@ -133,46 +133,46 @@ export default {
         },
         (results, status) => {
           if (status === google.maps.GeocoderStatus.OK) {
-            this.alert = ""
-            this.lat = results[0].geometry.location.lat()
-            this.lng = results[0].geometry.location.lng()
-            var ad = results[0].formatted_address.replace("日本、", "")
-            this.address = ad
+            this.alert = "";
+            this.lat = results[0].geometry.location.lat();
+            this.lng = results[0].geometry.location.lng();
+            const ad = results[0].formatted_address.replace("日本、", "");
+            this.address = ad;
           } else {
-            this.alert = "正しいスポットを入力してください"
+            this.alert = "正しいスポットを入力してください";
           }
         }
-      )
+      );
     },
     setImage(e) {
-      this.image = e
-      this.preview = URL.createObjectURL(e)
+      this.image = e;
+      this.preview = URL.createObjectURL(e);
     },
     // スポットをaxiosで登録
     createSpot(e) {
-      const formData = new FormData()
-      formData.append("photo", this.image)
-      formData.append("name", this.name)
-      formData.append("introduction", this.introduction)
-      formData.append("prefecture_id", this.prefectures)
-      formData.append("latitude", this.lat)
-      formData.append("longitude", this.lng)
-      formData.append("address", this.address)
-      formData.append("location_id", this.locations)
+      const formData = new FormData();
+      formData.append("photo", this.image);
+      formData.append("name", this.name);
+      formData.append("introduction", this.introduction);
+      formData.append("prefecture_id", this.prefectures);
+      formData.append("latitude", this.lat);
+      formData.append("longitude", this.lng);
+      formData.append("address", this.address);
+      formData.append("location_id", this.locations);
       const config = {
         headers: {
           "content-type": "multipart/form-data",
         },
-      }
+      };
       this.$axios.post("/api/v1/spots", formData, config).then((res) => {
         if (res.data) {
-          this.spots.push(res.data)
-          this.$router.push("/")
+          this.spots.push(res.data);
+          this.$router.push("/");
         }
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style></style>

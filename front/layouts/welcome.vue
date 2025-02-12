@@ -47,7 +47,7 @@ export default {
     return {
       menus: [],
       imgHeight: 690,
-    }
+    };
   },
-}
+};
 </script>

@@ -1,21 +1,21 @@
 export default ({ $axios, isDev }) => {
-  "http://localhost:3000"
+  "http://localhost:3000";
   // リクエストログ
   $axios.onRequest((config) => {
     // if (isDev) 追加
     if (isDev) {
-      console.log(config)
+      console.log(config);
     }
-  })
+  });
   // レスポンスログ
   $axios.onResponse((config) => {
     // if (isDev) 追加
     if (isDev) {
-      console.log(config)
+      console.log(config);
     }
-  })
+  });
   // エラーログ
   $axios.onError((e) => {
-    console.log(e.response)
-  })
-}
+    console.log(e.response);
+  });
+};

@@ -30,19 +30,19 @@
 </template>
 
 <script>
-import homeImg from "~/assets/images/loggedIn/adventure__isometric.png"
+import homeImg from "~/assets/images/loggedIn/adventure__isometric.png";
 
 export default {
   // middleware: 'authenticator',
   layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome"
+    return $auth.loggedIn ? "loggedIn" : "welcome";
   },
   data() {
     return {
       homeImg,
-    }
+    };
   },
-}
+};
 </script>
 <style>
 * {

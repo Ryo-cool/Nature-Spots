@@ -9,8 +9,8 @@ export default {
   layout: "loggedIn",
   middleware({ route, redirect }) {
     if (route.name === "account") {
-      return redirect("/")
+      return redirect("/");
     }
   },
-}
+};
 </script>

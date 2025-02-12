@@ -26,20 +26,20 @@ export default {
       isValid: false,
       loading: false,
       params: { user: { name: "", email: "", password: "" } },
-    }
+    };
   },
   methods: {
     signup() {
-      this.loading = true
+      this.loading = true;
       setTimeout(() => {
-        this.formReset()
-        this.loading = false
-      }, 1500)
+        this.formReset();
+        this.loading = false;
+      }, 1500);
     },
     formReset() {
-      this.$refs.form.reset()
-      this.params = { user: { name: "", email: "", password: "" } }
+      this.$refs.form.reset();
+      this.params = { user: { name: "", email: "", password: "" } };
     },
   },
-}
+};
 </script>

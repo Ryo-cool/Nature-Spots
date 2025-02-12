@@ -52,12 +52,12 @@ export default {
   data() {
     return {
       review: {},
-    }
+    };
   },
   mounted() {
     this.$axios.get(`/api/v1/users/${this.$route.params.id}`).then((res) => {
-      this.review = JSON.parse(res.data.reviews)
-    })
+      this.review = JSON.parse(res.data.reviews);
+    });
   },
-}
+};
 </script>

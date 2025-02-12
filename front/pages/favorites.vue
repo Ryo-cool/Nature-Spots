@@ -15,19 +15,19 @@
 <script>
 export default {
   layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome"
+    return $auth.loggedIn ? "loggedIn" : "welcome";
   },
   data() {
     return {
       fspots: {},
-    }
+    };
   },
   mounted() {
     this.$axios.get("/api/v1/users/user_data").then((res) => {
       if (res.data) {
-        this.fspots = res.data.favorite
+        this.fspots = res.data.favorite;
       }
-    })
+    });
   },
-}
+};
 </script>

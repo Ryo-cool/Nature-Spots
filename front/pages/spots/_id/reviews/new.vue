@@ -61,11 +61,11 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import axios from "~/plugins/axios";
 
 export default {
   layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome"
+    return $auth.loggedIn ? "loggedIn" : "welcome";
   },
   data() {
     return {
@@ -80,13 +80,13 @@ export default {
       reviews: [],
       id: [],
       loading: false,
-    }
+    };
   },
   computed: {
     // すべてインプット後に投稿ボタンを押せるようにする
     allInput() {
-      const required_fields = [this.title, this.text, this.picker, this.rating]
-      return required_fields.indexOf("") === -1
+      const requiredFields = ["title", "text", "picker", "rating"];
+      return !requiredFields.includes("");
     },
   },
   created() {
@@ -95,34 +95,34 @@ export default {
       .get(`/api/v1/spots/${this.$route.params.id}`)
       .then((res) => {
         // const spot = res.data
-        this.spots = res.data
-        this.id = res.data.id
+        this.spots = res.data;
+        this.id = res.data.id;
         // this.review = res.data.review
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
   methods: {
     setImage(e) {
-      this.image = e
-      this.preview = URL.createObjectURL(e)
+      this.image = e;
+      this.preview = URL.createObjectURL(e);
     },
     createReview() {
-      this.loading = true
-      const formData = new FormData()
-      formData.append("title", this.title)
-      formData.append("text", this.text)
-      formData.append("image", this.image)
-      formData.append("wentday", this.picker)
-      formData.append("rating", this.rating)
-      formData.append("spot_id", this.id)
-      formData.append("user_id", this.$auth.user.id)
+      this.loading = true;
+      const formData = new FormData();
+      formData.append("title", this.title);
+      formData.append("text", this.text);
+      formData.append("image", this.image);
+      formData.append("wentday", this.picker);
+      formData.append("rating", this.rating);
+      formData.append("spot_id", this.id);
+      formData.append("user_id", this.$auth.user.id);
       const config = {
         headers: {
           "content-type": "multipart/form-data",
         },
-      }
+      };
       this.$axios
         .post(
           `/api/v1/spots/${this.$route.params.id}/reviews/`,
@@ -130,15 +130,15 @@ export default {
           config
         )
         .then((res) => {
-          this.$router.push("/")
+          this.$router.push("/");
           if (res.data) {
-            this.reviews.push(res.data)
+            this.reviews.push(res.data);
           }
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.log(error));
     },
   },
-}
+};
 </script>
 
 <style>

@@ -26,24 +26,28 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios"
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
 
-export default {
+@Component({
   data() {
     return {
       prefectures: [],
       active: false,
-    }
+    };
   },
   mounted() {
     this.$axios
       .get("api/v1/prefectures")
       .then((res) => {
-        this.prefectures = res.data
+        this.prefectures = res.data;
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   },
+})
+export default class JapanList extends Vue {
+  // ... existing code ...
 }
 </script>

@@ -37,16 +37,16 @@ export default {
       review: {},
       follow: {},
       follower: {},
-    }
+    };
   },
   mounted() {
     this.$axios.get(`/api/v1/users/${this.$route.params.id}`).then((res) => {
-      this.user = res.data.user
-      this.userImage = res.data.user.image.url
-      this.review = JSON.parse(res.data.reviews)
-      this.follow = res.data.follow
-      this.follower = res.data.follower
-    })
+      this.user = res.data.user;
+      this.userImage = res.data.user.image.url;
+      this.review = JSON.parse(res.data.reviews);
+      this.follow = res.data.follow;
+      this.follower = res.data.follower;
+    });
   },
-}
+};
 </script>

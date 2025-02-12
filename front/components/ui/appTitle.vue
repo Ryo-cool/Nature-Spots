@@ -9,7 +9,7 @@ export default {
   data({ $config: { appName } }) {
     return {
       appName,
-    }
+    };
   },
-}
+};
 </script>

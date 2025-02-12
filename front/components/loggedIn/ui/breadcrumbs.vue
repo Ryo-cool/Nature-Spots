@@ -17,8 +17,8 @@
 export default {
   computed: {
     items() {
-      return [{ text: this.$my.pageTitle(this.$route.name) }]
+      return [{ text: this.$my.pageTitle(this.$route.name) }];
     },
   },
-}
+};
 </script>

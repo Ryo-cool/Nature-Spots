@@ -28,7 +28,7 @@ export default {
     return {
       appName,
       pageTitle: this.$t(`pages.${$route.name}`),
-    }
+    };
   },
-}
+};
 </script>
