@@ -40,6 +40,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+import { useToastStore } from '~/stores/toast'
+
 definePageMeta({
   layout: 'beforeLogin'
 })

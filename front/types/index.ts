@@ -33,3 +33,30 @@ export interface ApiResponse<T> {
   status: number;
   message?: string;
 }
+
+// declare modules for TypeScript 
+declare module '#app' {
+  interface PageMeta {
+    layout?: string | ((route: any) => string)
+    middleware?: string | string[]
+    auth?: boolean
+  }
+}
+
+// Ensure TS doesn't complain about .png imports
+declare module '*.png' {
+  const value: any
+  export default value
+}
+
+declare module '*.jpg' {
+  const value: any
+  export default value
+}
+
+declare module '*.jpeg' {
+  const value: any
+  export default value
+}
+
+export {}

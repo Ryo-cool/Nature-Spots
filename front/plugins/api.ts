@@ -1,4 +1,6 @@
-export default defineNuxtPlugin((nuxtApp) => {
+import { useAuthStore } from '~/stores/auth'
+
+export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
   const isDev = process.env.NODE_ENV !== 'production'
   const authStore = useAuthStore()
@@ -31,7 +33,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
     onResponseError({ response }) {
       // エラーログ
-      console.error('API Error:', response.status, response._data)
+      console.error('API Error:', response?.status, response?._data)
     }
   })
   

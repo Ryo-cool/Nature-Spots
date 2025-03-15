@@ -1,8 +1,12 @@
-export default defineNuxtRouteMiddleware((to, from) => {
-  const { loggedIn, isAuthenticated, logout } = useAuth()
+import { useAuth } from '~/composables/useAuth'
+import { useAuthStore } from '~/stores/auth'
+import { useToastStore } from '~/stores/toast'
+import { navigateTo } from '#app'
+
+export default defineNuxtRouteMiddleware((to) => {
+  const { isAuthenticated } = useAuth()
   const authStore = useAuthStore()
   const toastStore = useToastStore()
-  const router = useRouter()
   
   // トップページかつユーザーが存在しない場合、何もしない(layouts/welcome.vue表示のため)
   if (to.name === 'index' && !authStore.user) {
@@ -17,7 +21,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (authStore.user) {
       // ログイン中のユーザー
       msg = "もう一度ログインしてください"
-      logout()
+      authStore.logout()
     } else {
       // ログイン前ユーザー
       localStorage.setItem('rememberRoute', JSON.stringify(to.fullPath))

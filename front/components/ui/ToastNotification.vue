@@ -16,13 +16,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeUnmount } from 'vue'
 import { useToastStore } from '~/stores/toast'
 
 const toastStore = useToastStore()
 
 const isVisible = computed({
   get: () => toastStore.show,
-  set: (value) => {
+  set: (value: boolean) => {
     if (!value) {
       closeToast()
     }

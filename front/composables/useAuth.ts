@@ -1,5 +1,6 @@
 import cryptoJs from 'crypto-js'
 import { useAuthStore } from '~/stores/auth'
+import { computed } from 'vue'
 
 export const useAuth = () => {
   const authStore = useAuthStore()

@@ -1,166 +1,165 @@
-import { defineStore } from "pinia";
-import type { Spot } from "~/types";
+import { defineStore } from 'pinia'
+import type { Spot } from '~/types'
 
-export const useSpotStore = defineStore("spot", {
+export const useSpotStore = defineStore('spot', {
   state: () => ({
     spots: [] as Spot[],
     currentSpot: null as Spot | null,
     loading: false,
-    error: null as string | null,
+    error: null as string | null
   }),
-
+  
   getters: {
     allSpots: (state) => state.spots,
-    getSpotById: (state) => (id: number) =>
-      state.spots.find((spot) => spot.id === id),
+    getSpotById: (state) => (id: number) => state.spots.find(spot => spot.id === id),
     getCurrentSpot: (state) => state.currentSpot,
     isLoading: (state) => state.loading,
-    getError: (state) => state.error,
+    getError: (state) => state.error
   },
-
+  
   actions: {
     setSpots(spots: Spot[]) {
-      this.spots = spots;
+      this.spots = spots
     },
-
+    
     setCurrentSpot(spot: Spot | null) {
-      this.currentSpot = spot;
+      this.currentSpot = spot
     },
-
+    
     setLoading(loading: boolean) {
-      this.loading = loading;
+      this.loading = loading
     },
-
+    
     setError(error: string | null) {
-      this.error = error;
+      this.error = error
     },
-
+    
     async fetchSpots() {
-      this.setLoading(true);
+      this.setLoading(true)
       try {
-        const config = useRuntimeConfig();
-        const response = await $fetch("/api/v1/spots", {
-          method: "GET",
-          baseURL: config.public.apiBaseUrl,
-        });
-
-        this.setSpots(response);
-        this.setError(null);
+        const config = useRuntimeConfig()
+        const response = await $fetch('/api/v1/spots', {
+          method: 'GET',
+          baseURL: config.public.apiBaseUrl
+        })
+        
+        this.setSpots(response)
+        this.setError(null)
       } catch (error: any) {
-        this.setError(error.message || "Failed to fetch spots");
+        this.setError(error.message || 'Failed to fetch spots')
       } finally {
-        this.setLoading(false);
+        this.setLoading(false)
       }
     },
-
+    
     async fetchSpot(id: number) {
-      this.setLoading(true);
+      this.setLoading(true)
       try {
-        const config = useRuntimeConfig();
+        const config = useRuntimeConfig()
         const response = await $fetch(`/api/v1/spots/${id}`, {
-          method: "GET",
-          baseURL: config.public.apiBaseUrl,
-        });
-
-        this.setCurrentSpot(response);
-        this.setError(null);
+          method: 'GET',
+          baseURL: config.public.apiBaseUrl
+        })
+        
+        this.setCurrentSpot(response)
+        this.setError(null)
       } catch (error: any) {
-        this.setError(error.message || `Failed to fetch spot with id ${id}`);
+        this.setError(error.message || `Failed to fetch spot with id ${id}`)
       } finally {
-        this.setLoading(false);
+        this.setLoading(false)
       }
     },
-
+    
     async createSpot(spot: Partial<Spot>) {
-      this.setLoading(true);
+      this.setLoading(true)
       try {
-        const config = useRuntimeConfig();
-        const authStore = useAuthStore();
-
-        const response = await $fetch("/api/v1/spots", {
-          method: "POST",
+        const config = useRuntimeConfig()
+        const authStore = useAuthStore()
+        
+        const response = await $fetch('/api/v1/spots', {
+          method: 'POST',
           body: spot,
           baseURL: config.public.apiBaseUrl,
           headers: {
-            Authorization: `Bearer ${authStore.token}`,
-          },
-        });
-
+            Authorization: `Bearer ${authStore.getToken}`
+          }
+        })
+        
         // Add the new spot to the spots array
-        this.spots.push(response);
-        this.setError(null);
-        return response;
+        this.spots.push(response)
+        this.setError(null)
+        return response
       } catch (error: any) {
-        this.setError(error.message || "Failed to create spot");
-        throw error;
+        this.setError(error.message || 'Failed to create spot')
+        throw error
       } finally {
-        this.setLoading(false);
+        this.setLoading(false)
       }
     },
-
+    
     async updateSpot({ id, spot }: { id: number; spot: Partial<Spot> }) {
-      this.setLoading(true);
+      this.setLoading(true)
       try {
-        const config = useRuntimeConfig();
-        const authStore = useAuthStore();
-
+        const config = useRuntimeConfig()
+        const authStore = useAuthStore()
+        
         const response = await $fetch(`/api/v1/spots/${id}`, {
-          method: "PUT",
+          method: 'PUT',
           body: spot,
           baseURL: config.public.apiBaseUrl,
           headers: {
-            Authorization: `Bearer ${authStore.token}`,
-          },
-        });
-
+            Authorization: `Bearer ${authStore.getToken}`
+          }
+        })
+        
         // Update the spot in the spots array
-        const index = this.spots.findIndex((s) => s.id === id);
+        const index = this.spots.findIndex(s => s.id === id)
         if (index !== -1) {
-          this.spots[index] = response;
+          this.spots[index] = response
         }
-
+        
         if (this.currentSpot?.id === id) {
-          this.setCurrentSpot(response);
+          this.setCurrentSpot(response)
         }
-
-        this.setError(null);
-        return response;
+        
+        this.setError(null)
+        return response
       } catch (error: any) {
-        this.setError(error.message || `Failed to update spot with id ${id}`);
-        throw error;
+        this.setError(error.message || `Failed to update spot with id ${id}`)
+        throw error
       } finally {
-        this.setLoading(false);
+        this.setLoading(false)
       }
     },
-
+    
     async deleteSpot(id: number) {
-      this.setLoading(true);
+      this.setLoading(true)
       try {
-        const config = useRuntimeConfig();
-        const authStore = useAuthStore();
-
+        const config = useRuntimeConfig()
+        const authStore = useAuthStore()
+        
         await $fetch(`/api/v1/spots/${id}`, {
-          method: "DELETE",
+          method: 'DELETE',
           baseURL: config.public.apiBaseUrl,
           headers: {
-            Authorization: `Bearer ${authStore.token}`,
-          },
-        });
-
+            Authorization: `Bearer ${authStore.getToken}`
+          }
+        })
+        
         // Remove the spot from the spots array
-        this.spots = this.spots.filter((spot) => spot.id !== id);
-
+        this.spots = this.spots.filter(spot => spot.id !== id)
+        
         if (this.currentSpot?.id === id) {
-          this.setCurrentSpot(null);
+          this.setCurrentSpot(null)
         }
-
-        this.setError(null);
+        
+        this.setError(null)
       } catch (error: any) {
-        this.setError(error.message || `Failed to delete spot with id ${id}`);
-        throw error;
+        this.setError(error.message || `Failed to delete spot with id ${id}`)
+        throw error
       } finally {
-        this.setLoading(false);
+        this.setLoading(false)
       }
-    },
-  },
-});
+    }
+  }
+})
