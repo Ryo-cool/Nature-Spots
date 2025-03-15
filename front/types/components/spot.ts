@@ -1,5 +1,5 @@
-import { SpotResponse, SpotDetailResponse } from "../api/spot";
-import { BaseProps } from "./common";
+import type { SpotResponse, SpotDetailResponse } from "../api/spot";
+import type { BaseProps } from "./common";
 
 // スポットカード用のprops
 export interface SpotCardProps extends BaseProps {

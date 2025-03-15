@@ -22,28 +22,28 @@
     <v-row>
       <v-col>
         <h1>人気のスポット一覧</h1>
-
         <popular-spots />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
-<script>
-import homeImg from "~/assets/images/loggedIn/adventure__isometric.png";
+<script setup lang="ts">
+import { useAuth } from '~/composables/useAuth'
 
-export default {
-  // middleware: 'authenticator',
-  layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome";
-  },
-  data() {
-    return {
-      homeImg,
-    };
-  },
-};
+// 認証状態に応じてレイアウトを動的に設定
+const { loggedIn } = useAuth()
+
+definePageMeta({
+  layout: () => {
+    return useAuth().loggedIn.value ? "loggedIn" : "welcome"
+  }
+})
+
+// homeImgのpath指定
+const homeImg = "/images/loggedIn/adventure__isometric.png"
 </script>
+
 <style>
 * {
   font-family: "Kosugi Maru", sans-serif;

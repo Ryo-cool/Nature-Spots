@@ -1,58 +1,55 @@
 <template>
   <v-text-field
-    v-model="setPassword"
-    :rules="form.rules"
+    :model-value="modelValue"
+    @update:model-value="updateValue"
+    :rules="passwordRules"
     :counter="!noValidation"
-    :hint="form.hint"
+    :hint="hint"
     label="パスワードを入力"
-    :placeholder="form.placeholder"
+    :placeholder="placeholder"
     :hide-details="noValidation"
-    :append-icon="toggle.icon"
-    :type="toggle.type"
-    outlined
+    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+    :type="showPassword ? 'text' : 'password'"
+    variant="outlined"
     autocomplete="on"
-    @click:append="show = !show"
+    @click:append="showPassword = !showPassword"
   />
 </template>
 
-<script>
-export default {
-  props: {
-    noValidation: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      show: false,
-    };
-  },
-  computed: {
-    setPassword: {
-      get() {
-        return this.password;
-      },
-      set(newVal) {
-        return this.$emit("update:password", newVal);
-      },
-    },
-    form() {
-      const min = "8文字以上";
-      const msg = `${min}。半角英数字•ﾊｲﾌﾝ•ｱﾝﾀﾞｰﾊﾞｰが使えます`;
-      const required = (v) => !!v || "";
-      const format = (v) => /^[\w-]{8,72}$/.test(v) || msg;
+<script setup lang="ts">
+import { ref, computed } from 'vue'
 
-      const rules = this.noValidation ? [required] : [format];
-      const hint = this.noValidation ? undefined : msg;
-      const placeholder = this.noValidation ? undefined : min;
-      return { rules, hint, placeholder };
-    },
-    toggle() {
-      const icon = this.show ? "mdi-eye" : "mdi-eye-off";
-      const type = this.show ? "text" : "password";
-      return { icon, type };
-    },
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: ''
   },
-};
+  noValidation: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+// パスワード表示状態
+const showPassword = ref(false)
+
+// バリデーションメッセージ
+const min = "8文字以上"
+const msg = `${min}。半角英数字•ﾊｲﾌﾝ•ｱﾝﾀﾞｰﾊﾞｰが使えます`
+
+// バリデーションルール
+const required = (v: string) => !!v || ""
+const format = (v: string) => /^[\w-]{8,72}$/.test(v) || msg
+
+// プロパティに基づいてルールを設定
+const passwordRules = computed(() => props.noValidation ? [required] : [format])
+const hint = computed(() => props.noValidation ? undefined : msg)
+const placeholder = computed(() => props.noValidation ? undefined : min)
+
+// 値の更新
+function updateValue(value: string) {
+  emit('update:modelValue', value)
+}
 </script>

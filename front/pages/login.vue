@@ -1,11 +1,11 @@
 <template>
   <bef-login-form-card>
     <template #form-card-content>
-      <toaster />
-      <v-form ref="form" v-model="isValid">
-        <user-form-email :email.sync="params.auth.email" no-validation />
+      <toast-notification />
+      <v-form v-model="isValid">
+        <user-form-email v-model="params.auth.email" no-validation />
         <user-form-password
-          :password.sync="params.auth.password"
+          v-model="params.auth.password"
           no-validation
         />
         <v-card-actions>
@@ -19,7 +19,7 @@
             :loading="loading"
             block
             color="myblue"
-            class="white--text"
+            class="text-white"
             @click="login"
           >
             ログインする
@@ -39,48 +39,88 @@
   </bef-login-form-card>
 </template>
 
-<script>
-export default {
-  layout: "beforeLogin",
-  data() {
-    return {
-      isValid: false,
-      loading: false,
-      params: { auth: { email: "", password: "" } },
-      guestParams: {
-        auth: { email: "user0@example.com", password: "password" },
-      },
-    };
-  },
-  methods: {
-    async login() {
-      this.loading = true;
-      if (this.isValid) {
-        await this.$axios
-          .$post("/api/v1/user_token", this.params)
-          .then((response) => this.authSuccessful(response))
-          .catch((error) => this.authFailure(error));
-      }
-      this.loading = false;
-    },
-    async guestLogin() {
-      this.loading = true;
-      await this.$axios
-        .$post("/api/v1/user_token", this.guestParams)
-        .then((response) => this.authSuccessful(response))
-        .catch((error) => this.authFailure(error));
-    },
-    // ログイン成功
-    async authSuccessful(response) {
-      await this.$auth.login(response);
-      this.$router.push(this.$store.state.rememberRoute);
-    },
-    // ログイン失敗
-    authFailure({ response }) {
-      if (response.status === 404) {
-        this.$store.dispatch("getToast", { msg: "ユーザーが見つかりません😷" });
-      }
-    },
-  },
-};
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '~/composables/useAuth'
+import { useToastStore } from '~/stores/toast'
+
+definePageMeta({
+  layout: 'beforeLogin'
+})
+
+const { login: authLogin } = useAuth()
+const toastStore = useToastStore()
+const router = useRouter()
+
+const isValid = ref(false)
+const loading = ref(false)
+const params = reactive({
+  auth: { email: "", password: "" }
+})
+const guestParams = {
+  auth: { email: "user0@example.com", password: "password" }
+}
+
+// ログイン処理
+async function login() {
+  loading.value = true
+  if (isValid.value) {
+    try {
+      const config = useRuntimeConfig()
+      const response = await $fetch('/api/v1/user_token', {
+        method: 'POST',
+        body: params,
+        baseURL: config.public.apiBaseUrl
+      })
+      await authSuccessful(response)
+    } catch (error: any) {
+      authFailure(error)
+    }
+  }
+  loading.value = false
+}
+
+// ゲストログイン処理
+async function guestLogin() {
+  loading.value = true
+  try {
+    const config = useRuntimeConfig()
+    const response = await $fetch('/api/v1/user_token', {
+      method: 'POST',
+      body: guestParams,
+      baseURL: config.public.apiBaseUrl
+    })
+    await authSuccessful(response)
+  } catch (error: any) {
+    authFailure(error)
+  }
+  loading.value = false
+}
+
+// ログイン成功処理
+async function authSuccessful(response: any) {
+  await authLogin(response)
+  
+  // 保存されたルートパスを取得
+  const savedRoute = localStorage.getItem('rememberRoute')
+  const redirectTo = savedRoute ? JSON.parse(savedRoute) : '/'
+  
+  router.push(redirectTo)
+}
+
+// ログイン失敗処理
+function authFailure(error: any) {
+  if (error.response?.status === 404) {
+    toastStore.showToast({ 
+      message: "ユーザーが見つかりません😷", 
+      color: "error" 
+    })
+  } else {
+    toastStore.showToast({ 
+      message: "ログインに失敗しました", 
+      color: "error" 
+    })
+  }
+}
 </script>

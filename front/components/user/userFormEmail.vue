@@ -1,39 +1,38 @@
 <template>
   <v-text-field
-    v-model="setEmail"
+    :model-value="modelValue"
+    @update:model-value="updateValue"
     :rules="rules"
     label="メールアドレスを入力"
-    :placeholder="form.placeholder"
-    outlined
+    :placeholder="placeholder"
+    variant="outlined"
   />
 </template>
 
-<script>
-export default {
-  props: {
-    noValidation: {
-      type: Boolean,
-      default: false,
-    },
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: ''
   },
-  data() {
-    return {
-      rules: [(v) => !!v || "", (v) => /.+@.+\..+/.test(v) || ""],
-    };
-  },
-  computed: {
-    setEmail: {
-      get() {
-        return this.email;
-      },
-      set(newVal) {
-        return this.$emit("update:email", newVal);
-      },
-    },
-    form() {
-      const placeholder = this.noValidation ? undefined : "your@email.com";
-      return { placeholder };
-    },
-  },
-};
+  noValidation: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+// バリデーションルール
+const rules = [(v: string) => !!v || '', (v: string) => /.+@.+\..+/.test(v) || '']
+
+// プレースホルダー
+const placeholder = computed(() => props.noValidation ? undefined : 'your@email.com')
+
+// 値の更新
+function updateValue(value: string) {
+  emit('update:modelValue', value)
+}
 </script>

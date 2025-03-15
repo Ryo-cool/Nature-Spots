@@ -19,42 +19,41 @@
   </picture>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { ImageProps } from "~/types/components/common";
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
+import type { ImageProps } from "~/types/components/common"
 
-@Component
-export default class OptimizedImage extends Vue implements ImageProps {
-  @Prop({ required: true }) src!: string;
-  @Prop({ default: "" }) alt!: string;
-  @Prop() width?: number;
-  @Prop() height?: number;
-  @Prop({ default: "lazy" }) loading!: "lazy" | "eager";
-  @Prop() className?: string;
-  @Prop() webpSrc?: string;
-  @Prop() srcset?: string;
-  @Prop() webpSrcset?: string;
-  @Prop() sizes?: string;
-  @Prop() originalType?: string;
-
-  private webpSupported = false;
-
-  mounted() {
-    this.checkWebPSupport();
-  }
-
-  get fallbackSrc(): string {
-    return this.src;
-  }
-
-  get originalSrcset(): string {
-    return this.srcset || this.src;
-  }
-
-  private async checkWebPSupport() {
-    this.webpSupported = await this.$imageOptimization.checkWebPSupport();
-  }
+interface Props extends ImageProps {
+  className?: string;
+  webpSrc?: string;
+  srcset?: string;
+  webpSrcset?: string;
+  originalType?: string;
+  loading?: "lazy" | "eager";
 }
+
+const props = defineProps<Props>()
+const webpSupported = ref(false)
+
+// 画像フォーマットのサポート確認
+onMounted(async () => {
+  if (process.client) {
+    const { $imageOptimization } = useNuxtApp()
+    if ($imageOptimization) {
+      webpSupported.value = $imageOptimization.checkWebPSupport()
+    } else {
+      // フォールバック: canvas要素を使用してWebPサポートを確認
+      const canvas = document.createElement('canvas')
+      if (canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0) {
+        webpSupported.value = true
+      }
+    }
+  }
+})
+
+// 計算プロパティ
+const fallbackSrc = computed(() => props.src)
+const originalSrcset = computed(() => props.srcset || props.src)
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
-import { LoginRequest, RegisterRequest } from "../api/auth";
-import { BaseProps } from "./common";
+import type { LoginRequest, RegisterRequest } from "../api/auth";
+import type { BaseProps } from "./common";
 
 // ログインフォーム用のprops
 export interface LoginFormProps extends BaseProps {
