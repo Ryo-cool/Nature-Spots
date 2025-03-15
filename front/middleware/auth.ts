@@ -1,7 +1,6 @@
 import { useAuth } from '~/composables/useAuth'
 import { useAuthStore } from '~/stores/auth'
 import { useToastStore } from '~/stores/toast'
-import { navigateTo } from '#app'
 
 export default defineNuxtRouteMiddleware((to) => {
   const { isAuthenticated } = useAuth()
@@ -24,7 +23,9 @@ export default defineNuxtRouteMiddleware((to) => {
       authStore.logout()
     } else {
       // ログイン前ユーザー
-      localStorage.setItem('rememberRoute', JSON.stringify(to.fullPath))
+      if (process.client) {
+        localStorage.setItem('rememberRoute', JSON.stringify(to.fullPath))
+      }
     }
     
     // トースター出力
@@ -33,7 +34,9 @@ export default defineNuxtRouteMiddleware((to) => {
   } else if (!authStore.user) {
     // 有効期限内でユーザーが存在しない場合
     authStore.setAuth(false)
-    localStorage.removeItem('rememberRoute')
+    if (process.client) {
+      localStorage.removeItem('rememberRoute')
+    }
     return navigateTo('/login')
   }
 })

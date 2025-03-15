@@ -11,7 +11,7 @@ export default defineNuxtPlugin(() => {
     headers: {
       'Content-Type': 'application/json',
     },
-    onRequest({ options }) {
+    onRequest({ options }: { options: any }) {
       // リクエストにトークンを添付
       if (authStore.token) {
         options.headers = {
@@ -25,13 +25,13 @@ export default defineNuxtPlugin(() => {
         console.log('API Request:', options)
       }
     },
-    onResponse({ response }) {
+    onResponse({ response }: { response: any }) {
       // レスポンスログ
       if (isDev) {
         console.log('API Response:', response)
       }
     },
-    onResponseError({ response }) {
+    onResponseError({ response }: { response: any }) {
       // エラーログ
       console.error('API Error:', response?.status, response?._data)
     }

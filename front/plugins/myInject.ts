@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   const { t } = useI18n()
   
   const helpers = {
@@ -8,7 +8,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     pageTitle(routeName: string): string {
       const jsonPath = `pages.${routeName.replace(/-/g, ".")}`
       const title = t(jsonPath)
-      return typeof title === "object" ? title.index : title
+      return typeof title === "object" ? '' : title
     },
     
     format(date: string | Date): string {

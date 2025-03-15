@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { ImageProps } from "~/types/components/common"
+import type { ImageProps } from "~/types/components/common"
 
 interface Props extends ImageProps {
   className?: string;

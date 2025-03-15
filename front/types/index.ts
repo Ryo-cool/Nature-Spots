@@ -34,7 +34,7 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
-// declare modules for TypeScript 
+// Declaration merging for Nuxt
 declare module '#app' {
   interface PageMeta {
     layout?: string | ((route: any) => string)
@@ -43,20 +43,18 @@ declare module '#app' {
   }
 }
 
-// Ensure TS doesn't complain about .png imports
+// Declare image module types
 declare module '*.png' {
-  const value: any
-  export default value
+  const content: string;
+  export default content;
 }
 
 declare module '*.jpg' {
-  const value: any
-  export default value
+  const content: string;
+  export default content;
 }
 
 declare module '*.jpeg' {
-  const value: any
-  export default value
+  const content: string;
+  export default content;
 }
-
-export {}

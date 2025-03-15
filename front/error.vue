@@ -21,10 +21,13 @@
 </template>
 
 <script setup lang="ts">
+interface ErrorObject {
+  statusCode?: number;
+  message?: string;
+}
+
 // Nuxt 3のエラーハンドリング
-const props = defineProps({
-  error: Object
-})
+const error = useError() as ErrorObject
 
 // エラーをクリアして再読み込み
 function handleError() {

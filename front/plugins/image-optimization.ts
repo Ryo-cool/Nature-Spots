@@ -9,7 +9,7 @@ interface ImageOptimizationOptions {
   };
 }
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   const convertToWebP = async (
     file: File | Blob,
     options: ImageOptimizationOptions = {}

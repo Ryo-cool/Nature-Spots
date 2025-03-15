@@ -1,4 +1,4 @@
-import { VNode } from "vue";
+import type { VNode } from "vue";
 
 // 共通のprops型
 export interface BaseProps {

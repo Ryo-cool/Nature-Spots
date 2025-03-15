@@ -1,7 +1,6 @@
 import { useAuth } from '~/composables/useAuth'
-import { navigateTo } from '#app'
 
-export default defineNuxtRouteMiddleware((to) => {
+export default defineNuxtRouteMiddleware(() => {
   const { loggedIn } = useAuth()
   
   // ログイン済みの場合はメインページにリダイレクト
