@@ -43,12 +43,12 @@ export const useSpotStore = defineStore('spot', {
           baseURL: config.public.apiBaseUrl
         })
         
-        this.setSpots(response)
-        this.setError(null)
+        this.spots = response
+        this.error = null
       } catch (error: any) {
-        this.setError(error.message || 'Failed to fetch spots')
+        this.error = error.message || 'Failed to fetch spots'
       } finally {
-        this.setLoading(false)
+        this.loading = false
       }
     },
     
@@ -61,12 +61,12 @@ export const useSpotStore = defineStore('spot', {
           baseURL: config.public.apiBaseUrl
         })
         
-        this.setCurrentSpot(response)
-        this.setError(null)
+        this.currentSpot = response
+        this.error = null
       } catch (error: any) {
-        this.setError(error.message || `Failed to fetch spot with id ${id}`)
+        this.error = error.message || `Failed to fetch spot with id ${id}`
       } finally {
-        this.setLoading(false)
+        this.loading = false
       }
     },
     
@@ -81,19 +81,19 @@ export const useSpotStore = defineStore('spot', {
           body: spot,
           baseURL: config.public.apiBaseUrl,
           headers: {
-            Authorization: `Bearer ${authStore.getToken}`
+            Authorization: `Bearer ${authStore.token}`
           }
         })
         
         // Add the new spot to the spots array
         this.spots.push(response)
-        this.setError(null)
+        this.error = null
         return response
       } catch (error: any) {
-        this.setError(error.message || 'Failed to create spot')
+        this.error = error.message || 'Failed to create spot'
         throw error
       } finally {
-        this.setLoading(false)
+        this.loading = false
       }
     },
     
@@ -108,7 +108,7 @@ export const useSpotStore = defineStore('spot', {
           body: spot,
           baseURL: config.public.apiBaseUrl,
           headers: {
-            Authorization: `Bearer ${authStore.getToken}`
+            Authorization: `Bearer ${authStore.token}`
           }
         })
         
@@ -119,16 +119,16 @@ export const useSpotStore = defineStore('spot', {
         }
         
         if (this.currentSpot?.id === id) {
-          this.setCurrentSpot(response)
+          this.currentSpot = response
         }
         
-        this.setError(null)
+        this.error = null
         return response
       } catch (error: any) {
-        this.setError(error.message || `Failed to update spot with id ${id}`)
+        this.error = error.message || `Failed to update spot with id ${id}`
         throw error
       } finally {
-        this.setLoading(false)
+        this.loading = false
       }
     },
     
@@ -142,7 +142,7 @@ export const useSpotStore = defineStore('spot', {
           method: 'DELETE',
           baseURL: config.public.apiBaseUrl,
           headers: {
-            Authorization: `Bearer ${authStore.getToken}`
+            Authorization: `Bearer ${authStore.token}`
           }
         })
         
@@ -150,15 +150,15 @@ export const useSpotStore = defineStore('spot', {
         this.spots = this.spots.filter(spot => spot.id !== id)
         
         if (this.currentSpot?.id === id) {
-          this.setCurrentSpot(null)
+          this.currentSpot = null
         }
         
-        this.setError(null)
+        this.error = null
       } catch (error: any) {
-        this.setError(error.message || `Failed to delete spot with id ${id}`)
+        this.error = error.message || `Failed to delete spot with id ${id}`
         throw error
       } finally {
-        this.setLoading(false)
+        this.loading = false
       }
     }
   }

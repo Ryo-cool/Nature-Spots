@@ -66,6 +66,8 @@ export const useAuthStore = defineStore('auth', {
     async fetchUser() {
       try {
         const config = useRuntimeConfig()
+        const { $api } = useNuxtApp()
+        
         const response = await $fetch('/api/v1/users/me', {
           method: 'GET',
           baseURL: config.public.apiBaseUrl,
