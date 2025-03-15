@@ -1,25 +1,22 @@
 {
+  "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "~/*": ["./*"],
+      "@/*": ["./*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ],
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "resolveJsonModule": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -34,12 +31,11 @@
     "emitDecoratorMetadata": true
   },
   "include": [
+    ".nuxt/nuxt.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.vue",
     "**/*.json"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

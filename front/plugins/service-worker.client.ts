@@ -1,7 +1,5 @@
-import { Plugin } from "@nuxt/types";
-
-const serviceWorkerPlugin: Plugin = () => {
-  if (process.client && "serviceWorker" in navigator) {
+export default defineNuxtPlugin(() => {
+  if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
         .register("/sw.js")
@@ -13,6 +11,4 @@ const serviceWorkerPlugin: Plugin = () => {
         });
     });
   }
-};
-
-export default serviceWorkerPlugin;
+});

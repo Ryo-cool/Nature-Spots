@@ -1,6 +1,5 @@
-import { Plugin } from "@nuxt/types";
 import imagemin from "imagemin";
-import imageminWebp from "imagemin-webp"; 
+import imageminWebp from "imagemin-webp";
 
 interface ImageOptimizationOptions {
   quality?: number;
@@ -10,7 +9,7 @@ interface ImageOptimizationOptions {
   };
 }
 
-const imageOptimization: Plugin = (_context, inject) => {
+export default defineNuxtPlugin((nuxtApp) => {
   const convertToWebP = async (
     file: File | Blob,
     options: ImageOptimizationOptions = {}
@@ -45,16 +44,20 @@ const imageOptimization: Plugin = (_context, inject) => {
   };
 
   const checkWebPSupport = (): boolean => {
+    if (!process.client) return false;
+    
     const canvas = document.createElement("canvas");
     return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0;
   };
 
-  // プラグインとして関数を注入
-  inject("imageOptimization", {
-    convertToWebP,
-    createResponsiveImage,
-    checkWebPSupport,
-  });
-};
-
-export default imageOptimization;
+  // Nuxt 3形式でプラグインとして関数を提供
+  return {
+    provide: {
+      imageOptimization: {
+        convertToWebP,
+        createResponsiveImage,
+        checkWebPSupport,
+      }
+    }
+  };
+});

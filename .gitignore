@@ -3,3 +3,10 @@ milestone_checklist.md
 .env
 .env.*
 
+# Nuxt 3関連
+front/.nuxt
+front/.output
+front/.nitro
+front/dist
+front/node_modules
+front/.cache
