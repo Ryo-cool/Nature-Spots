@@ -2,14 +2,14 @@
   <v-app>
     <bef-login-app-bar />
     <v-main>
-      <nuxt />
+      <slot />
     </v-main>
     <bef-login-footer />
   </v-app>
 </template>
 
-<script>
-export default {
-  middleware: "loggedInIsRedirects",
-};
+<script setup lang="ts">
+definePageMeta({
+  middleware: 'loggedInRedirects'
+})
 </script>

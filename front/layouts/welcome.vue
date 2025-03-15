@@ -13,16 +13,16 @@
         :style="{ height: `${imgHeight}px` }"
       >
         <v-col cols="12" class="text-center">
-          <h1 class="display-1 mb-4">
-自然を探そう。ワクワクしよう。
-</h1>
-          <h4 class="subheading" :style="{ letterSpacing: '5px' }">
+          <h1 class="text-h4 mb-4">
+            自然を探そう。ワクワクしよう。
+          </h1>
+          <h4 class="text-subtitle-1" :style="{ letterSpacing: '5px' }">
             自然スポットに特化した口コミサイト
           </h4>
           <div class="pt-9">
-            <guest-login class="hidden-ipad-and-up ma-2" />
-            <signup-link class="hidden-ipad-and-up" />
-            <login-link class="hidden-ipad-and-up" />
+            <guest-login class="ma-2" />
+            <signup-link />
+            <login-link />
           </div>
         </v-col>
       </v-row>
@@ -41,13 +41,15 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      menus: [],
-      imgHeight: 690,
-    };
-  },
-};
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const menus = ref([
+  { title: 'products' },
+  { title: 'price' },
+  { title: 'company' },
+  { title: 'contact' }
+])
+
+const imgHeight = ref(690)
 </script>

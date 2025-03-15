@@ -4,6 +4,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   
   // クライアントサイドでのみ初期化を実行
   if (process.client) {
-    await initialize()
+    try {
+      await initialize()
+    } catch (error) {
+      console.error('Auth initialization error:', error)
+    }
   }
 })
