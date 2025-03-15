@@ -3,8 +3,7 @@
     v-model="isVisible" 
     :color="toastStore.color" 
     :timeout="toastStore.timeout"
-    top
-    text
+    location="top"
   >
     {{ toastStore.message }}
     <template #actions>

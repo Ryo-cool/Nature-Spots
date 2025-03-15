@@ -70,3 +70,14 @@ export interface ErrorProps extends BaseProps {
   code?: string | number;
   retry?: () => void;
 }
+
+// 画像関連の共通型
+export interface ImageProps {
+  src: string;
+  alt?: string;
+  width?: number | string;
+  height?: number | string;
+  lazy?: boolean;
+  sizes?: string;
+  quality?: number;
+}

@@ -5,8 +5,9 @@
 </template>
 
 <script setup lang="ts">
+// タイトルとメタタグの設定
 useHead({
-  titleTemplate: (titleChunk) => {
+  titleTemplate: (titleChunk: string | undefined) => {
     return titleChunk ? `${titleChunk} - Nature Spots` : 'Nature Spots'
   },
   meta: [
