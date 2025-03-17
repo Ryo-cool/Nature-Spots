@@ -1,0 +1,42 @@
+back/app/models/**/*.rb
+
+# Railsモデルルール
+- モデルはActiveRecordを継承し、データベーステーブルとマッピングされます
+- バリデーションとアソシエーションを明示的に定義します
+
+## モデル設計の原則
+- Fat ModelよりもPORO（Plain Old Ruby Object）を使用することを推奨
+- コールバックは最小限に抑え、副作用を避ける
+- バリデーションは徹底し、データの整合性を確保する
+- スコープを活用して共通のクエリを定義する
+
+## 改善すべき点
+- モデル内のメソッドを適切に分類し、整理する
+- 複雑なクエリはスコープとして抽出する
+- バリデーションルールを強化する
+- アソシエーションには適切なdependentオプションを設定する
+
+## パフォーマンス考慮事項
+- 頻繁に使用されるクエリにはインデックスを設定する
+- 必要に応じてcounter_cacheを使用する
+- 大きなテーブルに対するクエリは最適化する
+
+## コード例
+```ruby
+# Good example
+class Spot < ApplicationRecord
+  belongs_to :prefecture
+  belongs_to :location
+  has_many :reviews, dependent: :destroy
+  has_many :favorites, dependent: :destroy
+  
+  validates :name, presence: true, length: { maximum: 100 }
+  validates :introduction, presence: true
+  
+  scope :popular, -> { joins(:reviews).group(:id).order('COUNT(reviews.id) DESC') }
+  scope :by_prefecture, ->(prefecture_id) { where(prefecture_id: prefecture_id) }
+  
+  def review_count
+    reviews.count
+  end
+end 

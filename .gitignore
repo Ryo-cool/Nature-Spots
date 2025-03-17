@@ -2,6 +2,7 @@ back/public/uploads/*
 milestone_checklist.md
 .env
 .env.*
+backend_improvement_plan.md
 
 # Nuxt 3関連
 front/.nuxt

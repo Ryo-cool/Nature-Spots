@@ -4,15 +4,20 @@ class Api::V1::SpotsController < ApplicationController
   # before_action :set_location, only: [:show]
   # GET /spots
   def index
-    @spots = Spot.all
+    @spots = Spot.includes(:prefecture, :location).all
     @prefecture = Prefecture.all
     @location = Location.all
-    render json: {spots: @spots, prefecture: @prefecture,location: @location }
+    render json: {
+      spots: @spots, 
+      prefecture: @prefecture,
+      location: @location,
+      status: :ok
+    }
   end
 
   # GET /spots/1
   def show
-    @reviews = @spot.reviews
+    @reviews = @spot.reviews.includes(:user)
     @prefecture = @spot.prefecture
     @location = @spot.location
     # お気に入り機能
@@ -23,16 +28,20 @@ class Api::V1::SpotsController < ApplicationController
       prefecture: @prefecture,
       location: @location,
       favuser: @favorite_user,
-      review: @reviews.to_json(include: [:user])
+      review: @reviews.to_json(include: [:user]),
+      status: :ok
     }
   end
   
   # レビュー数順にスポットを表示する
   def ranking
-    @all_ranks = Spot.find(Review.group(:spot_id).order('count(spot_id) desc').limit(5).pluck(:spot_id))
+    spot_ids = Review.group(:spot_id).order('count(spot_id) desc').limit(5).pluck(:spot_id)
+    @all_ranks = Spot.includes(:prefecture, :location).find(spot_ids)
 
-    render json: @all_ranks.to_json(methods: [:review_count])
-    
+    render json: {
+      spots: @all_ranks.to_json(methods: [:review_count]),
+      status: :ok
+    }
   end
 
   # SPOT /spots

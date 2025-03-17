@@ -1,0 +1,42 @@
+back/app/controllers/**/*.rb
+
+# Railsコントローラールール
+- このプロジェクトのAPIコントローラーは全てApi::V1名前空間の下にあります
+- REST原則に従い、標準的なCRUDアクションを使用します
+
+## 改善すべき点
+- N+1クエリを解消するために、includesやpreloadを使用する
+- コントローラーの責務を軽くし、ビジネスロジックはサービスクラスに移動させる
+- エラーハンドリングを統一し、適切なHTTPステータスコードとエラーメッセージを返す
+- コントローラーのアクション内のコードを短く保ち、プライベートメソッドに分割する
+
+## 具体的なリファクタリング候補
+- spots_controller.rbのindexアクションをincludesを使用して最適化
+- users_controller.rbのshowアクションをサービスクラスに分割
+- 共通のJSONレスポンス形式を定義し、一貫性を持たせる
+
+## セキュリティ考慮事項
+- Strong Parametersを徹底し、許可するパラメーターを明示的に定義する
+- 適切な認証・認可チェックを行い、未認証または権限のないアクセスを防ぐ
+- CSRF対策を適切に行う
+
+## コード例
+```ruby
+# Good example
+def index
+  @spots = Spot.includes(:prefecture, :location).all
+  render json: { spots: @spots, status: :ok }
+end
+
+# Better with pagination
+def index
+  @spots = Spot.includes(:prefecture, :location).page(params[:page]).per(20)
+  render json: { 
+    spots: @spots, 
+    meta: { 
+      current_page: @spots.current_page,
+      total_pages: @spots.total_pages
+    }, 
+    status: :ok 
+  }
+end 

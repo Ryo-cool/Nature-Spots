@@ -4,12 +4,12 @@ class Api::V1::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     #レビュー
-    @reviews = @user.reviews
+    @reviews = @user.reviews.includes(:spot)
     #お気に入り
     favorites = Favorite.where(user_id: @user.id).pluck(:spot_id)
-    @favorite_list = Spot.find(favorites)
+    @favorite_list = Spot.includes(:prefecture, :location).find(favorites)
     #いいね
-    @likes= Like.where(user_id: @user.id)
+    @likes = Like.where(user_id: @user.id).includes(:review)
     # フォロー
     follow = Relationship.where(user_id: @user.id).pluck(:follow_id)
     @follow_list = User.find(follow)
@@ -22,7 +22,8 @@ class Api::V1::UsersController < ApplicationController
       favorite: @favorite_list,
       like: @likes,
       follow: @follow_list,
-      follower: @follower_list
+      follower: @follower_list,
+      status: :ok
     }
 
   end
@@ -44,13 +45,13 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def user_data
-    @likes= Like.where(user_id: current_user.id)
     @user = User.find(current_user.id)
-    @reviews = @user.reviews
-    @like_reviews= @user.liked_reviews
+    @likes = Like.where(user_id: current_user.id).includes(:review)
+    @reviews = @user.reviews.includes(:spot)
+    @like_reviews = @user.liked_reviews.includes(:spot, :user)
     # お気に入り機能
     favorites = Favorite.where(user_id: current_user.id).pluck(:spot_id)
-    @favorite_list = Spot.find(favorites)
+    @favorite_list = Spot.includes(:prefecture, :location).find(favorites)
     # フォロー
     follow = Relationship.where(user_id: current_user.id).pluck(:follow_id)
     @follow_list = User.find(follow)
@@ -71,7 +72,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:name, :email, :password_digest,:image,:introduction)
+    params.permit(:name, :email, :password, :password_confirmation, :image, :introduction)
   end
 
 end
