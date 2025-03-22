@@ -40,15 +40,26 @@ class User < ApplicationRecord
 
   # validates
   validates :name, presence: true,
-                    length: { maximum: 30, allow_blank: true }
-                    VALID_PASSWORD_REGEX = /\A[\w\-]+\z/
+                  length: { minimum: 2, maximum: 30 },
+                  format: { with: /\A[ぁ-んァ-ヶー一-龠]+\z/, message: "は日本語で入力してください" }
+
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true,
+                   length: { maximum: 255 },
+                   format: { with: VALID_EMAIL_REGEX },
+                   uniqueness: { case_sensitive: false }
+
+  VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,}\z/
   validates :password, presence: true,
-                        length: { minimum: 8 },
-                        format: {
-                          with: VALID_PASSWORD_REGEX,
-                          message: :invalid_password 
-                        },
-                        allow_blank: true
+                      length: { minimum: 8 },
+                      format: {
+                        with: VALID_PASSWORD_REGEX,
+                        message: "は8文字以上の半角英数字で、大文字・小文字・数字を含める必要があります"
+                      },
+                      allow_blank: true
+
+  validates :introduction, length: { maximum: 500 }
+
   ## methods
   # class method  ###########################
   class << self
@@ -67,7 +78,7 @@ class User < ApplicationRecord
 
   # 共通のJSONレスポンス。カラムを増やした場合は配列に追加する。
   def my_json
-    as_json(only: [:id, :name, :email,:image, :created_at])
+    as_json(only: [:id, :name, :email, :image, :introduction, :created_at])
   end
   
   private
