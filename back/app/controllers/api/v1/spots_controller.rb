@@ -1,7 +1,7 @@
 class Api::V1::SpotsController < ApplicationController
   before_action :set_spot, only: [:show, :update, :destroy]
-  before_action :set_prefecture, only: [:show]
-  # before_action :set_location, only: [:show]
+  before_action :authenticate_user, only: [:create, :update, :destroy]
+
   # GET /spots
   def index
     @spots = Spot.includes(:prefecture, :location).all
@@ -18,16 +18,12 @@ class Api::V1::SpotsController < ApplicationController
   # GET /spots/1
   def show
     @reviews = @spot.reviews.includes(:user)
-    @prefecture = @spot.prefecture
-    @location = @spot.location
-    # お気に入り機能
-    favorites = Favorite.where(spot_id: @spot.id).pluck(:user_id)
-    @favorite_user = User.find(favorites)
+    @favorite_users = User.where(id: Favorite.where(spot_id: @spot.id).pluck(:user_id))
     render json: {
       spot: @spot,
-      prefecture: @prefecture,
-      location: @location,
-      favuser: @favorite_user,
+      prefecture: @spot.prefecture,
+      location: @spot.location,
+      favuser: @favorite_users,
       review: @reviews.to_json(include: [:user]),
       status: :ok
     }
@@ -44,60 +40,65 @@ class Api::V1::SpotsController < ApplicationController
     }
   end
 
-  # SPOT /spots
+  # POST /spots
   def create
     @spot = Spot.new(spot_params)
     if @spot.save
-      render json: @spot
+      render json: {
+        spot: @spot,
+        status: :created
+      }, status: :created
     else
-      render json: @spot.errors, status: :unprocessable_entity
+      render json: {
+        errors: @spot.errors.full_messages,
+        status: :unprocessable_entity
+      }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /spots/1
   def update
     if @spot.update(spot_params)
-      render json: @spot
+      render json: {
+        spot: @spot,
+        status: :ok
+      }
     else
-      render json: @spot.errors, status: :unprocessable_entity
+      render json: {
+        errors: @spot.errors.full_messages,
+        status: :unprocessable_entity
+      }, status: :unprocessable_entity
     end
   end
 
   # DELETE /spots/1
   def destroy
-    @spot.destroy
+    if @spot.destroy
+      render json: { status: :no_content }, status: :no_content
+    else
+      render json: {
+        errors: @spot.errors.full_messages,
+        status: :unprocessable_entity
+      }, status: :unprocessable_entity
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_spot
-      @spot = Spot.find(params[:id])
-    end
 
-    def set_user
-      @user = User.find(params[:id])
-    end
+  def set_spot
+    @spot = Spot.find(params[:id])
+  end
 
-    def set_prefecture
-      @prefecture = Prefecture.find(params[:id])
-    end
-
-    def set_location
-      @location = Location.find(params[:id])
-    end
-
-    # Only allow a trusted parameter "white list" through.
-    def spot_params
-      params
-      .permit(
-        :name,
-        :introduction,
-        :location_id,
-        :photo,
-        :longitude,
-        :latitude,
-        :address,
-        :prefecture_id
-      )
-    end
+  def spot_params
+    params.permit(
+      :name,
+      :introduction,
+      :location_id,
+      :photo,
+      :longitude,
+      :latitude,
+      :address,
+      :prefecture_id
+    )
+  end
 end
