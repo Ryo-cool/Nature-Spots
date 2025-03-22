@@ -1,12 +1,18 @@
 # Nature-Spots
+
 自然スポットの口コミサイトです。<br >
 旅行先の景色や好きな自然スポットを位置情報付きで共有できます。<br >
 レスポンシブ対応<br >
 <img width="733" alt="スクショ2020-10-16 19 16 10" src="https://user-images.githubusercontent.com/58380104/96246943-5b151300-0fe4-11eb-9435-bc4d0c88971e.png">
+
 ## 思い出のスポットを投稿出来ます
+
 ![スポット投稿](https://user-images.githubusercontent.com/58380104/105680382-ffd3b480-5f32-11eb-825f-09d0ac525728.gif)
+
 ## そのスポットについてのレビューを書くことができます
+
 ![レビュー投稿](https://user-images.githubusercontent.com/58380104/105680428-11b55780-5f33-11eb-9b4f-9466e74fd08d.gif)
+
 <h2 align="left">Frontend</h2>
 
 <p align="left">
@@ -27,26 +33,29 @@
     <a href="https://circleci.com/ja/"><img src="https://user-images.githubusercontent.com/58380104/104709632-85e94180-5762-11eb-8ccc-c3bc2d0f1be1.jpg" height="45px;" /></a>
 
 # 特に見ていただきたい点
+
 - ## インフラ面
-- Dockerを使い、ECS(EC2)/ECRで本番環境を運用している点
-- CircleCIを使い、CD/CDパイプラインを構築している点
+- Docker を使い、ECS(EC2)/ECR で本番環境を運用している点
+- CircleCI を使い、CD/CD パイプラインを構築している点
 - ## フロントエンド面
-- Nuxt.jsを使用しSPA化することでUX向上している点
-- Vuetilyを使用し、UIの整形を行っている点
+- Nuxt.js を使用し SPA 化することで UX 向上している点
+- Vuetily を使用し、UI の整形を行っている点
 - ## バックエンド面
-- RailsのAPIモードで開発し、フロントと分けて疎結合な構成にしている点
-- 外部API(Google Maps Javascript API,Geocording API)を利用し、機能を追加している点
-- JWTを使用したログイン認証を実装している点
+- Rails の API モードで開発し、フロントと分けて疎結合な構成にしている点
+- 外部 API(Google Maps Javascript API,Geocording API)を利用し、機能を追加している点
+- JWT を使用したログイン認証を実装している点
 - ## その他
-- チーム開発を意識したGitHubの活用をしている点
+- チーム開発を意識した GitHub の活用をしている点
 
 # URL
-https://www.nature-spots.work/  （現在停止中)
+
+https://www.nature-spots.work/ （現在停止中)
 
 # 使用技術
+
 - フロント
   - Vue.js
-  - Nuxt.js(SPA化)
+  - Nuxt.js(SPA 化)
   - vuetify
 - バックエンド
   - Ruby 2.6.3
@@ -57,24 +66,26 @@ https://www.nature-spots.work/  （現在停止中)
   - Docker/Docker-compose
   - CircleCI(CI/CD)
   - AWS (VPC,ECS,ECR,RDS,Route53,ELB,ACM,IAM)
-  - axios(APIとのHTTP通信),cors(異なるオリジンの許可）
+  - axios(API との HTTP 通信),cors(異なるオリジンの許可）
   - nuxt-i18n（国際化対応)
   - bcrypt(パスワード暗号化）
+
 # 機能一覧
+
 - ユーザー登録、ログイン機能(JWT)
-  - Cookieにてログイン維持
+  - Cookie にてログイン維持
   - ゲストログイン機能
 - ユーザーフォロー機能
 - 詳細ページ
   - 投稿、いいねした投稿、フォロー＆フォロワー表示
 - スポット投稿機能
-  - スポット名入力でGoogle MAP緯度経度取得(Geocording API)
+  - スポット名入力で Google MAP 緯度経度取得(Geocording API)
 - 一覧画面
   - 都道府県別リンク
   - ジャンル別リンク
   - レビュー数順スポット
 - 詳細ページ
-  - Google MAP表示（Google Maps Javascript API）
+  - Google MAP 表示（Google Maps Javascript API）
 - 検索機能
   - オートコンプリート機能
 - 口コミ投稿機能
@@ -85,19 +96,44 @@ https://www.nature-spots.work/  （現在停止中)
   - お気に入り一覧表示
 
 **その他使用したライブラリ**
+
 - moment.js(日付フォーマット)
 - active_hash
 - Eslint(静的コード解析)
+
 # テスト
+
 - RSpec,FactoryBot
   - 単体テスト(model)
   - 機能テスト(request)
   - 統合テスト(feature)
 
-# ER図
+# ER 図
+
 <img width="915" alt="スクリーンショット 2020-11-23 17 04 53" src="https://user-images.githubusercontent.com/58380104/99939743-21d37e00-2dae-11eb-8ec8-aee6c6f0d63b.png">
 
 # インフラ構成図
+
 <img width="704" alt="スクリーンショット 2020-12-08 18 28 33" src="https://user-images.githubusercontent.com/58380104/101465370-35244300-3983-11eb-810a-31062e02577e.png">
 
+## 環境変数の設定
 
+1. バックエンドの環境変数設定
+
+```bash
+# back/environments/db.env.example をコピーして db.env を作成
+cp back/environments/db.env.example back/environments/db.env
+
+# db.env を編集して、実際の認証情報を設定
+```
+
+2. フロントエンドの環境変数設定（必要な場合）
+
+```bash
+# front/.env.example をコピーして .env を作成
+cp front/.env.example front/.env
+
+# .env を編集して、実際の認証情報を設定
+```
+
+注意: 環境変数ファイル（.env）は Git で管理されません。各開発者が自身の環境に合わせて設定する必要があります。
