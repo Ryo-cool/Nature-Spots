@@ -7,8 +7,9 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :liked_reviews, through: :likes, source: :review
   has_many :reviews, dependent: :destroy
-  has_many :liked_spots, through: :likes, source: :spot
+  has_many :liked_spots, through: :likes, source: :spot # Spots liked via reviews
   has_many :favorites, dependent: :destroy
+  has_many :favorite_spots, through: :favorites, source: :spot # Actual spots favorited by the user
   # フォロー機能関係
   has_many :relationships
   has_many :followings, through: :relationships, source: :follow
