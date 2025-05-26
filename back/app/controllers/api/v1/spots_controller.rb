@@ -5,47 +5,62 @@ class Api::V1::SpotsController < ApplicationController
   # GET /spots
   def index
     @spots = Spot.includes(:prefecture, :location).all
-    @prefecture = Prefecture.all
-    @location = Location.all
-    render json: {
-      spots: @spots, 
-      prefecture: @prefecture,
-      location: @location,
-      status: :ok
-    }
+    serialized_spots = @spots.map { |spot| SpotSerializer.new(spot).as_json }
+    
+    prefecture_location_result = PrefectureLocationService.call
+    
+    if prefecture_location_result.success?
+      render json: {
+        spots: serialized_spots,
+        **prefecture_location_result.data,
+        status: :ok
+      }
+    else
+      render json: {
+        spots: serialized_spots,
+        prefecture: [],
+        locations: [],
+        status: :ok
+      }
+    end
   end
 
   # GET /spots/1
   def show
-    @reviews = @spot.reviews.includes(:user)
-    @favorite_users = User.where(id: Favorite.where(spot_id: @spot.id).pluck(:user_id))
+    serialized_spot = SpotSerializer.new(@spot).with_details
+    
     render json: {
-      spot: @spot,
-      prefecture: @spot.prefecture,
-      location: @spot.location,
-      favuser: @favorite_users,
-      review: @reviews.to_json(include: [:user]),
+      **serialized_spot,
       status: :ok
     }
   end
   
   # レビュー数順にスポットを表示する
   def ranking
-    spot_ids = Review.group(:spot_id).order('count(spot_id) desc').limit(5).pluck(:spot_id)
-    @all_ranks = Spot.includes(:prefecture, :location).find(spot_ids)
-
-    render json: {
-      spots: @all_ranks.to_json(methods: [:review_count]),
-      status: :ok
-    }
+    result = SpotRankingService.call
+    
+    if result.success?
+      render json: {
+        **result.data,
+        status: :ok
+      }
+    else
+      render json: {
+        errors: result.errors,
+        status: :unprocessable_entity
+      }, status: :unprocessable_entity
+    end
   end
 
   # POST /spots
   def create
-    @spot = Spot.new(spot_params)
+    @spot = current_user.spots.build(spot_params)
+    authorize(@spot)
+    
     if @spot.save
+      serialized_spot = SpotSerializer.new(@spot).as_json
       render json: {
-        spot: @spot,
+        spot: serialized_spot,
         status: :created
       }, status: :created
     else
@@ -58,9 +73,12 @@ class Api::V1::SpotsController < ApplicationController
 
   # PATCH/PUT /spots/1
   def update
+    authorize(@spot)
+    
     if @spot.update(spot_params)
+      serialized_spot = SpotSerializer.new(@spot).as_json
       render json: {
-        spot: @spot,
+        spot: serialized_spot,
         status: :ok
       }
     else
@@ -73,6 +91,8 @@ class Api::V1::SpotsController < ApplicationController
 
   # DELETE /spots/1
   def destroy
+    authorize(@spot)
+    
     if @spot.destroy
       render json: { status: :no_content }, status: :no_content
     else
