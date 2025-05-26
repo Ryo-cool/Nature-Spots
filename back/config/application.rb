@@ -29,13 +29,14 @@ module App
     
     # Zeitwerk（ツァイトベルク）にvalidator配下のファイルを読み込ます
     config.autoload_paths += %W(#{config.root}/lib/validator)
+    config.autoload_paths += %W(#{config.root}/app/validators)
     
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 7.1
 
     # Railsアプリデフォルトのタイムゾーン(default 'UTC')
     # TimeZoneList: http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html
-    config.time_zone = ENV["TZ"]
+    config.time_zone = ENV["TZ"] || 'Asia/Tokyo'
 
     # データベースの読み書きに使用するタイムゾーン(:local | :utc(default))
     config.active_record.default_timezone = :utc
@@ -46,6 +47,21 @@ module App
     # $LOAD_PATHにautoload pathを追加しない(Zeitwerk有効時false推奨)
     config.add_autoload_paths_to_load_path = false
 
-    config.api_only = true
+    # キャッシュストアの設定
+    config.cache_store = :memory_store, { size: 64.megabytes }
+
+    # セキュリティヘッダーの設定
+    config.force_ssl = Rails.env.production?
+    
+    # CORS設定
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins ENV['FRONTEND_URL'] || 'http://localhost:3000'
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head],
+          credentials: true
+      end
+    end
   end
 end

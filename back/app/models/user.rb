@@ -4,6 +4,7 @@ class User < ApplicationRecord
   include UserAuth::Tokenizable
 
   # アソシエーション
+  has_many :spots, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_reviews, through: :likes, source: :review
   has_many :reviews, dependent: :destroy
@@ -41,7 +42,7 @@ class User < ApplicationRecord
   # validates
   validates :name, presence: true,
                   length: { minimum: 2, maximum: 30 },
-                  format: { with: /\A[ぁ-んァ-ヶー一-龠]+\z/, message: "は日本語で入力してください" }
+                  japanese_text: true
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true,
@@ -50,13 +51,13 @@ class User < ApplicationRecord
                    uniqueness: { case_sensitive: false }
 
   VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,}\z/
-  validates :password, presence: true,
-                      length: { minimum: 8 },
+  validates :password, presence: true, on: :create
+  validates :password, length: { minimum: 8 },
                       format: {
                         with: VALID_PASSWORD_REGEX,
                         message: "は8文字以上の半角英数字で、大文字・小文字・数字を含める必要があります"
                       },
-                      allow_blank: true
+                      if: :password_present?
 
   validates :introduction, length: { maximum: 500 }
 
@@ -86,5 +87,10 @@ class User < ApplicationRecord
     # email小文字化
     def downcase_email
       self.email.downcase! if email
+    end
+
+    # パスワードが存在するかチェック
+    def password_present?
+      password.present?
     end
 end
