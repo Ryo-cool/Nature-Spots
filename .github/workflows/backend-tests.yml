@@ -1,0 +1,45 @@
+name: Backend Tests
+
+on:
+  pull_request:
+    paths:
+      - 'back/**'
+      - 'docker-compose.yml'
+      - '.github/workflows/backend-tests.yml'
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup environment variables
+        run: |
+          cat <<'EOT' > back/environments/db.env
+          DB_USERNAME=root
+          DB_PASSWORD=password
+          MYSQL_ROOT_PASSWORD=password
+          MYSQL_USER=root
+          MYSQL_PASSWORD=password
+          EOT
+
+      - name: Build Docker images
+        run: docker-compose build
+
+      - name: Start database
+        run: docker-compose up -d db
+
+      - name: Wait for MySQL
+        run: sleep 20
+
+      - name: Prepare database
+        run: |
+          docker-compose run --rm back rails db:create RAILS_ENV=test
+          docker-compose run --rm back rails db:migrate RAILS_ENV=test
+
+      - name: Run RSpec
+        run: docker-compose run --rm back bundle exec rspec spec
+
+      - name: Shutdown
+        run: docker-compose down
