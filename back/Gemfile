@@ -56,3 +56,13 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.12'
 gem 'active_hash'
 # 画像投稿
 gem 'carrierwave'
+
+# セキュリティ関連のgem
+gem 'rack-attack', '~> 6.6'
+gem 'brakeman', '~> 5.4'
+gem 'bundler-audit', '~> 0.9'
+
+group :development do
+  # セキュリティ監査ツール
+  gem 'ruby_audit', '~> 2.2'
+end

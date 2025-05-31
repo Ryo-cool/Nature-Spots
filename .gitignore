@@ -4,6 +4,12 @@ milestone_checklist.md
 front/.env
 backend_improvement_plan.md
 
+# 改善計画書（Gitで管理しない）
+SECURITY_IMPROVEMENT_PLAN.md
+TEST_IMPROVEMENT_PLAN.md
+PERFORMANCE_IMPROVEMENT_PLAN.md
+IMPROVEMENT_ROADMAP.md
+
 # Nuxt 3関連
 front/.nuxt
 front/.output

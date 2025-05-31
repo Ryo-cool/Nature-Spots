@@ -53,6 +53,27 @@ module App
     # セキュリティヘッダーの設定
     config.force_ssl = Rails.env.production?
     
+    # セキュリティヘッダーの追加
+    config.middleware.use Rack::Deflater
+    
+    # セキュリティヘッダーの設定
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins Rails.env.production? ? 
+          ['https://www.nature-spots.work', 'https://nature-spots.work'] : 
+          ['http://localhost:8080', 'http://127.0.0.1:8080']
+        
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head],
+          credentials: true,
+          expose: ['Authorization']
+      end
+    end
+    
+    # セキュリティヘッダーミドルウェアの追加
+    config.middleware.use Rack::Attack if Rails.env.production?
+    
     # CORS設定
     config.middleware.insert_before 0, Rack::Cors do
       allow do
