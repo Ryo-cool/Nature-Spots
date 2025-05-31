@@ -6,7 +6,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # No default working directory, docker-compose commands run from project root.
+    # No default working directory, docker compose commands run from project root.
 
     steps:
       - name: Checkout code
@@ -14,25 +14,26 @@ jobs:
 
       # Docker images should define Ruby and bundle install.
       # No need for ruby/setup-ruby or direct bundle install on the runner.
+      # Docker Compose v2 (docker compose) is typically pre-installed on GitHub-hosted runners.
 
       - name: Build Docker images
-        run: docker-compose build
+        run: docker compose build
 
       - name: Start Docker services
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Wait for services to be ready
         run: sleep 30 # Consider more robust health checks if possible
 
       - name: Create test database
-        run: docker-compose run --rm back rails db:create RAILS_ENV=test
+        run: docker compose run --rm back rails db:create RAILS_ENV=test
 
       - name: Migrate test database
-        run: docker-compose run --rm back rails db:migrate RAILS_ENV=test
+        run: docker compose run --rm back rails db:migrate RAILS_ENV=test
 
       - name: Run RSpec tests
-        run: docker-compose run --rm back bundle exec rspec spec
+        run: docker compose run --rm back bundle exec rspec spec
 
       - name: Stop Docker services
         if: always() # Ensures this step runs even if previous steps fail
-        run: docker-compose down
+        run: docker compose down
