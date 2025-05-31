@@ -26,8 +26,9 @@ class JapaneseTextValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return unless value.present?
     
-    unless value.match?(/\A[ぁ-んァ-ヶー一-龠\s]+\z/)
-      record.errors.add(attribute, options[:message] || "は日本語で入力してください")
+    # 日本語文字（ひらがな、カタカナ、漢字）、数字、アルファベット、スペースを許可
+    unless value.match?(/\A[ぁ-んァ-ヶー一-龠a-zA-Z0-9\s]+\z/)
+      record.errors.add(attribute, options[:message] || "は日本語、英数字で入力してください")
     end
   end
 end 

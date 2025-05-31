@@ -32,6 +32,13 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'pry-byebug'
+  # セキュリティ監査ツール
+  gem 'brakeman', '~> 5.4'
+  gem 'bundler-audit', '~> 0.9'
+  # テストカバレッジ測定
+  gem 'simplecov', '~> 0.22', require: false
+  # RSpecマッチャー
+  gem 'shoulda-matchers', '~> 5.3'
 end
 
 group :development do
@@ -39,6 +46,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # セキュリティ監査ツール
+  gem 'ruby_audit', '~> 2.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -57,12 +66,5 @@ gem 'active_hash'
 # 画像投稿
 gem 'carrierwave'
 
-# セキュリティ関連のgem
+# セキュリティ関連のgem（本番環境でも使用）
 gem 'rack-attack', '~> 6.6'
-gem 'brakeman', '~> 5.4'
-gem 'bundler-audit', '~> 0.9'
-
-group :development do
-  # セキュリティ監査ツール
-  gem 'ruby_audit', '~> 2.2'
-end

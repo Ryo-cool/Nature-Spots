@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2020_11_22_080043) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_01_000000) do
   create_table "favorites", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "spot_id", null: false
     t.bigint "user_id", null: false
@@ -64,6 +64,8 @@ ActiveRecord::Schema[7.1].define(version: 2020_11_22_080043) do
     t.integer "location_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_spots_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
@@ -86,4 +88,5 @@ ActiveRecord::Schema[7.1].define(version: 2020_11_22_080043) do
   add_foreign_key "relationships", "users", column: "follow_id"
   add_foreign_key "reviews", "spots"
   add_foreign_key "reviews", "users"
+  add_foreign_key "spots", "users"
 end

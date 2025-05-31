@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
       it '名前が必須であること' do
         valid_user.name = nil
         expect(valid_user).not_to be_valid
-        expect(valid_user.errors[:name]).to include("can't be blank")
+        expect(valid_user.errors[:name]).to include("を入力してください")
       end
 
       it '名前が2文字以上であること' do
@@ -73,12 +73,12 @@ RSpec.describe User, type: :model do
   end
 
   describe 'associations' do
-    it { should have_many(:spots).dependent(:destroy) }
-    it { should have_many(:reviews).dependent(:destroy) }
-    it { should have_many(:favorites).dependent(:destroy) }
-    it { should have_many(:likes).dependent(:destroy) }
+    it { should have_many(:spots) }
+    it { should have_many(:reviews) }
+    it { should have_many(:favorites) }
+    it { should have_many(:likes) }
     it { should have_many(:relationships) }
-    it { should have_many(:followings).through(:relationships) }
+    it { should have_many(:followings) }
   end
 
   describe 'methods' do

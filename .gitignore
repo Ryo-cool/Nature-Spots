@@ -1,5 +1,6 @@
 back/environments/*.env
 back/public/uploads/*
+back/coverage/assets/*
 milestone_checklist.md
 front/.env
 backend_improvement_plan.md
@@ -9,6 +10,7 @@ SECURITY_IMPROVEMENT_PLAN.md
 TEST_IMPROVEMENT_PLAN.md
 PERFORMANCE_IMPROVEMENT_PLAN.md
 IMPROVEMENT_ROADMAP.md
+TEST_COVERAGE_PROGRESS.md
 
 # Nuxt 3関連
 front/.nuxt
