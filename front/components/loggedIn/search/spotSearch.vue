@@ -1,52 +1,64 @@
 <template>
   <div>
     <v-autocomplete
-      v-model="value"
+      v-model="selectedSpot"
       :items="spots"
-      item-text="name"
+      :item-title="(item) => item.name"
+      :item-value="(item) => item"
       prepend-inner-icon="mdi-database-search"
-      dense
-      solo-inverted
-      background-color="green lighten-4"
+      density="comfortable"
+      variant="solo-inverted"
+      bg-color="green-lighten-4"
       color="black"
-      height="60"
+      :height="60"
       hide-no-data
       label="入力し、出たスポットをクリック"
+      @update:model-value="onSpotSelect"
     >
-      <template #item="data">
-        <v-list-item :to="`spots/${data.item.id}`" link>
-          <v-list-item-icon>
-            <v-icon color="green darken-2"> mdi-map-marker </v-icon>
-          </v-list-item-icon>
-          <v-list-item-title v-text="data.item.name" />
+      <template #item="{ item, props }">
+        <v-list-item v-bind="props" :to="`/spots/${item.raw.id}`">
+          <template #prepend>
+            <v-icon color="green-darken-2">mdi-map-marker</v-icon>
+          </template>
         </v-list-item>
       </template>
     </v-autocomplete>
   </div>
 </template>
 
-<script>
-import axios from "~/plugins/axios";
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      spots: [],
-      value: null,
-    };
-  },
-  created() {
-    // ユーザーをaxiosで取得
-    this.$axios.get("/api/v1/spots").then((res) => {
-      if (res.data) {
-        this.spots = res.data.spots;
-      }
-    });
-  },
-};
-</script>
-<style>
-v-list-item-title {
-  width: 100px;
+interface Spot {
+  id: number;
+  name: string;
 }
+
+const { $api } = useNuxtApp();
+const router = useRouter();
+
+const spots = ref<Spot[]>([]);
+const selectedSpot = ref<Spot | null>(null);
+
+const onSpotSelect = (spot: Spot | null) => {
+  if (spot) {
+    router.push(`/spots/${spot.id}`);
+  }
+};
+
+onMounted(async () => {
+  try {
+    const res = await $api.get("/api/v1/spots");
+    if (res.data?.spots) {
+      spots.value = res.data.spots;
+    }
+  } catch (error) {
+    console.error("スポットデータの取得に失敗しました:", error);
+  }
+});
+</script>
+
+<style scoped>
+/* Vuetify 3では、コンポーネント名のセレクターは動作しないため削除 */
 </style>

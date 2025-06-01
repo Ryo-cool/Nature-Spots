@@ -1,45 +1,54 @@
 <template>
-  <v-slide-group
-    v-model="model"
-    prev-icon="mdi-arrow-left-circle-outline"
-    next-icon="mdi-arrow-right-circle-outline"
-  >
-    <v-slide-item v-for="(spot, index) in pspots" :key="index">
-      <v-card
-        class="ma-4"
-        height="300"
-        width="300"
-        nuxt
-        :to="`/spots/${spot.id}`"
-      >
-        <v-img :src="spot.photo.url" :aspect-ratio="12 / 9" />
-        <h3>{{ spot.name }}</h3>
-        <div>
-          <v-icon>mdi-comment-text-outline</v-icon>
-          {{ spot.review_count }}件
-        </div>
+  <v-slide-group v-model="selectedIndex" show-arrows>
+    <template #prev>
+      <v-btn icon="mdi-arrow-left-circle-outline" variant="text" />
+    </template>
+    <template #next>
+      <v-btn icon="mdi-arrow-right-circle-outline" variant="text" />
+    </template>
+
+    <v-slide-group-item v-for="spot in popularSpots" :key="spot.id">
+      <v-card class="ma-4" :height="300" :width="300" :to="`/spots/${spot.id}`">
+        <v-img
+          :src="spot.photo?.url || '/no-image.png'"
+          :aspect-ratio="12 / 9"
+          cover
+        />
+        <v-card-text>
+          <h3 class="text-h6">{{ spot.name }}</h3>
+          <div class="d-flex align-center mt-2">
+            <v-icon size="small" class="mr-1">mdi-comment-text-outline</v-icon>
+            <span>{{ spot.review_count || 0 }}件</span>
+          </div>
+        </v-card-text>
       </v-card>
-    </v-slide-item>
+    </v-slide-group-item>
   </v-slide-group>
 </template>
 
-<script>
-import axios from "~/plugins/axios";
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
 
-export default {
-  data: () => ({
-    model: null,
-    pspots: {},
-  }),
-  mounted() {
-    this.$axios
-      .get("api/v1/spots/ranking")
-      .then((res) => {
-        this.pspots = res.data;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  },
-};
+interface PopularSpot {
+  id: number;
+  name: string;
+  photo?: {
+    url: string;
+  };
+  review_count?: number;
+}
+
+const { $api } = useNuxtApp();
+
+const selectedIndex = ref<number | null>(null);
+const popularSpots = ref<PopularSpot[]>([]);
+
+onMounted(async () => {
+  try {
+    const res = await $api.get("/api/v1/spots/ranking");
+    popularSpots.value = Array.isArray(res.data) ? res.data : [];
+  } catch (error) {
+    console.error("人気スポットの取得に失敗しました:", error);
+  }
+});
 </script>
