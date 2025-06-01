@@ -1,14 +1,19 @@
-declare module 'imagemin' {
+declare module "imagemin" {
   interface Options {
-    plugins: any[]
+    plugins: any[];
   }
 
-  function imagemin(input: Buffer | string[], options?: Options): Promise<{
-    data: Buffer;
-    path?: string;
-    sourceData?: Buffer;
-    destinationPath?: string;
-  }[]>;
+  function imagemin(
+    input: Buffer | string[],
+    options?: Options,
+  ): Promise<
+    {
+      data: Buffer;
+      path?: string;
+      sourceData?: Buffer;
+      destinationPath?: string;
+    }[]
+  >;
 
   namespace imagemin {
     function buffer(input: Uint8Array, options?: Options): Promise<Buffer>;
@@ -17,7 +22,7 @@ declare module 'imagemin' {
   export = imagemin;
 }
 
-declare module 'imagemin-webp' {
+declare module "imagemin-webp" {
   interface Options {
     quality?: number;
     lossless?: boolean;

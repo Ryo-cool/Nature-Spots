@@ -1,41 +1,48 @@
 <template>
   <div>
-    <v-list-item v-for="review in reviews" :key="review.title">
+    <v-list-item v-for="review in reviews" :key="review.id">
       <v-card>
         <!-- ユーザーの投稿 -->
         <v-container>
           <v-row>
             <v-col cols="1">
               <v-avatar color="black" size="34" class="my-app-log">
-                <span class="white--text text-subtitle-2"> Biz </span>
+                <span class="white--text text-subtitle-2">
+                  {{ review.user?.name?.charAt(0) || "U" }}
+                </span>
               </v-avatar>
             </v-col>
             <v-col cols="10">
               <div class="indigo--text caption d-flex">
-                <h3>山口</h3>
-                さんの口コミ（{{ review.created_at }})
+                <h3>{{ review.user?.name || "ユーザー" }}</h3>
+                さんの口コミ（{{ formatDate(review.created_at) }})
               </div>
-              <div class="blue-grey--text caption">いいね〇〇件</div>
+              <div class="blue-grey--text caption">
+                いいね{{ review.likes?.length || 0 }}件
+              </div>
             </v-col>
             <v-col cols="1">
-              <v-btn icon>
+              <v-btn :icon="true">
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </v-col>
           </v-row>
           <v-row>
-            <v-img src="https://picsum.photos/id/243/960/540" />
+            <v-img
+              :src="review.image?.url || 'https://picsum.photos/id/243/960/540'"
+              :aspect-ratio="16 / 9"
+            />
           </v-row>
           <v-row>
             <v-col>
               <v-row>
                 <v-rating
-                  :value="review.rating"
-                  background-color="purple lighten-3"
+                  v-model="review.rating"
+                  bg-color="purple-lighten-3"
                   color="purple"
-                  medium
-                  readonly
-                  half-increments
+                  size="default"
+                  :readonly="true"
+                  :half-increments="true"
                 />
                 <span class="grey--text subtitle-1 mt-2 ml-1">
                   {{ review.rating }}
@@ -48,12 +55,12 @@
           </v-row>
           <v-row>
             <v-col cols="1">
-              <v-btn icon>
+              <v-btn :icon="true">
                 <v-icon>mdi-thumb-up-outline</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="1">
-              <v-btn icon>
+              <v-btn :icon="true">
                 <v-icon>mdi-export-variant</v-icon>
               </v-btn>
             </v-col>
@@ -64,24 +71,45 @@
   </div>
 </template>
 
-<script>
-import axios from "~/plugins/axios";
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { format } from "date-fns";
+import { ja } from "date-fns/locale";
 
-export default {
-  data() {
-    return {
-      reviews: {},
-    };
-  },
-  mounted() {
-    this.$axios
-      .get(`/api/v1/users/user_data`)
-      .then((res) => {
-        this.reviews = res.data.like_reviews;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  },
+interface Review {
+  id: number;
+  title: string;
+  text: string;
+  rating: number;
+  wentday: number;
+  created_at: string;
+  user?: {
+    name: string;
+  };
+  image?: {
+    url: string;
+  };
+  likes?: any[];
+}
+
+const { $api } = useNuxtApp();
+
+const reviews = ref<Review[]>([]);
+
+const formatDate = (dateString: string) => {
+  try {
+    return format(new Date(dateString), "yyyy年M月d日", { locale: ja });
+  } catch {
+    return dateString;
+  }
 };
+
+onMounted(async () => {
+  try {
+    const res = await $api.get("/api/v1/users/user_data");
+    reviews.value = res.data.like_reviews || [];
+  } catch (error) {
+    console.error("ユーザーデータの取得に失敗しました:", error);
+  }
+});
 </script>

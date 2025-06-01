@@ -1,8 +1,7 @@
 <template>
   <v-btn
-    outlined
-    dark
-    color="myblue"
+    variant="outlined"
+    color="primary"
     class="ml-5 font-weight-bold"
     to="/signup"
   >
@@ -10,6 +9,6 @@
   </v-btn>
 </template>
 
-<script>
-export default {};
+<script setup lang="ts">
+// No additional logic needed for this simple link component
 </script>

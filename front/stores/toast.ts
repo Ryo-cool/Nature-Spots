@@ -14,6 +14,10 @@ export const useToastStore = defineStore("toast", {
     timeout: 3000,
   }),
 
+  getters: {
+    visible: (state) => state.show,
+  },
+
   actions: {
     showToast({ message, color = "info", timeout = 3000 }: ToastMessage) {
       this.show = true;
@@ -21,14 +25,20 @@ export const useToastStore = defineStore("toast", {
       this.color = color;
       this.timeout = timeout;
 
-      setTimeout(() => {
-        this.clearToast();
-      }, timeout);
+      if (timeout > 0) {
+        setTimeout(() => {
+          this.clearToast();
+        }, timeout);
+      }
     },
 
     clearToast() {
       this.show = false;
       this.message = "";
+    },
+
+    hideToast() {
+      this.clearToast();
     },
   },
 });

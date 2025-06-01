@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app :height="appBarHeight" color="white">
+  <v-app-bar :height="64" color="white">
     <nuxt-link to="/" class="text-decoration-none">
       <app-logo />
     </nuxt-link>
@@ -12,12 +12,7 @@
   </v-app-bar>
 </template>
 
-<script>
-export default {
-  data({ $store }) {
-    return {
-      appBarHeight: $store.state.styles.beforeLogin.appBarHeight,
-    };
-  },
-};
+<script setup lang="ts">
+// App bar height is now fixed at 64px for consistency
+// Can be made configurable if needed
 </script>

@@ -88,8 +88,6 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios";
-
 export default {
   layout({ $auth }) {
     return $auth.loggedIn ? "loggedIn" : "welcome";
@@ -149,7 +147,7 @@ export default {
       this.preview = URL.createObjectURL(e);
     },
     // スポットをaxiosで登録
-    createSpot(e) {
+    createSpot(_e) {
       const formData = new FormData();
       formData.append("photo", this.image);
       formData.append("name", this.name);

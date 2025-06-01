@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import axios from "~/plugins/axios";
-
 export default {
   layout({ $auth }) {
     return $auth.loggedIn ? "loggedIn" : "welcome";

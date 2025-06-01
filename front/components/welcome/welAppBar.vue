@@ -1,7 +1,6 @@
 <template>
   <v-app-bar
-    app
-    :dark="!isScrollPoint"
+    :theme="isScrollPoint ? 'light' : 'dark'"
     :height="appBarHeight"
     :color="toolbarStyle.color"
     :elevation="toolbarStyle.elevation"
@@ -10,70 +9,72 @@
     <app-title class="hidden-mobile-and-down" />
     <v-spacer />
 
-    <v-toolbar-items class="ml-2 hidden-ipad-and-down">
+    <div class="ml-2 hidden-ipad-and-down d-flex">
       <v-btn
         v-for="(menu, i) in menus"
         :key="`menu-btn-${i}`"
-        text
+        variant="text"
         :class="{ 'hidden-sm-and-down': menu.title === 'about' }"
       >
         {{ $t(`menus.${menu.title}`) }}
       </v-btn>
-    </v-toolbar-items>
+    </div>
     <guest-login class="hidden-ipad-and-down" />
     <signup-link class="hidden-ipad-and-down" />
     <login-link class="hidden-ipad-and-down" />
-    <v-menu bottom offset-y nudge-left="110" nudge-width="100">
-      <template #activator="{ on }">
-        <v-app-bar-nav-icon class="hidden-ipad-and-up" v-on="on" />
+    <v-menu location="bottom">
+      <template #activator="{ props: menuProps }">
+        <v-app-bar-nav-icon class="hidden-ipad-and-up" v-bind="menuProps" />
       </template>
-      <v-list dense class="hidden-ipad-and-up">
-        <v-list-item link to="/signup"> 会員登録 </v-list-item>
-        <v-list-item link to="/login"> ログイン </v-list-item>
+      <v-list density="compact" class="hidden-ipad-and-up">
+        <v-list-item to="/signup">会員登録</v-list-item>
+        <v-list-item to="/login">ログイン</v-list-item>
       </v-list>
     </v-menu>
   </v-app-bar>
 </template>
 
-<script>
-export default {
-  props: {
-    menus: {
-      type: Array,
-      default: () => [],
-    },
-    imgHeight: {
-      type: Number,
-      default: 0,
-    },
-  },
-  data({ $store }) {
-    return {
-      scrollY: 0,
-      appBarHeight: $store.state.styles.beforeLogin.appBarHeight,
-    };
-  },
-  computed: {
-    isScrollPoint() {
-      return this.scrollY > this.imgHeight - this.appBarHeight;
-    },
-    toolbarStyle() {
-      const color = this.isScrollPoint ? "white" : "transparent";
-      const elevation = this.isScrollPoint ? 4 : 0;
-      return { color, elevation };
-    },
-  },
-  mounted() {
-    window.addEventListener("scroll", this.onScroll);
-  },
-  beforeUnmount() {
-    window.removeEventListener("scroll", this.onScroll);
-  },
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
-  methods: {
-    onScroll() {
-      this.scrollY = window.scrollY;
-    },
-  },
+interface Menu {
+  title: string;
+}
+
+interface Props {
+  menus?: Menu[];
+  imgHeight?: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  menus: () => [],
+  imgHeight: 0,
+});
+
+// i18n can be added later for menu translations
+
+const scrollY = ref(0);
+const appBarHeight = 64; // Fixed height for consistency
+
+const isScrollPoint = computed(() => {
+  return scrollY.value > props.imgHeight - appBarHeight;
+});
+
+const toolbarStyle = computed(() => {
+  const color = isScrollPoint.value ? "white" : "transparent";
+  const elevation = isScrollPoint.value ? 4 : 0;
+  return { color, elevation };
+});
+
+const onScroll = () => {
+  scrollY.value = window.scrollY;
 };
+
+onMounted(() => {
+  window.addEventListener("scroll", onScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", onScroll);
+});
 </script>

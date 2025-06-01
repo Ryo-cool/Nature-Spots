@@ -1,4 +1,4 @@
-declare module 'imagemin-webp' {
+declare module "imagemin-webp" {
   interface Options {
     quality?: number;
     resize?: {
@@ -8,4 +8,4 @@ declare module 'imagemin-webp' {
   }
   function imageminWebp(options?: Options): any;
   export default imageminWebp;
-} 
+}
