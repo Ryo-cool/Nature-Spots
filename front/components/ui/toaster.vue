@@ -1,39 +1,34 @@
 <template>
-  <v-snackbar v-model="setSnackbar" top text>
-    {{ toast.msg }}
-    <template #action="{ attrs }">
-      <v-btn v-bind="attrs" text :color="toast.color" @click="resetToast">
-        Close
-      </v-btn>
+  <v-snackbar
+    v-model="isVisible"
+    location="top"
+    :color="toastStore.color"
+    :timeout="toastStore.timeout"
+  >
+    {{ toastStore.message }}
+    <template #actions>
+      <v-btn variant="text" @click="toastStore.hideToast"> 閉じる </v-btn>
     </template>
   </v-snackbar>
 </template>
 
-<script>
-export default {
-  computed: {
-    toast() {
-      return this.$store.state.toast;
-    },
-    setSnackbar: {
-      get() {
-        return !!this.toast.msg;
-      },
-      set(val) {
-        // timeout: -1の場合は通過しない
-        this.resetToast();
-        return val;
-      },
-    },
+<script setup lang="ts">
+import { computed, onBeforeUnmount } from "vue";
+import { useToastStore } from "~/stores/toast";
+
+const toastStore = useToastStore();
+
+const isVisible = computed({
+  get: () => toastStore.visible,
+  set: (val: boolean) => {
+    if (!val) {
+      toastStore.hideToast();
+    }
   },
-  beforeUnmount() {
-    // ページ遷移前に削除する(-1に対応)
-    this.resetToast();
-  },
-  methods: {
-    resetToast() {
-      return this.$store.dispatch("getToast", { msg: null });
-    },
-  },
-};
+});
+
+onBeforeUnmount(() => {
+  // ページ遷移前にトーストを削除
+  toastStore.hideToast();
+});
 </script>

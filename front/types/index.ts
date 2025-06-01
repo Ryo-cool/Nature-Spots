@@ -3,6 +3,9 @@ export interface User {
   id: number;
   email: string;
   name: string;
+  image?: {
+    url: string;
+  };
 }
 
 // Spot types

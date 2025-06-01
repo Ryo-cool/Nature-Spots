@@ -1,24 +1,43 @@
 <template>
   <v-breadcrumbs :items="items">
-    <template #item="{ item }">
-      <v-breadcrumbs-item exact class="text-truncate">
-        <nuxt-link to="/"> HOME </nuxt-link>
-        <div style="white-space: pre-wrap">></div>
-        {{ item.text }}
-      </v-breadcrumbs-item>
+    <template #title="{ item }">
+      <nuxt-link v-if="item.to" :to="item.to">{{ item.title }}</nuxt-link>
+      <span v-else>{{ item.title }}</span>
     </template>
     <template #divider>
-      <v-icon> mdi-chevron-right </v-icon>
+      <v-icon>mdi-chevron-right</v-icon>
     </template>
   </v-breadcrumbs>
 </template>
 
-<script>
-export default {
-  computed: {
-    items() {
-      return [{ text: this.$my.pageTitle(this.$route.name) }];
-    },
-  },
+<script setup lang="ts">
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
+// ページタイトルのマッピング
+const pageTitles: Record<string, string> = {
+  index: "ホーム",
+  "spots-id": "スポット詳細",
+  "spots-id-reviews-new": "レビュー投稿",
+  favorites: "お気に入り",
+  newspots: "スポット追加",
+  "user-id": "ユーザーページ",
+  account: "アカウント",
+  "account-settings": "アカウント設定",
+  "account-password": "パスワード変更",
+  "account-userEdit": "プロフィール編集",
+  "location-id": "ジャンル",
+  "prefecture-id": "都道府県",
 };
+
+const items = computed(() => {
+  const routeName = route.name as string;
+  const title = pageTitles[routeName] || routeName;
+  return [
+    { title: "HOME", to: "/" },
+    { title, to: undefined },
+  ];
+});
 </script>

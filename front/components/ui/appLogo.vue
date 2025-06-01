@@ -1,17 +1,15 @@
 <template>
-  <v-avatar color="black" size="34" class="my-app-log">
-    <span class="white--text text-subtitle-2">
-      <v-icon dark>mdi-leaf</v-icon>
-    </span>
+  <v-avatar color="black" size="34" class="my-app-logo">
+    <v-icon color="white">mdi-leaf</v-icon>
   </v-avatar>
 </template>
 
-<script>
-export default {};
+<script setup lang="ts">
+// No logic needed for this simple component
 </script>
 
 <style lang="scss" scoped>
-.my-app-log {
+.my-app-logo {
   margin-right: 8px;
   cursor: pointer;
 }

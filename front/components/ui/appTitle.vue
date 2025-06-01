@@ -4,12 +4,7 @@
   </v-toolbar-title>
 </template>
 
-<script>
-export default {
-  data({ $config: { appName } }) {
-    return {
-      appName,
-    };
-  },
-};
+<script setup lang="ts">
+const config = useRuntimeConfig();
+const appName = config.public.appName || "Nature-Spots";
 </script>

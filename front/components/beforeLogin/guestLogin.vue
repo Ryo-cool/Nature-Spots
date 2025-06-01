@@ -1,38 +1,67 @@
 <template>
   <div>
-    <v-btn outlined dark class="font-weight-bold" @click="guestLogin">
+    <v-btn
+      variant="outlined"
+      color="white"
+      class="font-weight-bold"
+      :loading="isLoading"
+      @click="guestLogin"
+    >
       ゲストログイン
     </v-btn>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      guestParams: {
-        auth: { email: "user0@example.com", password: "password" },
-      },
-    };
-  },
-  methods: {
-    async guestLogin() {
-      await this.$axios
-        .$post("/api/v1/user_token", this.guestParams)
-        .then((response) => this.authSuccessful(response))
-        .catch((error) => this.authFailure(error));
-    },
-    // ログイン成功
-    async authSuccessful(response) {
-      await this.$auth.login(response);
-      this.$router.go({ path: this.$router.currentRoute.path, force: true });
-    },
-    // ログイン失敗
-    authFailure({ response }) {
-      if (response.status === 404) {
-        this.$store.dispatch("getToast", { msg: "ユーザーが見つかりません😷" });
-      }
-    },
-  },
+<script setup lang="ts">
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "~/stores/auth";
+import { useToastStore } from "~/stores/toast";
+
+const router = useRouter();
+const authStore = useAuthStore();
+const toastStore = useToastStore();
+
+const isLoading = ref(false);
+
+const guestCredentials = {
+  email: "user0@example.com",
+  password: "password",
+};
+
+const guestLogin = async () => {
+  if (isLoading.value) return;
+
+  isLoading.value = true;
+
+  try {
+    const token = await authStore.login(guestCredentials);
+
+    if (token) {
+      toastStore.showToast({
+        message: "ゲストログインしました",
+        color: "success",
+      });
+
+      // ホームページにリダイレクト
+      await router.push("/");
+    } else {
+      throw new Error("ログインに失敗しました");
+    }
+  } catch (error: any) {
+    console.error("ゲストログインエラー:", error);
+
+    const message =
+      error?.response?.status === 404
+        ? "ユーザーが見つかりません😷"
+        : "ログインに失敗しました";
+
+    toastStore.showToast({
+      message,
+      color: "error",
+    });
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
