@@ -28,12 +28,8 @@
         <v-app-bar-nav-icon class="hidden-ipad-and-up" v-on="on" />
       </template>
       <v-list dense class="hidden-ipad-and-up">
-        <v-list-item link to="/signup">
-会員登録
-</v-list-item>
-        <v-list-item link to="/login">
-ログイン
-</v-list-item>
+        <v-list-item link to="/signup"> 会員登録 </v-list-item>
+        <v-list-item link to="/login"> ログイン </v-list-item>
       </v-list>
     </v-menu>
   </v-app-bar>
@@ -70,7 +66,7 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.onScroll);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("scroll", this.onScroll);
   },
 

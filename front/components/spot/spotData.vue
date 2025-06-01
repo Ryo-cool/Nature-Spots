@@ -163,7 +163,7 @@ export default {
               user_id: this.$auth.user.id,
               spot_id: this.spotId,
             },
-          }
+          },
         )
         .then((res) => {
           console.log(res);

@@ -141,7 +141,7 @@ export default {
           } else {
             this.alert = "正しいスポットを入力してください";
           }
-        }
+        },
       );
     },
     setImage(e) {

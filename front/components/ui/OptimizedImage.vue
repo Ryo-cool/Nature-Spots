@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import type { ImageProps } from "~/types/components/common"
+import { ref, onMounted, computed } from "vue";
+import type { ImageProps } from "~/types/components/common";
 
 interface Props extends ImageProps {
   className?: string;
@@ -32,28 +32,28 @@ interface Props extends ImageProps {
   loading?: "lazy" | "eager";
 }
 
-const props = defineProps<Props>()
-const webpSupported = ref(false)
+const props = defineProps<Props>();
+const webpSupported = ref(false);
 
 // 画像フォーマットのサポート確認
 onMounted(async () => {
   if (process.client) {
-    const { $imageOptimization } = useNuxtApp()
+    const { $imageOptimization } = useNuxtApp();
     if ($imageOptimization) {
-      webpSupported.value = $imageOptimization.checkWebPSupport()
+      webpSupported.value = $imageOptimization.checkWebPSupport();
     } else {
       // フォールバック: canvas要素を使用してWebPサポートを確認
-      const canvas = document.createElement('canvas')
-      if (canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0) {
-        webpSupported.value = true
+      const canvas = document.createElement("canvas");
+      if (canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0) {
+        webpSupported.value = true;
       }
     }
   }
-})
+});
 
 // 計算プロパティ
-const fallbackSrc = computed(() => props.src)
-const originalSrcset = computed(() => props.srcset || props.src)
+const fallbackSrc = computed(() => props.src);
+const originalSrcset = computed(() => props.srcset || props.src);
 </script>
 
 <style scoped>

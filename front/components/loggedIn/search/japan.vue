@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import homeImg from "~/assets/images/loggedIn/japanesemap.png";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import homeImg from "~/assets/images/loggedIn/japanesemap.png";
 
 export default {
   data() {

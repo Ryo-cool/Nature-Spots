@@ -63,8 +63,8 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 
@@ -88,68 +88,73 @@ interface Review {
   likes: Array<any>;
 }
 
-@Component
-export default class Reviews extends Vue {
-  private rating = 3.6;
-  private reviews: Review[] = [];
-  private users = {};
-  private likes: any[] = [];
+const route = useRoute();
+const config = useRuntimeConfig();
+const authStore = useAuthStore();
 
-  mounted() {
-    this.$axios
-      .get(`/api/v1/spots/${this.$route.params.id}`)
-      .then((res) => {
-        this.reviews = JSON.parse(res.data.review);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+const reviews = ref<Review[]>([]);
+
+onMounted(async () => {
+  try {
+    const response = await $fetch(`/api/v1/spots/${route.params.id}`, {
+      method: "GET",
+      baseURL: config.public.apiBaseUrl,
+    });
+    reviews.value = JSON.parse(response.review);
+  } catch (error) {
+    console.error(error);
   }
+});
 
-  formatDate(date: string): string {
-    return format(new Date(date), "yyyy/MM/dd", { locale: ja });
-  }
+const formatDate = (date: string): string => {
+  return format(new Date(date), "yyyy/MM/dd", { locale: ja });
+};
 
-  like(reviewId: number): void {
-    this.$axios
-      .post(
-        `/api/v1/spots/${this.$route.params.id}/reviews/${reviewId}/likes`,
-        {
-          user_id: this.$auth.user.id,
+const like = async (reviewId: number): Promise<void> => {
+  try {
+    const response = await $fetch(
+      `/api/v1/spots/${route.params.id}/reviews/${reviewId}/likes`,
+      {
+        method: "POST",
+        body: {
+          user_id: authStore.user?.id,
           review_id: reviewId,
-        }
-      )
-      .then((res) => {
-        const review = this.reviews.find((r) => r.id === reviewId);
-        if (review) {
-          review.likes = res.data.likes;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+        },
+        baseURL: config.public.apiBaseUrl,
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+      },
+    );
 
-  deleteLike(reviewId: number): void {
-    this.$axios
-      .delete(
-        `/api/v1/spots/${this.$route.params.id}/reviews/${reviewId}/likes/${this.$auth.user.id}`,
-        {
-          params: {
-            user_id: this.$auth.user.id,
-            review_id: reviewId,
-          },
-        }
-      )
-      .then((res) => {
-        const review = this.reviews.find((r) => r.id === reviewId);
-        if (review) {
-          review.likes = res.data.likes;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const review = reviews.value.find((r) => r.id === reviewId);
+    if (review) {
+      review.likes = response.likes;
+    }
+  } catch (error) {
+    console.log(error);
   }
-}
+};
+
+const deleteLike = async (reviewId: number): Promise<void> => {
+  try {
+    const response = await $fetch(
+      `/api/v1/spots/${route.params.id}/reviews/${reviewId}/likes/${authStore.user?.id}`,
+      {
+        method: "DELETE",
+        baseURL: config.public.apiBaseUrl,
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+      },
+    );
+
+    const review = reviews.value.find((r) => r.id === reviewId);
+    if (review) {
+      review.likes = response.likes;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>

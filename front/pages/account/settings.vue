@@ -17,33 +17,23 @@
 
     <v-tabs>
       <v-tab>
-        <v-icon left>
-mdi-account
-</v-icon>
+        <v-icon left> mdi-account </v-icon>
         投稿したレビュー({{ myReview.length }})
       </v-tab>
       <v-tab>
-        <v-icon left>
-mdi-heart
-</v-icon>
+        <v-icon left> mdi-heart </v-icon>
         いいねしたレビュー({{ reviews.length }})
       </v-tab>
       <v-tab>
-        <v-icon left>
-mdi-access-point
-</v-icon>
+        <v-icon left> mdi-access-point </v-icon>
         お気に入りスポット({{ likeSpot.length }})
       </v-tab>
       <v-tab>
-        <v-icon left>
-mdi-account-multiple
-</v-icon>
+        <v-icon left> mdi-account-multiple </v-icon>
         フォロー ({{ followUser.length }})
       </v-tab>
       <v-tab>
-        <v-icon left>
-mdi-account-multiple
-</v-icon>
+        <v-icon left> mdi-account-multiple </v-icon>
         フォロワー ({{ follower.length }})
       </v-tab>
       <v-tab-item>

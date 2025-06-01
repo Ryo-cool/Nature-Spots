@@ -10,6 +10,6 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'loggedInRedirects'
-})
+  middleware: "loggedInRedirects",
+});
 </script>

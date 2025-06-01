@@ -26,9 +26,7 @@
       </v-row>
       <v-row>
         <v-col cols="3">
-          <v-btn color="primary" @click="editSpot">
-登録する
-</v-btn>
+          <v-btn color="primary" @click="editSpot"> 登録する </v-btn>
         </v-col>
       </v-row>
     </v-form>

@@ -35,26 +35,15 @@ export interface ApiResponse<T> {
 }
 
 // Declaration merging for Nuxt
-declare module '#app' {
+declare module "#app" {
   interface PageMeta {
-    layout?: string | ((route: any) => string)
-    middleware?: string | string[]
-    auth?: boolean
+    layout?: string | ((route: any) => string);
+    middleware?: string | string[];
+    auth?: boolean;
   }
 }
 
 // Declare image module types
-declare module '*.png' {
-  const content: string;
-  export default content;
-}
-
-declare module '*.jpg' {
-  const content: string;
-  export default content;
-}
-
-declare module '*.jpeg' {
-  const content: string;
-  export default content;
-}
+declare module "*.png";
+declare module "*.jpg";
+declare module "*.jpeg";

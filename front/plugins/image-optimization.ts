@@ -12,7 +12,7 @@ interface ImageOptimizationOptions {
 export default defineNuxtPlugin(() => {
   const convertToWebP = async (
     file: File | Blob,
-    options: ImageOptimizationOptions = {}
+    options: ImageOptimizationOptions = {},
   ): Promise<Blob> => {
     const buffer = await file.arrayBuffer();
     const optimizedBuffer = await imagemin.buffer(new Uint8Array(buffer), {
@@ -28,7 +28,7 @@ export default defineNuxtPlugin(() => {
 
   const createResponsiveImage = async (
     file: File,
-    sizes: { width: number; quality?: number }[]
+    sizes: { width: number; quality?: number }[],
   ): Promise<{ [key: string]: Blob }> => {
     const results: { [key: string]: Blob } = {};
 
@@ -45,7 +45,7 @@ export default defineNuxtPlugin(() => {
 
   const checkWebPSupport = (): boolean => {
     if (!process.client) return false;
-    
+
     const canvas = document.createElement("canvas");
     return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0;
   };
@@ -57,7 +57,7 @@ export default defineNuxtPlugin(() => {
         convertToWebP,
         createResponsiveImage,
         checkWebPSupport,
-      }
-    }
+      },
+    },
   };
 });

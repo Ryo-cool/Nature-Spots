@@ -26,7 +26,7 @@ export default {
       },
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     // ページ遷移前に削除する(-1に対応)
     this.resetToast();
   },
