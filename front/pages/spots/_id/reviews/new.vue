@@ -127,7 +127,7 @@ export default {
         .post(
           `/api/v1/spots/${this.$route.params.id}/reviews/`,
           formData,
-          config
+          config,
         )
         .then((res) => {
           this.$router.push("/");

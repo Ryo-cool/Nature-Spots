@@ -21,7 +21,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    
+
     <v-app-bar :clipped-left="clipped" fixed>
       <template #prepend>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -34,13 +34,13 @@
       </v-btn>
       <v-app-bar-title>{{ title }}</v-app-bar-title>
     </v-app-bar>
-    
+
     <v-main>
       <v-container>
         <slot />
       </v-container>
     </v-main>
-    
+
     <v-footer app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
@@ -48,27 +48,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 
 definePageMeta({
-  middleware: 'auth'
-})
+  middleware: "auth",
+});
 
-const clipped = ref(false)
-const drawer = ref(false)
+const clipped = ref(false);
+const drawer = ref(false);
 const items = ref([
   {
-    icon: 'mdi-apps',
-    title: 'ホーム',
-    to: '/'
+    icon: "mdi-apps",
+    title: "ホーム",
+    to: "/",
   },
   {
-    icon: 'mdi-account',
-    title: 'アカウント',
-    to: '/account'
-  }
-])
+    icon: "mdi-account",
+    title: "アカウント",
+    to: "/account",
+  },
+]);
 
-const miniVariant = ref(false)
-const title = ref('Nature Spots')
+const miniVariant = ref(false);
+const title = ref("Nature Spots");
 </script>

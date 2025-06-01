@@ -29,19 +29,18 @@
 </template>
 
 <script setup lang="ts">
-import { useAuth } from '~/composables/useAuth'
+import { useAuth } from "~/composables/useAuth";
 
 // 認証状態に応じてレイアウトを動的に設定
-const { loggedIn } = useAuth()
 
 definePageMeta({
   layout: () => {
-    return useAuth().loggedIn.value ? "loggedIn" : "welcome"
-  }
-})
+    return useAuth().loggedIn.value ? "loggedIn" : "welcome";
+  },
+});
 
 // homeImgのpath指定
-const homeImg = "/images/loggedIn/adventure__isometric.png"
+const homeImg = "/images/loggedIn/adventure__isometric.png";
 </script>
 
 <style>

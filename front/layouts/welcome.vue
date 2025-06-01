@@ -13,9 +13,7 @@
         :style="{ height: `${imgHeight}px` }"
       >
         <v-col cols="12" class="text-center">
-          <h1 class="text-h4 mb-4">
-            自然を探そう。ワクワクしよう。
-          </h1>
+          <h1 class="text-h4 mb-4">自然を探そう。ワクワクしよう。</h1>
           <h4 class="text-subtitle-1" :style="{ letterSpacing: '5px' }">
             自然スポットに特化した口コミサイト
           </h4>
@@ -42,14 +40,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 
 const menus = ref([
-  { title: 'products' },
-  { title: 'price' },
-  { title: 'company' },
-  { title: 'contact' }
-])
+  { title: "products" },
+  { title: "price" },
+  { title: "company" },
+  { title: "contact" },
+]);
 
-const imgHeight = ref(690)
+const imgHeight = ref(690);
 </script>
