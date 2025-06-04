@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: nature_spots_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -u root -ppassword" \
+          --health-interval 10s \
+          --health-timeout 5s \
+          --health-retries 3
+    env:
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      RAILS_ENV: test
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.8
+          bundler: "2.5.22"
+          bundler-cache: true
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nodejs yarn
+          cd back && bundle install --jobs 4 --retry 3
+      - name: Prepare database
+        run: |
+          sed -i 's/host: db/host: 127.0.0.1/' back/config/database.yml
+          cd back
+          bin/rails db:create
+          bin/rails db:schema:load --trace
+      - name: Run tests
+        run: |
+          cd back
+          bundle exec rspec --format documentation
+

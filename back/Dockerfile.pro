@@ -1,5 +1,5 @@
 
-FROM ruby:2.6.3-alpine3.10
+FROM ruby:3.3.8-alpine
 
 # 必要パッケージのダウンロード
 ENV RUNTIME_PACKAGES="linux-headers libxml2-dev make gcc libc-dev nodejs tzdata mysql-dev mysql-client yarn" \
