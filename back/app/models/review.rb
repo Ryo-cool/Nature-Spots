@@ -12,7 +12,7 @@ class Review < ApplicationRecord
                    length: { minimum: 2, maximum: 100 },
                    format: { with: /\A[ぁ-んァ-ヶー一-龠\s]+\z/, message: "は日本語で入力してください" }
 
-  validates :content, presence: true,
+  validates :text, presence: true,
                      length: { minimum: 10, maximum: 2000 }
 
   validates :rating, presence: true,
