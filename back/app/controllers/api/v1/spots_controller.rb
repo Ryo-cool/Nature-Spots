@@ -5,13 +5,36 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots
   def index
-    @spots = Spot.all
+    page = params[:page] || 1
+    per_page = params[:per_page] || 20
+    
+    # Optimize with includes to prevent N+1 queries and add pagination
+    @spots = Spot.includes(:prefecture, :location, :user, :reviews)
+                 .page(page)
+                 .per(per_page)
+                 .order(created_at: :desc)
+    
     serialized_spots = @spots.map { |spot| SpotSerializer.new(spot).as_json }
+    
+    # Cache prefecture and location data to avoid repeated queries
+    @prefectures = Rails.cache.fetch('prefectures_all', expires_in: 1.hour) do
+      Prefecture.all.to_a
+    end
+    
+    @locations = Rails.cache.fetch('locations_all', expires_in: 1.hour) do
+      Location.all.to_a
+    end
     
     render json: {
       spots: serialized_spots,
-      prefectures: Prefecture.all,
-      locations: Location.all,
+      prefectures: @prefectures,
+      locations: @locations,
+      pagination: {
+        current_page: @spots.current_page,
+        total_pages: @spots.total_pages,
+        total_count: @spots.total_count,
+        per_page: per_page.to_i
+      },
       status: :ok
     }
   end
@@ -97,7 +120,7 @@ class Api::V1::SpotsController < ApplicationController
   private
 
   def set_spot
-    @spot = Spot.find(params[:id])
+    @spot = Spot.includes(:prefecture, :location, :user, :reviews, :favorites).find(params[:id])
   end
 
   def record_not_found

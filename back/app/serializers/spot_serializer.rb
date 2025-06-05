@@ -18,13 +18,21 @@ class SpotSerializer < ApplicationSerializer
   end
 
   def with_details
+    # Assume associations are already loaded via includes in controller
     as_json.merge(
       user: object.user ? UserSerializer.new(object.user).as_json : nil,
-      reviews: object.reviews.includes(:user).map { |review| ReviewSerializer.new(review).with_user },
-      favorite_users: object.favorites.includes(:user).map { |fav| UserSerializer.new(fav.user).as_json },
-      review_count: object.review_count,
-      average_rating: object.average_rating
+      reviews: object.reviews.map { |review| ReviewSerializer.new(review).with_user },
+      favorite_users: object.favorites.map { |fav| UserSerializer.new(fav.user).as_json },
+      review_count: object.reviews.size, # Use size instead of count to avoid DB query
+      average_rating: calculate_average_rating
     )
+  end
+  
+  private
+  
+  def calculate_average_rating
+    return 0 if object.reviews.empty?
+    (object.reviews.sum(&:rating).to_f / object.reviews.size).round(1)
   end
 
   def with_ranking_data

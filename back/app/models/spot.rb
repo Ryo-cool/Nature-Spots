@@ -3,7 +3,7 @@ class Spot < ApplicationRecord
   belongs_to_active_hash :prefecture
   belongs_to_active_hash :location
   mount_uploader :photo, ImageUploader
-  has_many :reviews, dependent: :destroy
+  has_many :reviews, dependent: :destroy, counter_cache: true
   belongs_to :user
   has_many :favorites, dependent: :destroy
 
@@ -26,13 +26,15 @@ class Spot < ApplicationRecord
 
   # スコープ
   scope :recent, -> { order(created_at: :desc) }
-  scope :popular, -> { order(review_count: :desc) }
+  scope :popular, -> { order(reviews_count: :desc) }
   
+  # Use counter cache column instead of database count
   def review_count
-    reviews.count
+    reviews_count
   end
 
   def average_rating
+    return 0 if reviews_count == 0
     reviews.average(:rating)&.round(1) || 0
   end
 end
