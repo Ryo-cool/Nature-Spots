@@ -12,7 +12,7 @@
       :alt="alt"
       :width="width"
       :height="height"
-      :loading="loading"
+      :loading="loading || 'lazy'"
       class="optimized-image"
       :class="className"
     />
