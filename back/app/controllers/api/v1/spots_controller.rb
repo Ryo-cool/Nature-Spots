@@ -17,7 +17,7 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots/1
   def show
-    serialized_spot = SpotSerializer.new(@spot).with_details
+    serialized_spot = SpotSerializer.new(@spot).as_json
     
     render json: {
       **serialized_spot,
