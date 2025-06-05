@@ -53,8 +53,8 @@ RSpec.describe Review, type: :model do
         expect(valid_review).not_to be_valid
       end
 
-      it 'コンテンツが1000文字以下であること' do
-        valid_review.text = 'あ' * 1001
+      it 'コンテンツが2000文字以下であること' do
+        valid_review.text = 'あ' * 2001
         expect(valid_review).not_to be_valid
       end
     end

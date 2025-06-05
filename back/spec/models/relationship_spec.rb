@@ -5,7 +5,10 @@ RSpec.describe Relationship, type: :model do
     let(:valid_relationship) { build(:relationship) }
 
     it '有効なフォロー関係が作成できること' do
-      expect(valid_relationship).to be_valid
+      user = create(:user)
+      follow_user = create(:user)
+      relationship = build(:relationship, user: user, follow: follow_user)
+      expect(relationship).to be_valid
     end
 
     it 'ユーザーとフォロー対象の組み合わせが一意であること' do
