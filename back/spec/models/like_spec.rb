@@ -9,8 +9,11 @@ RSpec.describe Like, type: :model do
     end
 
     it 'ユーザーとレビューの組み合わせが一意であること' do
-      create(:like, user: valid_like.user, review: valid_like.review)
-      expect(valid_like).not_to be_valid
+      user = create(:user)
+      review = create(:review)
+      create(:like, user: user, review: review)
+      duplicate_like = build(:like, user: user, review: review)
+      expect(duplicate_like).not_to be_valid
     end
   end
 
