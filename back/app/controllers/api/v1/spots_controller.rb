@@ -10,7 +10,8 @@ class Api::V1::SpotsController < ApplicationController
     offset = (page - 1) * per_page
     
     # Fix: Include nested user associations for reviews and favorites to prevent N+1 queries
-    @spots = Spot.includes(:prefecture, :location, :user, 
+    # Note: prefecture and location are ActiveHash, not ActiveRecord, so don't include them
+    @spots = Spot.includes(:user, 
                           reviews: :user, 
                           favorites: :user)
                  .offset(offset)
@@ -23,14 +24,9 @@ class Api::V1::SpotsController < ApplicationController
     
     serialized_spots = @spots.map { |spot| SpotSerializer.new(spot).as_json }
     
-    # Cache prefecture and location data to avoid repeated queries
-    @prefectures = Rails.cache.fetch('prefectures_all', expires_in: 1.hour) do
-      Prefecture.all.to_a
-    end
-    
-    @locations = Rails.cache.fetch('locations_all', expires_in: 1.hour) do
-      Location.all.to_a
-    end
+    # ActiveHash data is already in memory, no need to cache
+    @prefectures = Prefecture.all
+    @locations = Location.all
     
     render json: {
       spots: serialized_spots,
@@ -128,7 +124,8 @@ class Api::V1::SpotsController < ApplicationController
 
   def set_spot
     # Fix: Include nested user associations for reviews and favorites to prevent N+1 queries
-    @spot = Spot.includes(:prefecture, :location, :user, 
+    # Note: prefecture and location are ActiveHash, not ActiveRecord, so don't include them
+    @spot = Spot.includes(:user, 
                          reviews: :user, 
                          favorites: :user).find(params[:id])
   end
