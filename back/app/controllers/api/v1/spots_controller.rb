@@ -4,25 +4,15 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots
   def index
-    @spots = Spot.includes(:prefecture, :location).all
+    @spots = Spot.all
     serialized_spots = @spots.map { |spot| SpotSerializer.new(spot).as_json }
     
-    prefecture_location_result = PrefectureLocationService.call
-    
-    if prefecture_location_result.success?
-      render json: {
-        spots: serialized_spots,
-        **prefecture_location_result.data,
-        status: :ok
-      }
-    else
-      render json: {
-        spots: serialized_spots,
-        prefecture: [],
-        locations: [],
-        status: :ok
-      }
-    end
+    render json: {
+      spots: serialized_spots,
+      prefectures: Prefecture.all,
+      locations: Location.all,
+      status: :ok
+    }
   end
 
   # GET /spots/1
