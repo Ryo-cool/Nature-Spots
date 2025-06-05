@@ -5,14 +5,21 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots
   def index
-    page = params[:page] || 1
-    per_page = params[:per_page] || 20
+    page = (params[:page] || 1).to_i
+    per_page = (params[:per_page] || 20).to_i
+    offset = (page - 1) * per_page
     
-    # Optimize with includes to prevent N+1 queries and add pagination
-    @spots = Spot.includes(:prefecture, :location, :user, :reviews)
-                 .page(page)
-                 .per(per_page)
+    # Fix: Include nested user associations for reviews and favorites to prevent N+1 queries
+    @spots = Spot.includes(:prefecture, :location, :user, 
+                          reviews: :user, 
+                          favorites: :user)
+                 .offset(offset)
+                 .limit(per_page)
                  .order(created_at: :desc)
+    
+    # Calculate total count for manual pagination
+    total_count = Spot.count
+    total_pages = (total_count.to_f / per_page).ceil
     
     serialized_spots = @spots.map { |spot| SpotSerializer.new(spot).as_json }
     
@@ -30,10 +37,10 @@ class Api::V1::SpotsController < ApplicationController
       prefectures: @prefectures,
       locations: @locations,
       pagination: {
-        current_page: @spots.current_page,
-        total_pages: @spots.total_pages,
-        total_count: @spots.total_count,
-        per_page: per_page.to_i
+        current_page: page,
+        total_pages: total_pages,
+        total_count: total_count,
+        per_page: per_page
       },
       status: :ok
     }
@@ -120,7 +127,10 @@ class Api::V1::SpotsController < ApplicationController
   private
 
   def set_spot
-    @spot = Spot.includes(:prefecture, :location, :user, :reviews, :favorites).find(params[:id])
+    # Fix: Include nested user associations for reviews and favorites to prevent N+1 queries
+    @spot = Spot.includes(:prefecture, :location, :user, 
+                         reviews: :user, 
+                         favorites: :user).find(params[:id])
   end
 
   def record_not_found
