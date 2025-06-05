@@ -23,7 +23,7 @@ export default defineNuxtRouteMiddleware((to) => {
       authStore.logout();
     } else {
       // ログイン前ユーザー
-      if (process.client) {
+      if (import.meta.client) {
         localStorage.setItem("rememberRoute", JSON.stringify(to.fullPath));
       }
     }
@@ -34,7 +34,7 @@ export default defineNuxtRouteMiddleware((to) => {
   } else if (!authStore.user) {
     // 有効期限内でユーザーが存在しない場合
     authStore.setAuth(false);
-    if (process.client) {
+    if (import.meta.client) {
       localStorage.removeItem("rememberRoute");
     }
     return navigateTo("/login");

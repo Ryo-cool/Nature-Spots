@@ -8,7 +8,7 @@ export const useAuth = () => {
   const keys = { exp: "exp" };
 
   // LocalStorageはクライアントサイドでのみ利用可能
-  const storage = process.client ? localStorage : null;
+  const storage = import.meta.client ? localStorage : null;
 
   // 有効期限を暗号化
   const encrypt = (exp: number) => {

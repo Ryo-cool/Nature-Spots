@@ -74,7 +74,7 @@ export default defineNuxtPlugin(() => {
   };
 
   const checkWebPSupport = (): boolean => {
-    if (!process.client) return false;
+    if (!import.meta.client) return false;
 
     const canvas = document.createElement("canvas");
     canvas.width = 1;
