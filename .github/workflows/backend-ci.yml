@@ -25,8 +25,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-          --character-set-server=utf8mb4
-          --collation-server=utf8mb4_unicode_ci
 
     defaults:
       run:
@@ -67,6 +65,7 @@ jobs:
           DATABASE_NAME: nature_spots_test
         run: |
           bundle exec rails db:create
+          mysql -h 127.0.0.1 -u root -proot -e "ALTER DATABASE nature_spots_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
           bundle exec rails db:migrate
 
       - name: Run RSpec tests
