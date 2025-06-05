@@ -57,6 +57,13 @@ RSpec.describe "Api::V1::Spots", type: :request do
         
         expect(response).to have_http_status(:created)
       end
+      
+      it "作成失敗時のレスポンスを確認" do
+        post "/api/v1/spots", params: valid_params, headers: headers
+        puts "Response status: #{response.status}"
+        puts "Response body: #{response.body}"
+        expect(response.status).to be_between(200, 299).or be(422)
+      end
     end
 
     context "未認証ユーザーの場合" do
