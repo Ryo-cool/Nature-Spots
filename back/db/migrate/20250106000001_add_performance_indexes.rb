@@ -4,7 +4,6 @@ class AddPerformanceIndexes < ActiveRecord::Migration[7.1]
     add_index :spots, :prefecture_id, name: 'index_spots_on_prefecture_id'
     add_index :spots, :location_id, name: 'index_spots_on_location_id'
     add_index :spots, :created_at, name: 'index_spots_on_created_at'
-    add_index :spots, :user_id, name: 'index_spots_on_user_id'
 
     # Add indexes for reviews table - for calculations and ordering
     add_index :reviews, :rating, name: 'index_reviews_on_rating'
