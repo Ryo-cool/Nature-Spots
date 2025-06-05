@@ -1,5 +1,6 @@
 class Api::V1::SpotsController < ApplicationController
   before_action :set_spot, only: [:show, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   before_action :authenticate_user, only: [:create, :update, :destroy]
 
   # GET /spots
@@ -97,6 +98,10 @@ class Api::V1::SpotsController < ApplicationController
 
   def set_spot
     @spot = Spot.find(params[:id])
+  end
+
+  def record_not_found
+    render json: { error: 'Spot not found' }, status: :not_found
   end
 
   def spot_params
