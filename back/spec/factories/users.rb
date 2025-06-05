@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :user do
-    sequence(:name) { |n| "テストユーザー#{n}" }
+    sequence(:name) { |n| "Test User #{n}" }
     sequence(:email) { |n| "test#{n}@example.com" }
     password { "Password123" }
     password_confirmation { "Password123" }
-    introduction { "テスト用の自己紹介文です。" }
+    introduction { "Test user introduction." }
     activated { true }
 
     trait :with_image do

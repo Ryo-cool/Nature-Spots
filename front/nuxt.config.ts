@@ -34,6 +34,32 @@ export default defineNuxtConfig({
     transpile: ["vuetify"],
   },
 
+  nitro: {
+    compressPublicAssets: true,
+  },
+
+  experimental: {
+    payloadExtraction: false,
+  },
+
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vuetify: ["vuetify"],
+            "google-maps": ["vue3-google-map"],
+            utils: ["date-fns", "crypto-js"],
+          },
+        },
+      },
+      chunkSizeWarningLimit: 1000,
+    },
+    optimizeDeps: {
+      include: ["vue3-google-map", "date-fns", "crypto-js"],
+    },
+  },
+
   runtimeConfig: {
     public: {
       appName: process.env.APP_NAME || "Nature Spots",

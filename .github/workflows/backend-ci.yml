@@ -46,6 +46,7 @@ jobs:
           test:
             adapter: mysql2
             encoding: utf8mb4
+            collation: utf8mb4_unicode_ci
             pool: 5
             username: test_user
             password: test_password
@@ -64,7 +65,8 @@ jobs:
           DATABASE_NAME: nature_spots_test
         run: |
           bundle exec rails db:create
-          bundle exec rails db:schema:load
+          mysql -h 127.0.0.1 -u root -proot -e "ALTER DATABASE nature_spots_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          bundle exec rails db:migrate
 
       - name: Run RSpec tests
         env:
