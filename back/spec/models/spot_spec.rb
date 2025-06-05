@@ -57,8 +57,13 @@ RSpec.describe Spot, type: :model do
 
   describe 'associations' do
     it { should belong_to(:user) }
-    it { should belong_to(:prefecture) }
     it { should have_many(:reviews) }
     it { should have_many(:favorites) }
+    
+    it 'belongs to prefecture through ActiveHash' do
+      spot = create(:spot)
+      expect(spot.prefecture).to be_present
+      expect(spot.prefecture_id).to eq(13) # 東京都
+    end
   end
 end
