@@ -47,16 +47,16 @@ export default defineNuxtConfig({
       rollupOptions: {
         output: {
           manualChunks: {
-            'vuetify': ['vuetify'],
-            'google-maps': ['vue3-google-map'],
-            'utils': ['date-fns', 'crypto-js'],
+            vuetify: ["vuetify"],
+            "google-maps": ["vue3-google-map"],
+            utils: ["date-fns", "crypto-js"],
           },
         },
       },
       chunkSizeWarningLimit: 1000,
     },
     optimizeDeps: {
-      include: ['vue3-google-map', 'date-fns', 'crypto-js'],
+      include: ["vue3-google-map", "date-fns", "crypto-js"],
     },
   },
 
