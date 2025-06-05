@@ -9,8 +9,11 @@ RSpec.describe Favorite, type: :model do
     end
 
     it 'ユーザーとスポットの組み合わせが一意であること' do
-      create(:favorite, user: valid_favorite.user, spot: valid_favorite.spot)
-      expect(valid_favorite).not_to be_valid
+      user = create(:user)
+      spot = create(:spot)
+      create(:favorite, user: user, spot: spot)
+      duplicate_favorite = build(:favorite, user: user, spot: spot)
+      expect(duplicate_favorite).not_to be_valid
     end
   end
 

@@ -13,6 +13,7 @@
     "lint:fix": "eslint . --fix",
     "type-check": "vue-tsc --noEmit",
     "format": "prettier --write \"**/*.{js,ts,vue,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,vue,json,md}\"",
     "check": "yarn lint && yarn type-check"
   },
   "dependencies": {
@@ -20,8 +21,6 @@
     "@vueuse/core": "^13.0.0",
     "crypto-js": "^4.0.0",
     "date-fns": "^4.1.0",
-    "imagemin": "^9.0.0",
-    "imagemin-webp": "^8.0.0",
     "pinia": "^3.0.1",
     "vue-i18n": "^11.1.2",
     "vue3-google-map": "^0.21.1"

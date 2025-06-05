@@ -1,0 +1,27 @@
+# Nuxt build output
+.nuxt
+.output
+dist
+
+# Dependencies
+node_modules
+
+# Logs
+*.log
+
+# Coverage
+coverage
+
+# Generated files
+.nitro
+.cache
+
+# IDE
+.idea
+.vscode
+
+# OS
+.DS_Store
+
+# Static files
+static/sw.js

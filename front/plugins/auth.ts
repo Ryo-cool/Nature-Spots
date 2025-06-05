@@ -3,7 +3,7 @@ export default defineNuxtPlugin(async () => {
   const { initialize } = useAuth();
 
   // クライアントサイドでのみ初期化を実行
-  if (process.client) {
+  if (import.meta.client) {
     try {
       await initialize();
     } catch (error) {

@@ -4,12 +4,14 @@ class SpotSerializer < ApplicationSerializer
       id: object.id,
       name: object.name,
       introduction: object.introduction,
-      photo: object.photo.url,
+      photo: object.photo&.url,
       address: object.address,
       longitude: object.longitude,
       latitude: object.latitude,
-      prefecture: object.prefecture,
-      location: object.location,
+      prefecture: object.prefecture&.name,
+      prefecture_id: object.prefecture_id,
+      location: object.location&.name,
+      location_id: object.location_id,
       created_at: object.created_at,
       updated_at: object.updated_at
     }

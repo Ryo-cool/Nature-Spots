@@ -1,33 +1,24 @@
 class Api::V1::SpotsController < ApplicationController
   before_action :set_spot, only: [:show, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   before_action :authenticate_user, only: [:create, :update, :destroy]
 
   # GET /spots
   def index
-    @spots = Spot.includes(:prefecture, :location).all
+    @spots = Spot.all
     serialized_spots = @spots.map { |spot| SpotSerializer.new(spot).as_json }
     
-    prefecture_location_result = PrefectureLocationService.call
-    
-    if prefecture_location_result.success?
-      render json: {
-        spots: serialized_spots,
-        **prefecture_location_result.data,
-        status: :ok
-      }
-    else
-      render json: {
-        spots: serialized_spots,
-        prefecture: [],
-        locations: [],
-        status: :ok
-      }
-    end
+    render json: {
+      spots: serialized_spots,
+      prefectures: Prefecture.all,
+      locations: Location.all,
+      status: :ok
+    }
   end
 
   # GET /spots/1
   def show
-    serialized_spot = SpotSerializer.new(@spot).with_details
+    serialized_spot = SpotSerializer.new(@spot).as_json
     
     render json: {
       **serialized_spot,
@@ -107,6 +98,10 @@ class Api::V1::SpotsController < ApplicationController
 
   def set_spot
     @spot = Spot.find(params[:id])
+  end
+
+  def record_not_found
+    render json: { error: 'Spot not found' }, status: :not_found
   end
 
   def spot_params

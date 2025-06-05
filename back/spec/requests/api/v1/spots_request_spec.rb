@@ -13,7 +13,11 @@ RSpec.describe "Api::V1::Spots", type: :request do
     it "スポット一覧を取得できること" do
       get "/api/v1/spots"
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body).size).to eq(3)
+      
+      json = JSON.parse(response.body)
+      expect(json['spots'].size).to eq(3)
+      expect(json['prefectures']).to be_present
+      expect(json['locations']).to be_present
     end
   end
 
@@ -36,12 +40,12 @@ RSpec.describe "Api::V1::Spots", type: :request do
   describe "POST /api/v1/spots" do
     let(:valid_params) do
       {
-        spot: {
-          name: "新しいスポット",
-          address: "東京都新宿区テスト1-1-1",
-          description: "新しいスポットの説明",
-          prefecture_id: 13
-        }
+        name: "新しいスポット",
+        address: "東京都新宿区テスト1-1-1",
+        introduction: "新しいスポットの説明",
+        prefecture_id: 13,
+        location_id: 1,
+        photo: fixture_file_upload(Rails.root.join('spec/fixtures/test_image.jpg'), 'image/jpeg')
       }
     end
 
@@ -66,6 +70,6 @@ RSpec.describe "Api::V1::Spots", type: :request do
   private
 
   def generate_jwt_token(user)
-    JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base)
+    UserAuth::AuthToken.new(payload: { sub: user.id }).token
   end
 end

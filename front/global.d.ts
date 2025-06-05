@@ -61,12 +61,26 @@ declare const useNuxtApp: () => {
 };
 
 declare const defineNuxtPlugin: (plugin: any) => any;
+declare const defineNuxtConfig: (config: any) => any;
 declare const defineNuxtRouteMiddleware: (
   middleware: (to: any, from: any) => any,
 ) => any;
 declare const definePageMeta: (meta: any) => void;
 declare const defineI18nConfig: (config: any) => any;
 declare const useHead: (head: any) => any;
+declare const useRoute: () => any;
+declare const useRouter: () => any;
 declare const navigateTo: (path: string) => any;
 declare const useError: () => any;
 declare const clearError: (options?: { redirect?: string }) => void;
+declare const useAuth: () => any;
+declare const useAuthStore: () => any;
+
+// Vite/Meta型定義
+interface ImportMeta {
+  client: boolean;
+  server: boolean;
+}
+
+// Google Maps API
+declare const google: any;

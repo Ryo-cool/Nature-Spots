@@ -37,7 +37,7 @@ const webpSupported = ref(false);
 
 // 画像フォーマットのサポート確認
 onMounted(async () => {
-  if (process.client) {
+  if (import.meta.client) {
     const { $imageOptimization } = useNuxtApp();
     if ($imageOptimization) {
       webpSupported.value = $imageOptimization.checkWebPSupport();

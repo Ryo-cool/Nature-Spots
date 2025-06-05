@@ -1,29 +1,59 @@
-import imagemin from "imagemin";
-import imageminWebp from "imagemin-webp";
-
 interface ImageOptimizationOptions {
   quality?: number;
-  resize?: {
-    width?: number;
-    height?: number;
-  };
+  maxWidth?: number;
+  maxHeight?: number;
 }
 
 export default defineNuxtPlugin(() => {
-  const convertToWebP = async (
-    file: File | Blob,
+  const resizeImage = async (
+    file: File,
     options: ImageOptimizationOptions = {},
   ): Promise<Blob> => {
-    const buffer = await file.arrayBuffer();
-    const optimizedBuffer = await imagemin.buffer(new Uint8Array(buffer), {
-      plugins: [
-        imageminWebp({
-          quality: options.quality || 80,
-          resize: options.resize,
-        }),
-      ],
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      img.onload = () => {
+        let { width, height } = img;
+
+        // アスペクト比を保持しながらリサイズ
+        if (options.maxWidth && width > options.maxWidth) {
+          height = (height * options.maxWidth) / width;
+          width = options.maxWidth;
+        }
+        if (options.maxHeight && height > options.maxHeight) {
+          width = (width * options.maxHeight) / height;
+          height = options.maxHeight;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                resolve(blob);
+              } else {
+                reject(new Error("Failed to create blob"));
+              }
+            },
+            "image/webp",
+            options.quality ? options.quality / 100 : 0.8,
+          );
+        } else {
+          reject(new Error("Failed to get canvas context"));
+        }
+      };
+
+      img.onerror = () => {
+        reject(new Error("Failed to load image"));
+      };
+
+      img.src = URL.createObjectURL(file);
     });
-    return new Blob([optimizedBuffer], { type: "image/webp" });
   };
 
   const createResponsiveImage = async (
@@ -33,9 +63,9 @@ export default defineNuxtPlugin(() => {
     const results: { [key: string]: Blob } = {};
 
     for (const size of sizes) {
-      const optimized = await convertToWebP(file, {
+      const optimized = await resizeImage(file, {
+        maxWidth: size.width,
         quality: size.quality || 80,
-        resize: { width: size.width },
       });
       results[`${size.width}w`] = optimized;
     }
@@ -44,9 +74,11 @@ export default defineNuxtPlugin(() => {
   };
 
   const checkWebPSupport = (): boolean => {
-    if (!process.client) return false;
+    if (!import.meta.client) return false;
 
     const canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
     return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0;
   };
 
@@ -54,7 +86,7 @@ export default defineNuxtPlugin(() => {
   return {
     provide: {
       imageOptimization: {
-        convertToWebP,
+        convertToWebP: resizeImage,
         createResponsiveImage,
         checkWebPSupport,
       },
