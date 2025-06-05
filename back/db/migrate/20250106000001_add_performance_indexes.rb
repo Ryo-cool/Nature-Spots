@@ -19,7 +19,7 @@ class AddPerformanceIndexes < ActiveRecord::Migration[7.1]
     add_index :likes, [:user_id, :review_id], unique: true, name: 'index_likes_on_user_id_and_review_id'
 
     # Add indexes for relationships table
-    add_index :relationships, :follower_id, name: 'index_relationships_on_follower_id'
-    add_index :relationships, :followed_id, name: 'index_relationships_on_followed_id'
+    add_index :relationships, :user_id, name: 'index_relationships_on_user_id'
+    add_index :relationships, :follow_id, name: 'index_relationships_on_follow_id'
   end
 end
