@@ -14,7 +14,25 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     sourceType: "module",
     ecmaVersion: 2020,
+    extraFileExtensions: [".vue"],
   },
+  settings: {
+    "import/resolver": {
+      typescript: true,
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx", ".vue"],
+      },
+    },
+  },
+  ignorePatterns: [
+    ".nuxt",
+    ".output",
+    "dist",
+    "node_modules",
+    "coverage",
+    "*.config.js",
+    ".eslintrc.js",
+  ],
   rules: {
     "vue/multi-word-component-names": "off",
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
