@@ -18,7 +18,6 @@ module.exports = {
   },
   settings: {
     "import/resolver": {
-      typescript: true,
       node: {
         extensions: [".js", ".jsx", ".ts", ".tsx", ".vue"],
       },
@@ -46,6 +45,8 @@ module.exports = {
     "vue/valid-v-slot": ["error", { allowModifiers: true }],
     "@typescript-eslint/no-var-requires": "off",
     "import/namespace": "off",
+    "import/order": "off",
+    "import/no-unresolved": "off",
     "no-useless-catch": "off",
     "vue/no-deprecated-html-element-is": "off",
     "no-unused-expressions": "off",
