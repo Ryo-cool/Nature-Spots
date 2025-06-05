@@ -42,19 +42,19 @@ RSpec.describe Review, type: :model do
       end
     end
 
-    describe 'content' do
+    describe 'text' do
       it 'コンテンツが必須であること' do
-        valid_review.content = nil
+        valid_review.text = nil
         expect(valid_review).not_to be_valid
       end
 
       it 'コンテンツが10文字以上であること' do
-        valid_review.content = 'あ' * 9
+        valid_review.text = 'あ' * 9
         expect(valid_review).not_to be_valid
       end
 
       it 'コンテンツが1000文字以下であること' do
-        valid_review.content = 'あ' * 1001
+        valid_review.text = 'あ' * 1001
         expect(valid_review).not_to be_valid
       end
     end

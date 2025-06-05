@@ -22,7 +22,7 @@ class Spot < ApplicationRecord
   validates :address, presence: true,
                      length: { maximum: 255 }
 
-  validates :description, length: { maximum: 1000 }
+  validates :introduction, length: { maximum: 1000 }
 
   # スコープ
   scope :recent, -> { order(created_at: :desc) }
