@@ -22,13 +22,44 @@ RSpec.describe "Api::V1::Spots", type: :request do
   end
 
   describe "GET /api/v1/spots/:id" do
+    let!(:review) { create(:review, spot: spot, user: user, rating: 4, wentday: '5') }
+    let!(:like) { create(:like, review: review) }
+
     it "特定のスポットを取得できること" do
       get "/api/v1/spots/#{spot.id}"
       expect(response).to have_http_status(:ok)
-      
+
       json = JSON.parse(response.body)
-      expect(json['id']).to eq(spot.id)
-      expect(json['name']).to eq(spot.name)
+      expect(json['spot']).to include(
+        'id' => spot.id,
+        'name' => spot.name,
+        'prefecture_id' => spot.prefecture_id,
+        'location_id' => spot.location_id
+      )
+      expect(json['spot']['photo']).to include('url')
+
+      expect(json['spot']['reviews']).to be_an(Array)
+      first_review = json['spot']['reviews'].first
+      expect(first_review).to include(
+        'id' => review.id,
+        'title' => review.title,
+        'text' => review.text,
+        'rating' => review.rating,
+        'wentday' => review.wentday
+      )
+      expect(first_review['image']).to include('url')
+      expect(first_review['user']).to include('id' => review.user.id, 'name' => review.user.name)
+      expect(first_review['likes']).to be_an(Array)
+      expect(first_review['likes'].first).to include('user_id' => like.user_id)
+
+      expect(json['review']).to eq(json['spot']['reviews'])
+      expect(json['prefecture']['attributes']['name']).to eq(Prefecture.find(spot.prefecture_id).name)
+      expect(json['location']['attributes']['name']).to eq(Location.find(spot.location_id).name)
+      expect(json['reviews_count']).to eq(spot.reviews.count)
+
+      average_rating = (spot.reviews.sum(:rating).to_f / spot.reviews.count).round(1)
+      expect(json['average_rating']).to eq(average_rating)
+      expect(json['favuser']).to be_nil
     end
 
     it "存在しないスポットの場合404を返すこと" do
