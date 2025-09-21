@@ -21,15 +21,16 @@ class Api::V1::LikesController < ApplicationController
 
   private
 
-  def like_params
-    params.permit(:review_id, :user_id)
-  end
-
   def set_review
-    @review = Review.find(like_params[:review_id] || params[:review_id])
+    @review = Review.where(spot_id: params[:spot_id]).find(params[:review_id])
   end
 
   def render_likes(status: :ok)
-    render json: { likes: @review.likes.reload }, status: status
+    likes = Like
+              .where(review_id: @review.id)
+              .order(created_at: :asc)
+              .select(:id, :review_id, :user_id)
+
+    render json: { likes: likes.as_json(only: %i[id review_id user_id]) }, status: status
   end
 end
