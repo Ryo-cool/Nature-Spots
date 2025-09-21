@@ -3,8 +3,10 @@ class ReviewSerializer < ApplicationSerializer
     {
       id: object.id,
       title: object.title,
-      content: object.content,
+      text: object.text,
       rating: object.rating,
+      wentday: object.wentday,
+      image: serialize_uploader(object.image),
       created_at: object.created_at,
       updated_at: object.updated_at
     }
@@ -12,7 +14,8 @@ class ReviewSerializer < ApplicationSerializer
 
   def with_user
     as_json.merge(
-      user: UserSerializer.new(object.user).as_json
+      user: UserSerializer.new(object.user).as_json,
+      likes: object.likes.map { |like| LikeSerializer.new(like).as_json }
     )
   end
 

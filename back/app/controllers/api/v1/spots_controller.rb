@@ -44,10 +44,18 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots/1
   def show
-    serialized_spot = SpotSerializer.new(@spot).as_json
-    
+    serializer = SpotSerializer.new(@spot)
+    detailed_spot = serializer.with_details
+    reviews_count = detailed_spot[:reviews_count] || detailed_spot[:review_count]
+
     render json: {
-      **serialized_spot,
+      spot: detailed_spot,
+      review: detailed_spot[:reviews],
+      reviews_count: reviews_count,
+      average_rating: detailed_spot[:average_rating],
+      prefecture: serializer.prefecture_resource,
+      location: serializer.location_resource,
+      favuser: favorite_user_id_for_current_user,
       status: :ok
     }
   end
@@ -125,8 +133,8 @@ class Api::V1::SpotsController < ApplicationController
   def set_spot
     # Fix: Include nested user associations for reviews and favorites to prevent N+1 queries
     # Note: prefecture and location are ActiveHash, not ActiveRecord, so don't include them
-    @spot = Spot.includes(:user, 
-                         reviews: :user, 
+    @spot = Spot.includes(:user,
+                         { reviews: [:user, :likes] },
                          favorites: :user).find(params[:id])
   end
 
@@ -145,5 +153,11 @@ class Api::V1::SpotsController < ApplicationController
       :address,
       :prefecture_id
     )
+  end
+
+  def favorite_user_id_for_current_user
+    return nil unless defined?(current_user) && current_user
+
+    @spot.favorites.find { |favorite| favorite.user_id == current_user.id }&.user_id
   end
 end

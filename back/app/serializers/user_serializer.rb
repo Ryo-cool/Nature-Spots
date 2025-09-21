@@ -4,7 +4,7 @@ class UserSerializer < ApplicationSerializer
       id: object.id,
       name: object.name,
       email: object.email,
-      image: object.image.url,
+      image: serialize_uploader(object.image),
       introduction: object.introduction,
       created_at: object.created_at
     }
