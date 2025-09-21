@@ -1,5 +1,5 @@
 # イメージの指定
-FROM ruby:3.3.0-alpine
+FROM ruby:3.2.3-alpine
 
 # 必要パッケージのダウンロード
 ENV RUNTIME_PACKAGES="linux-headers libxml2-dev make gcc libc-dev nodejs tzdata mysql-dev mysql-client yarn bash" \
