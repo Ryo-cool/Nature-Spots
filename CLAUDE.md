@@ -7,7 +7,7 @@ Nature-Spots は自然スポットの口コミサイトです。位置情報付�
 ### 技術スタック
 
 - **Frontend**: Nuxt.js 3 + Vue.js 3 + TypeScript + Vuetify + Pinia
-- **Backend**: Rails 7.1.3 + Ruby 3.3.0 + MySQL 5.7 + JWT 認証
+- **Backend**: Rails 7.1.3 + Ruby 3.2.3 + MySQL 5.7 + JWT 認証
 - **Infrastructure**: Docker + Docker Compose
 - **API**: Google Maps JavaScript API, Geocoding API
 - **Internationalization**: Vue I18n (日本語・英語対応)
@@ -18,7 +18,7 @@ Nature-Spots は自然スポットの口コミサイトです。位置情報付�
 
 - Docker & Docker Compose
 - Node.js (推奨: v18+)
-- Ruby 3.3.0
+- Ruby 3.2.3
 - Yarn
 
 ### Initial Setup
