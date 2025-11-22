@@ -1,5 +1,15 @@
 # Nature-Spots Project Guide
 
+## 言語設定 / Language Settings
+
+**IMPORTANT: このプロジェクトでは、すべてのコミュニケーションを日本語で行ってください。**
+**All communications in this project MUST be in Japanese.**
+
+Claude Codeとやり取りする際は、必ず日本語でレスポンスしてください。
+技術用語は英語のままで構いませんが、説明や会話は日本語で行ってください。
+
+---
+
 ## Project Overview
 
 Nature-Spots は自然スポットの口コミサイトです。位置情報付きでスポットを共有し、レビューやいいね機能でユーザー同士の交流を促進します。
