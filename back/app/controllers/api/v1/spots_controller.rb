@@ -5,9 +5,10 @@ class Api::V1::SpotsController < ApplicationController
 
   # GET /spots
   def index
-    page = (params[:page] || 1).to_i
-    per_page = (params[:per_page] || 20).to_i
-    offset = (page - 1) * per_page
+    page = [(params[:page] || 1).to_i, 1].max
+    per_page = [(params[:per_page] || 20).to_i, 1].max
+    per_page = [per_page, 100].min  # Cap at 100 to prevent abuse
+     offset = (page - 1) * per_page
     
     # Fix: Include nested user associations for reviews and favorites to prevent N+1 queries
     # Note: prefecture and location are ActiveHash, not ActiveRecord, so don't include them
