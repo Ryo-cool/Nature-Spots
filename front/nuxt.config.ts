@@ -4,7 +4,9 @@ const effectiveCryptoKey = cryptoKey ?? "dev-default-key";
 
 if (!cryptoKey) {
   // 本番環境では必ず環境変数を設定すること
-  console.warn("[nuxt.config] CRYPTO_KEY is not set. Falling back to dev-default-key.");
+  console.warn(
+    "[nuxt.config] CRYPTO_KEY is not set. Falling back to dev-default-key.",
+  );
 }
 
 export default defineNuxtConfig({
