@@ -39,9 +39,11 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import type { FetchError } from "ofetch";
 import { useAuth } from "~/composables/useAuth";
 import { useSecureStorage } from "~/composables/useSecureStorage";
 import { useToastStore } from "~/stores/toast";
+import type { User } from "~/types";
 
 definePageMeta({
   layout: "beforeLogin",
@@ -58,6 +60,22 @@ const loading = ref(false);
 const params = reactive({
   auth: { email: "", password: "" },
 });
+interface AuthResponse {
+  token: string;
+  exp: number;
+  user: User | null;
+}
+
+const isAuthResponse = (data: unknown): data is AuthResponse => {
+  if (!data || typeof data !== "object") return false;
+  const candidate = data as Partial<AuthResponse>;
+  return (
+    typeof candidate.token === "string" &&
+    typeof candidate.exp === "number" &&
+    ("user" in candidate ? candidate.user === null || typeof candidate.user === "object" : true)
+  );
+};
+
 const guestParams = computed(() => ({
   auth: {
     email: config.public.guestEmail,
@@ -70,13 +88,16 @@ async function login() {
   loading.value = true;
   if (isValid.value) {
     try {
-      const response = await $fetch("/api/v1/user_token", {
+      const response = await $fetch<AuthResponse>("/api/v1/user_token", {
         method: "POST",
         body: params,
         baseURL: config.public.apiBaseUrl,
       });
+      if (!isAuthResponse(response)) {
+        throw new Error("認証レスポンスの形式が不正です");
+      }
       await authSuccessful(response);
-    } catch (error: any) {
+    } catch (error: unknown) {
       authFailure(error);
     }
   }
@@ -95,13 +116,16 @@ async function guestLogin() {
       return;
     }
 
-    const response = await $fetch("/api/v1/user_token", {
+    const response = await $fetch<AuthResponse>("/api/v1/user_token", {
       method: "POST",
       body: guestParams.value,
       baseURL: config.public.apiBaseUrl,
     });
+    if (!isAuthResponse(response)) {
+      throw new Error("認証レスポンスの形式が不正です");
+    }
     await authSuccessful(response);
-  } catch (error: any) {
+  } catch (error: unknown) {
     authFailure(error);
   } finally {
     loading.value = false;
@@ -109,7 +133,7 @@ async function guestLogin() {
 }
 
 // ログイン成功処理
-async function authSuccessful(response: any) {
+async function authSuccessful(response: AuthResponse) {
   await authLogin(response);
 
   // 保存されたルートパスを取得
@@ -120,17 +144,20 @@ async function authSuccessful(response: any) {
 }
 
 // ログイン失敗処理
-function authFailure(error: any) {
-  if (error.response?.status === 404) {
+function authFailure(error: unknown) {
+  const fetchError = error as FetchError | undefined;
+
+  if (fetchError?.response?.status === 404) {
     toastStore.showToast({
       message: "ユーザーが見つかりません😷",
       color: "error",
     });
-  } else {
-    toastStore.showToast({
-      message: "ログインに失敗しました",
-      color: "error",
-    });
+    return;
   }
+
+  toastStore.showToast({
+    message: "ログインに失敗しました",
+    color: "error",
+  });
 }
 </script>

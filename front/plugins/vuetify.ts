@@ -2,8 +2,9 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import "vuetify/styles";
+import type { NuxtApp } from "nuxt/app";
 
-export default defineNuxtPlugin((nuxtApp: any) => {
+export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
   const vuetify = createVuetify({
     components,
     directives,

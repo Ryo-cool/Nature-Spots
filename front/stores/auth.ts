@@ -1,6 +1,11 @@
 import { defineStore } from "pinia";
 import type { User } from "~/types";
 
+interface TokenResponse {
+  token: string;
+  exp?: number;
+}
+
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null as User | null,
@@ -30,7 +35,7 @@ export const useAuthStore = defineStore("auth", {
     async login(credentials: { email: string; password: string }) {
       try {
         const config = useRuntimeConfig();
-        const response = await $fetch("/api/v1/user_token", {
+        const response = await $fetch<TokenResponse>("/api/v1/user_token", {
           method: "POST",
           body: credentials,
           baseURL: config.public.apiBaseUrl,
@@ -67,7 +72,7 @@ export const useAuthStore = defineStore("auth", {
       try {
         const config = useRuntimeConfig();
 
-        const response = await $fetch("/api/v1/users/me", {
+        const response = await $fetch<User>("/api/v1/users/me", {
           method: "GET",
           baseURL: config.public.apiBaseUrl,
           headers: {
