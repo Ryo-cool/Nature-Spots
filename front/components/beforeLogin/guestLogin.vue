@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import type { FetchError } from "ofetch";
 import { useAuthStore } from "~/stores/auth";
 import { useToastStore } from "~/stores/toast";
 
@@ -57,13 +58,12 @@ const guestLogin = async () => {
     } else {
       throw new Error("ログインに失敗しました");
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("ゲストログインエラー:", error);
 
+    const status = (error as FetchError | undefined)?.response?.status;
     const message =
-      error?.response?.status === 404
-        ? "ユーザーが見つかりません😷"
-        : "ログインに失敗しました";
+      status === 404 ? "ユーザーが見つかりません😷" : "ログインに失敗しました";
 
     toastStore.showToast({
       message,

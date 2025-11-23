@@ -1,3 +1,5 @@
+import type { RouteLocationNormalized } from "vue-router";
+
 // User types
 export interface User {
   id: number;
@@ -40,7 +42,7 @@ export interface ApiResponse<T> {
 // Declaration merging for Nuxt
 declare module "#app" {
   interface PageMeta {
-    layout?: string | ((route: any) => string);
+    layout?: string | ((route: RouteLocationNormalized) => string);
     middleware?: string | string[];
     auth?: boolean;
   }

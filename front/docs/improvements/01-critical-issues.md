@@ -731,8 +731,8 @@ catch (err: unknown) {
 
 最優先課題の完了チェックリスト:
 
-- [ ] TypeScript strict mode段階的有効化開始
-- [ ] any型26箇所の修正
+- [x] TypeScript strict mode段階的有効化開始
+- [x] any型26箇所の修正
 - [x] 認証情報の環境変数化
 - [x] 暗号化キーの必須化
 - [x] 入力バリデーション強化
@@ -748,5 +748,7 @@ catch (err: unknown) {
 - `CRYPTO_KEY` を必須化しデフォルトキーを廃止
 - メールアドレス入力のバリデーションを強化（形式チェック・長さ上限・メッセージ追加）
 - `useSecureStorage` を新設し `rememberRoute` の保存先をセッションストレージに置き換え
+- strict 段階導入フェーズ1完了（noImplicitAny/This, strictFunctionTypes 有効化）し型チェック通過
+- any 使用箇所を主要ファイルで型付け（stores/spot.ts, plugins/api.ts, pages/login.vue 等）し type-check OK
 
 次は **[02-high-priority.md](./02-high-priority.md)** を読んで、高優先度課題を確認してください。

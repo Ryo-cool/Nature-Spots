@@ -67,6 +67,12 @@
 import { ref, onMounted } from "vue";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
+import { useAuthStore } from "~/stores/auth";
+
+interface Like {
+  id: number;
+  user_id?: number;
+}
 
 interface Review {
   id: number;
@@ -85,7 +91,7 @@ interface Review {
       url: string;
     };
   };
-  likes: Array<any>;
+  likes: Like[];
 }
 
 const route = useRoute();
@@ -96,13 +102,16 @@ const reviews = ref<Review[]>([]);
 
 onMounted(async () => {
   try {
-    const response = await $fetch(`/api/v1/spots/${route.params.id}`, {
-      method: "GET",
-      baseURL: config.public.apiBaseUrl,
-    });
-    reviews.value = JSON.parse(response.review);
-  } catch (error) {
-    console.error(error);
+    const response = await $fetch<{ review: string }>(
+      `/api/v1/spots/${route.params.id}`,
+      {
+        method: "GET",
+        baseURL: config.public.apiBaseUrl,
+      },
+    );
+    reviews.value = JSON.parse(response.review) as Review[];
+  } catch (error: unknown) {
+    console.error("Failed to load reviews", error);
   }
 });
 
@@ -112,7 +121,7 @@ const formatDate = (date: string): string => {
 
 const like = async (reviewId: number): Promise<void> => {
   try {
-    const response = await $fetch(
+    const response = await $fetch<{ likes: Like[] }>(
       `/api/v1/spots/${route.params.id}/reviews/${reviewId}/likes`,
       {
         method: "POST",
@@ -131,14 +140,14 @@ const like = async (reviewId: number): Promise<void> => {
     if (review) {
       review.likes = response.likes;
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.log(error);
   }
 };
 
 const deleteLike = async (reviewId: number): Promise<void> => {
   try {
-    const response = await $fetch(
+    const response = await $fetch<{ likes: Like[] }>(
       `/api/v1/spots/${route.params.id}/reviews/${reviewId}/likes/${authStore.user?.id}`,
       {
         method: "DELETE",
@@ -153,7 +162,7 @@ const deleteLike = async (reviewId: number): Promise<void> => {
     if (review) {
       review.likes = response.likes;
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.log(error);
   }
 };

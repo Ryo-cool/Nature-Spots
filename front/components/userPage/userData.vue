@@ -41,14 +41,16 @@ interface User {
   };
 }
 
+type UnknownRecord = Record<string, unknown>;
+
 const route = useRoute();
 const { $api } = useNuxtApp();
 
 const user = ref<User | null>(null);
 const userImage = ref<string | null>(null);
-const reviews = ref<any[]>([]);
-const follow = ref<any[]>([]);
-const follower = ref<any[]>([]);
+const reviews = ref<UnknownRecord[]>([]);
+const follow = ref<UnknownRecord[]>([]);
+const follower = ref<UnknownRecord[]>([]);
 
 const reviewCount = computed(() => reviews.value.length);
 const followCount = computed(() => follow.value.length);

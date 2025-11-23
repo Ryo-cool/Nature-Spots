@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { Spot } from "~/types";
+import { useAuthStore } from "./auth";
 
 export const useSpotStore = defineStore("spot", {
   state: () => ({
@@ -39,15 +40,16 @@ export const useSpotStore = defineStore("spot", {
       this.setLoading(true);
       try {
         const config = useRuntimeConfig();
-        const response = await $fetch("/api/v1/spots", {
+        const response = await $fetch<Spot[]>("/api/v1/spots", {
           method: "GET",
           baseURL: config.public.apiBaseUrl,
         });
 
         this.spots = response;
         this.error = null;
-      } catch (error: any) {
-        this.error = error.message || "Failed to fetch spots";
+      } catch (error: unknown) {
+        this.error =
+          error instanceof Error ? error.message : "Failed to fetch spots";
       } finally {
         this.loading = false;
       }
@@ -57,15 +59,18 @@ export const useSpotStore = defineStore("spot", {
       this.setLoading(true);
       try {
         const config = useRuntimeConfig();
-        const response = await $fetch(`/api/v1/spots/${id}`, {
+        const response = await $fetch<Spot>(`/api/v1/spots/${id}`, {
           method: "GET",
           baseURL: config.public.apiBaseUrl,
         });
 
         this.currentSpot = response;
         this.error = null;
-      } catch (error: any) {
-        this.error = error.message || `Failed to fetch spot with id ${id}`;
+      } catch (error: unknown) {
+        this.error =
+          error instanceof Error
+            ? error.message
+            : `Failed to fetch spot with id ${id}`;
       } finally {
         this.loading = false;
       }
@@ -77,7 +82,7 @@ export const useSpotStore = defineStore("spot", {
         const config = useRuntimeConfig();
         const authStore = useAuthStore();
 
-        const response = await $fetch("/api/v1/spots", {
+        const response = await $fetch<Spot>("/api/v1/spots", {
           method: "POST",
           body: spot,
           baseURL: config.public.apiBaseUrl,
@@ -90,8 +95,9 @@ export const useSpotStore = defineStore("spot", {
         this.spots.push(response);
         this.error = null;
         return response;
-      } catch (error: any) {
-        this.error = error.message || "Failed to create spot";
+      } catch (error: unknown) {
+        this.error =
+          error instanceof Error ? error.message : "Failed to create spot";
         throw error;
       } finally {
         this.loading = false;
@@ -104,7 +110,7 @@ export const useSpotStore = defineStore("spot", {
         const config = useRuntimeConfig();
         const authStore = useAuthStore();
 
-        const response = await $fetch(`/api/v1/spots/${id}`, {
+        const response = await $fetch<Spot>(`/api/v1/spots/${id}`, {
           method: "PUT",
           body: spot,
           baseURL: config.public.apiBaseUrl,
@@ -125,8 +131,11 @@ export const useSpotStore = defineStore("spot", {
 
         this.error = null;
         return response;
-      } catch (error: any) {
-        this.error = error.message || `Failed to update spot with id ${id}`;
+      } catch (error: unknown) {
+        this.error =
+          error instanceof Error
+            ? error.message
+            : `Failed to update spot with id ${id}`;
         throw error;
       } finally {
         this.loading = false;
@@ -155,8 +164,11 @@ export const useSpotStore = defineStore("spot", {
         }
 
         this.error = null;
-      } catch (error: any) {
-        this.error = error.message || `Failed to delete spot with id ${id}`;
+      } catch (error: unknown) {
+        this.error =
+          error instanceof Error
+            ? error.message
+            : `Failed to delete spot with id ${id}`;
         throw error;
       } finally {
         this.loading = false;

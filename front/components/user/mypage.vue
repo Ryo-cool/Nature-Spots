@@ -88,7 +88,12 @@ interface Review {
   image?: {
     url: string;
   };
-  likes?: any[];
+  likes?: Like[];
+}
+
+interface Like {
+  id: number;
+  user_id?: number;
 }
 
 const authStore = useAuthStore();
