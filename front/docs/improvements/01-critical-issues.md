@@ -737,10 +737,10 @@ catch (err: unknown) {
 - [x] 暗号化キーの必須化
 - [x] 入力バリデーション強化
 - [x] Storage Composable作成
-- [ ] Signup機能のComposition API書き換え
-- [ ] Signup APIの統合
-- [ ] エラーハンドリング実装
-- [ ] Signupページのテスト作成
+- [x] Signup機能のComposition API書き換え
+- [x] Signup APIの統合
+- [x] エラーハンドリング実装
+- [x] Signupページのテスト作成
 
 ### 進捗メモ (2025-11-23)
 
