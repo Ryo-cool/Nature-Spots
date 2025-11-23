@@ -72,7 +72,9 @@ const isAuthResponse = (data: unknown): data is AuthResponse => {
   return (
     typeof candidate.token === "string" &&
     typeof candidate.exp === "number" &&
-    ("user" in candidate ? candidate.user === null || typeof candidate.user === "object" : true)
+    ("user" in candidate
+      ? candidate.user === null || typeof candidate.user === "object"
+      : true)
   );
 };
 

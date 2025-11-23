@@ -6,7 +6,10 @@ type ApiRequestOptions = Omit<RequestInit, "body" | "method"> & {
   params?: Record<string, unknown>;
 };
 type ApiClient = {
-  get<T = any>(url: string, options?: ApiRequestOptions): Promise<ApiResponse<T>>;
+  get<T = any>(
+    url: string,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
   post<T = any>(
     url: string,
     body?: unknown,
@@ -60,7 +63,10 @@ export default defineNuxtPlugin(() => {
 
   const request = async <T = any>(
     url: string,
-    options: ApiRequestOptions & { method: "GET" | "POST" | "DELETE"; body?: unknown },
+    options: ApiRequestOptions & {
+      method: "GET" | "POST" | "DELETE";
+      body?: unknown;
+    },
   ): Promise<ApiResponse<T>> => {
     const data = await apiFetch<T>(url, options);
     return { data };

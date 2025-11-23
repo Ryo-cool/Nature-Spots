@@ -23,11 +23,9 @@ const emit = defineEmits<{
 }>();
 
 const max = 30;
-
 const rules = [
   (v: string) => !!v || "",
-  (v: string) =>
-    (!!v && max >= v.length) || `${max}文字以内で入力してください`,
+  (v: string) => (!!v && max >= v.length) || `${max}文字以内で入力してください`,
 ];
 
 const modelValue = computed({

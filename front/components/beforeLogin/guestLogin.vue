@@ -63,9 +63,7 @@ const guestLogin = async () => {
 
     const status = (error as FetchError | undefined)?.response?.status;
     const message =
-      status === 404
-        ? "ユーザーが見つかりません😷"
-        : "ログインに失敗しました";
+      status === 404 ? "ユーザーが見つかりません😷" : "ログインに失敗しました";
 
     toastStore.showToast({
       message,

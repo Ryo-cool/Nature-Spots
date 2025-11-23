@@ -64,13 +64,19 @@ type ApiRequestOptions = Omit<RequestInit, "body" | "method"> & {
 };
 
 interface ApiClient {
-  get<T = any>(url: string, options?: ApiRequestOptions): Promise<ApiResponse<T>>;
+  get<T = any>(
+    url: string,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
   post<T = any>(
     url: string,
     body?: unknown,
     options?: ApiRequestOptions,
   ): Promise<ApiResponse<T>>;
-  delete<T = any>(url: string, options?: ApiRequestOptions): Promise<ApiResponse<T>>;
+  delete<T = any>(
+    url: string,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
 }
 
 interface ImageOptimizationService {
