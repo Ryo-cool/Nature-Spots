@@ -31,21 +31,22 @@ JavaScriptファイル:  3ファイル（レガシー）
 
 ### 問題の分類
 
-| カテゴリ | 重大度 | 件数 |
-|----------|--------|------|
-| **コード品質** | Critical - Medium | 15件 |
-| **セキュリティ** | Critical - High | 4件 |
-| **パフォーマンス** | High - Medium | 4件 |
-| **アクセシビリティ** | Medium | 3件 |
-| **国際化(i18n)** | Medium | 2件 |
-| **テスト** | Critical | 1件 |
-| **その他** | Low | 4件 |
+| カテゴリ             | 重大度            | 件数 |
+| -------------------- | ----------------- | ---- |
+| **コード品質**       | Critical - Medium | 15件 |
+| **セキュリティ**     | Critical - High   | 4件  |
+| **パフォーマンス**   | High - Medium     | 4件  |
+| **アクセシビリティ** | Medium            | 3件  |
+| **国際化(i18n)**     | Medium            | 2件  |
+| **テスト**           | Critical          | 1件  |
+| **その他**           | Low               | 4件  |
 
 ---
 
 ## 🚨 最も重大な問題（Top 5）
 
 ### 1. TypeScript Strict Mode無効化
+
 **影響度**: ⭐⭐⭐⭐⭐
 
 ```typescript
@@ -60,6 +61,7 @@ JavaScriptファイル:  3ファイル（レガシー）
 ---
 
 ### 2. any型の大量使用
+
 **影響度**: ⭐⭐⭐⭐⭐
 
 26箇所以上で`any`型が使用されており、TypeScriptの利点が失われています。
@@ -81,6 +83,7 @@ catch (error: unknown) {
 ---
 
 ### 3. 認証情報のハードコード
+
 **影響度**: ⭐⭐⭐⭐⭐
 
 ```typescript
@@ -88,7 +91,7 @@ catch (error: unknown) {
 const guestParams = {
   auth: {
     email: "user0@example.com",
-    password: "password"  // ← パスワードが平文
+    password: "password", // ← パスワードが平文
   },
 };
 ```
@@ -98,6 +101,7 @@ const guestParams = {
 ---
 
 ### 4. テストファイルが0件
+
 **影響度**: ⭐⭐⭐⭐
 
 プロジェクト指針で「最低80%のテストカバレッジ」が要求されていますが、テストファイルが1つも存在しません。
@@ -107,6 +111,7 @@ const guestParams = {
 ---
 
 ### 5. Signup機能の未実装
+
 **影響度**: ⭐⭐⭐⭐
 
 ```javascript
@@ -170,21 +175,21 @@ signup() {
 
 ### 短期的効果（1-2ヶ月）
 
-| 改善項目 | 効果 |
-|----------|------|
-| TypeScript strict mode有効化 | バグ検出率 **+40%** |
-| セキュリティ問題の修正 | セキュリティリスク **-80%** |
-| エラーハンドリング統一 | ユーザー体験向上 |
-| Signup機能実装 | ユーザー登録率向上 |
+| 改善項目                     | 効果                        |
+| ---------------------------- | --------------------------- |
+| TypeScript strict mode有効化 | バグ検出率 **+40%**         |
+| セキュリティ問題の修正       | セキュリティリスク **-80%** |
+| エラーハンドリング統一       | ユーザー体験向上            |
+| Signup機能実装               | ユーザー登録率向上          |
 
 ### 中長期的効果（3-6ヶ月）
 
-| 改善項目 | 効果 |
-|----------|------|
+| 改善項目                | 効果                        |
+| ----------------------- | --------------------------- |
 | テストカバレッジ80%達成 | リグレッションバグ **-60%** |
-| Composition API統一 | 開発速度 **+30%** |
-| パフォーマンス最適化 | 初回表示速度 **-20%** |
-| アクセシビリティ対応 | 利用可能ユーザー数 **+15%** |
+| Composition API統一     | 開発速度 **+30%**           |
+| パフォーマンス最適化    | 初回表示速度 **-20%**       |
+| アクセシビリティ対応    | 利用可能ユーザー数 **+15%** |
 
 ---
 
@@ -207,13 +212,13 @@ signup() {
 
 ## 📋 プロジェクト指針との対比
 
-| プロジェクト指針 | 現状 | 目標 |
-|-----------------|------|------|
-| TypeScript Strict mode enabled | ❌ 無効 | ✅ 有効 |
-| 明示的な型定義必須 | ❌ any型多用 | ✅ 適切な型定義 |
-| 最低80%テストカバレッジ | ❌ 0% | ✅ 80%以上 |
-| Composition API preferred | ⚠️ 混在 | ✅ 統一 |
-| セキュリティ最優先 | ⚠️ 問題あり | ✅ 強化 |
+| プロジェクト指針               | 現状         | 目標            |
+| ------------------------------ | ------------ | --------------- |
+| TypeScript Strict mode enabled | ❌ 無効      | ✅ 有効         |
+| 明示的な型定義必須             | ❌ any型多用 | ✅ 適切な型定義 |
+| 最低80%テストカバレッジ        | ❌ 0%        | ✅ 80%以上      |
+| Composition API preferred      | ⚠️ 混在      | ✅ 統一         |
+| セキュリティ最優先             | ⚠️ 問題あり  | ✅ 強化         |
 
 ---
 
@@ -243,18 +248,22 @@ cat 05-implementation-roadmap.md
 ## 📚 参考リソース
 
 ### TypeScript
+
 - [TypeScript Handbook - Strict Mode](https://www.typescriptlang.org/tsconfig#strict)
 - [TypeScript Deep Dive - Type Safety](https://basarat.gitbook.io/typescript/)
 
 ### Nuxt 3
+
 - [Nuxt 3 Migration Guide](https://nuxt.com/docs/migration/overview)
 - [Composition API Best Practices](https://vuejs.org/guide/extras/composition-api-faq.html)
 
 ### Testing
+
 - [Vitest Documentation](https://vitest.dev/)
 - [Vue Test Utils](https://test-utils.vuejs.org/)
 
 ### Security
+
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [Vue.js Security Best Practices](https://vuejs.org/guide/best-practices/security.html)
 
