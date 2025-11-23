@@ -714,13 +714,19 @@ catch (err: unknown) {
 
 - [ ] TypeScript strict mode段階的有効化開始
 - [ ] any型26箇所の修正
-- [ ] 認証情報の環境変数化
-- [ ] 暗号化キーの必須化
-- [ ] 入力バリデーション強化
-- [ ] Storage Composable作成
+- [x] 認証情報の環境変数化
+- [x] 暗号化キーの必須化
+- [x] 入力バリデーション強化
+- [x] Storage Composable作成
 - [ ] Signup機能のComposition API書き換え
 - [ ] Signup APIの統合
 - [ ] エラーハンドリング実装
 - [ ] Signupページのテスト作成
+
+### 進捗メモ (2025-11-23)
+- ゲスト/通常ログイン資格情報を環境変数化し、未設定時はトースト通知
+- `CRYPTO_KEY` を必須化しデフォルトキーを廃止
+- メールアドレス入力のバリデーションを強化（形式チェック・長さ上限・メッセージ追加）
+- `useSecureStorage` を新設し `rememberRoute` の保存先をセッションストレージに置き換え
 
 次は **[02-high-priority.md](./02-high-priority.md)** を読んで、高優先度課題を確認してください。

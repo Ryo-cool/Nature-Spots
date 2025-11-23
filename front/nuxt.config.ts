@@ -1,4 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const cryptoKey = process.env.CRYPTO_KEY;
+
+if (!cryptoKey) {
+  throw new Error("CRYPTO_KEY environment variable is required");
+}
+
 export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
@@ -63,7 +69,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       appName: process.env.APP_NAME || "Nature Spots",
-      cryptoKey: process.env.CRYPTO_KEY || "default-key",
+      cryptoKey,
+      guestEmail: process.env.GUEST_EMAIL,
+      guestPassword: process.env.GUEST_PASSWORD,
       googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || "",
       apiBaseUrl:
         process.env.NODE_ENV === "production"
