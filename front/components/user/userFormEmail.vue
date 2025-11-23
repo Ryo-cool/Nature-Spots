@@ -27,8 +27,11 @@ const emit = defineEmits(["update:modelValue"]);
 
 // バリデーションルール
 const rules = [
-  (v: string) => !!v || "",
-  (v: string) => /.+@.+\..+/.test(v) || "",
+  (v: string) => !!v || "メールアドレスを入力してください",
+  (v: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ||
+    "メールアドレスの形式が正しくありません",
+  (v: string) => v.length <= 254 || "メールアドレスが長すぎます",
 ];
 
 // プレースホルダー

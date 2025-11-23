@@ -42,6 +42,8 @@ declare const useRuntimeConfig: () => {
     apiBaseUrl: string;
     appName: string;
     cryptoKey: string;
+    guestEmail?: string;
+    guestPassword?: string;
     googleMapsApiKey: string;
   };
 };

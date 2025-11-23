@@ -1,4 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const cryptoKey = process.env.CRYPTO_KEY;
+const effectiveCryptoKey = cryptoKey ?? "dev-default-key";
+
+if (!cryptoKey) {
+  // 本番環境では必ず環境変数を設定すること
+  console.warn(
+    "[nuxt.config] CRYPTO_KEY is not set. Falling back to dev-default-key.",
+  );
+}
+
 export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
@@ -63,7 +73,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       appName: process.env.APP_NAME || "Nature Spots",
-      cryptoKey: process.env.CRYPTO_KEY || "default-key",
+      cryptoKey: effectiveCryptoKey,
+      guestEmail: process.env.GUEST_EMAIL,
+      guestPassword: process.env.GUEST_PASSWORD,
       googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || "",
       apiBaseUrl:
         process.env.NODE_ENV === "production"

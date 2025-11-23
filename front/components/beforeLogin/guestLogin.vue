@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import { useToastStore } from "~/stores/toast";
@@ -21,13 +21,14 @@ import { useToastStore } from "~/stores/toast";
 const router = useRouter();
 const authStore = useAuthStore();
 const toastStore = useToastStore();
+const config = useRuntimeConfig();
 
 const isLoading = ref(false);
 
-const guestCredentials = {
-  email: "user0@example.com",
-  password: "password",
-};
+const guestCredentials = computed(() => ({
+  email: config.public.guestEmail,
+  password: config.public.guestPassword,
+}));
 
 const guestLogin = async () => {
   if (isLoading.value) return;
@@ -35,7 +36,15 @@ const guestLogin = async () => {
   isLoading.value = true;
 
   try {
-    const token = await authStore.login(guestCredentials);
+    if (!guestCredentials.value.email || !guestCredentials.value.password) {
+      toastStore.showToast({
+        message: "ゲストログインが設定されていません",
+        color: "error",
+      });
+      return;
+    }
+
+    const token = await authStore.login(guestCredentials.value);
 
     if (token) {
       toastStore.showToast({

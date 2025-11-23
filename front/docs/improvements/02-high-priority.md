@@ -19,15 +19,17 @@
 ## 1. Options APIからComposition APIへの移行
 
 ### 🚨 問題の重大度
+
 **High** - プロジェクト方針との不整合、保守性の低下
 
 ### 📍 影響範囲
+
 **12ファイル**でOptions APIが使用されています。
 
 #### 主要な対象ファイル
 
 1. [front/pages/signup.vue](../../pages/signup.vue) - 全体がOptions API
-2. [front/pages/spots/_id/index.vue](../../pages/spots/_id/index.vue):21-46
+2. [front/pages/spots/\_id/index.vue](../../pages/spots/_id/index.vue):21-46
 3. [front/pages/newspots.vue](../../pages/newspots.vue):90-173
 4. [front/pages/logout.vue](../../pages/logout.vue):4-11
 5. [front/pages/index.vue](../../pages/index.vue)
@@ -78,6 +80,7 @@ export default {
 ```
 
 **問題点**:
+
 - Nuxt 3の推奨パターンではない
 - TypeScriptの型推論が弱い
 - Composablesが使えない
@@ -88,52 +91,52 @@ export default {
 ```vue
 <!-- ✅ Composition API（推奨） -->
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 
 // Layout設定
 definePageMeta({
-  layout: 'before-login'
-})
+  layout: "before-login",
+});
 
 // Types
 interface SignupParams {
   user: {
-    name: string
-    email: string
-    password: string
-  }
+    name: string;
+    email: string;
+    password: string;
+  };
 }
 
 // State
-const isValid = ref(false)
-const loading = ref(false)
+const isValid = ref(false);
+const loading = ref(false);
 const params = ref<SignupParams>({
   user: {
-    name: '',
-    email: '',
-    password: ''
-  }
-})
+    name: "",
+    email: "",
+    password: "",
+  },
+});
 
 // Methods
 const signup = async () => {
-  loading.value = true
+  loading.value = true;
   try {
     // 実装...
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 const formReset = () => {
   params.value = {
     user: {
-      name: '',
-      email: '',
-      password: ''
-    }
-  }
-}
+      name: "",
+      email: "",
+      password: "",
+    },
+  };
+};
 </script>
 ```
 
@@ -141,17 +144,18 @@ const formReset = () => {
 
 #### ステップ1: 優先度付け
 
-| 優先度 | ファイル | 理由 |
-|--------|---------|------|
-| 1 | signup.vue | Critical課題でもある |
-| 2 | login.vue | 認証周り |
-| 3 | newspots.vue | 複雑なロジック |
-| 4 | spots/_id/index.vue | よく使われるページ |
-| 5 | その他 | - |
+| 優先度 | ファイル             | 理由                 |
+| ------ | -------------------- | -------------------- |
+| 1      | signup.vue           | Critical課題でもある |
+| 2      | login.vue            | 認証周り             |
+| 3      | newspots.vue         | 複雑なロジック       |
+| 4      | spots/\_id/index.vue | よく使われるページ   |
+| 5      | その他               | -                    |
 
 #### ステップ2: パターン別の移行方法
 
 **パターンA: data → ref**
+
 ```javascript
 // Before
 data() {
@@ -163,6 +167,7 @@ const count = ref(0)
 ```
 
 **パターンB: computed → computed**
+
 ```javascript
 // Before
 computed: {
@@ -176,6 +181,7 @@ const doubleCount = computed(() => count.value * 2)
 ```
 
 **パターンC: methods → function**
+
 ```javascript
 // Before
 methods: {
@@ -191,6 +197,7 @@ const increment = () => {
 ```
 
 **パターンD: lifecycle → onMounted等**
+
 ```javascript
 // Before
 mounted() {
@@ -218,14 +225,14 @@ onMounted(() => {
 
 ### 📊 作業量の見積もり
 
-| ファイル | 複雑度 | 期間 |
-|---------|--------|------|
-| signup.vue | 中 | 0.5日 |
-| login.vue | 中 | 0.5日 |
-| newspots.vue | 高 | 1日 |
-| spots/_id/index.vue | 中 | 0.5日 |
-| その他8ファイル | 低-中 | 2日 |
-| **合計** | - | **4.5日** |
+| ファイル             | 複雑度 | 期間      |
+| -------------------- | ------ | --------- |
+| signup.vue           | 中     | 0.5日     |
+| login.vue            | 中     | 0.5日     |
+| newspots.vue         | 高     | 1日       |
+| spots/\_id/index.vue | 中     | 0.5日     |
+| その他8ファイル      | 低-中  | 2日       |
+| **合計**             | -      | **4.5日** |
 
 ### 🎯 期待される効果
 
@@ -240,9 +247,11 @@ onMounted(() => {
 ## 2. $axiosから$fetchへの移行
 
 ### 🚨 問題の重大度
+
 **High** - 非推奨APIの使用、将来的な互換性問題
 
 ### 📍 影響範囲
+
 **8ファイル**で`$axios`が使用されています。
 
 #### 対象ファイル
@@ -258,16 +267,18 @@ Nuxt 3では`@nuxtjs/axios`が非推奨となり、組み込みの`$fetch`や`us
 
 ```javascript
 // ❌ 非推奨（Nuxt 2スタイル）
-this.$axios.get("/api/v1/spots")
-  .then(response => {
-    this.spots = response.data
+this.$axios
+  .get("/api/v1/spots")
+  .then((response) => {
+    this.spots = response.data;
   })
-  .catch(error => {
-    console.error(error)
-  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
 **問題点**:
+
 - Nuxt 3で非推奨
 - SSRとの統合が不十分
 - 型安全性が低い
@@ -309,20 +320,20 @@ const { data: spots, error, pending } = await useFetch<Spot[]>(
 const deleteSpot = async (id: number) => {
   try {
     await $fetch(`/api/v1/spots/${id}`, {
-      method: 'DELETE'
-    })
+      method: "DELETE",
+    });
 
     toastStore.showToast({
-      message: 'スポットを削除しました',
-      color: 'success'
-    })
+      message: "スポットを削除しました",
+      color: "success",
+    });
   } catch (error) {
     toastStore.showToast({
-      message: '削除に失敗しました',
-      color: 'error'
-    })
+      message: "削除に失敗しました",
+      color: "error",
+    });
   }
-}
+};
 ```
 
 #### パターン3: useAsyncData（カスタムロジック）
@@ -330,18 +341,18 @@ const deleteSpot = async (id: number) => {
 ```typescript
 // ✅ 複雑なデータ取得
 const { data: spots } = await useAsyncData(
-  'spots',  // キャッシュキー
+  "spots", // キャッシュキー
   async () => {
-    const response = await $fetch<ApiResponse<Spot[]>>('/api/v1/spots')
+    const response = await $fetch<ApiResponse<Spot[]>>("/api/v1/spots");
     // カスタム処理
-    return response.data.filter(spot => spot.isPublic)
+    return response.data.filter((spot) => spot.isPublic);
   },
   {
     // オプション
-    server: true,  // SSRで実行
-    lazy: false,   // 即座に実行
-  }
-)
+    server: true, // SSRで実行
+    lazy: false, // 即座に実行
+  },
+);
 ```
 
 ### 🔄 移行パターン
@@ -415,13 +426,13 @@ const deleteSpot = async (id: number) => {
 
 ### 📈 作業量の見積もり
 
-| ファイル | API呼び出し数 | 期間 |
-|---------|--------------|------|
-| newspots.vue | 3箇所 | 0.5日 |
-| spotData.vue | 2箇所 | 0.3日 |
-| reviews.vue | 2箇所 | 0.3日 |
-| その他5ファイル | 各1-2箇所 | 1日 |
-| **合計** | **約15箇所** | **2.1日** |
+| ファイル        | API呼び出し数 | 期間      |
+| --------------- | ------------- | --------- |
+| newspots.vue    | 3箇所         | 0.5日     |
+| spotData.vue    | 2箇所         | 0.3日     |
+| reviews.vue     | 2箇所         | 0.3日     |
+| その他5ファイル | 各1-2箇所     | 1日       |
+| **合計**        | **約15箇所**  | **2.1日** |
 
 ### 🎯 期待される効果
 
@@ -436,9 +447,11 @@ const deleteSpot = async (id: number) => {
 ## 3. エラーハンドリングの統一
 
 ### 🚨 問題の重大度
+
 **High** - ユーザー体験の低下、デバッグの困難
 
 ### 📍 影響範囲
+
 プロジェクト全体で**エラーハンドリングのパターンが不統一**です。
 
 ### 🔍 問題の詳細
@@ -491,10 +504,10 @@ export class AppError extends Error {
     message: string,
     public statusCode?: number,
     public code?: string,
-    public details?: Record<string, any>
+    public details?: Record<string, any>,
   ) {
-    super(message)
-    this.name = 'AppError'
+    super(message);
+    this.name = "AppError";
   }
 }
 
@@ -502,20 +515,20 @@ export class ApiError extends AppError {
   constructor(
     message: string,
     statusCode: number,
-    public errors?: Record<string, string[]>
+    public errors?: Record<string, string[]>,
   ) {
-    super(message, statusCode, 'API_ERROR')
-    this.name = 'ApiError'
+    super(message, statusCode, "API_ERROR");
+    this.name = "ApiError";
   }
 }
 
 export class ValidationError extends AppError {
   constructor(
     message: string,
-    public field: string
+    public field: string,
   ) {
-    super(message, 400, 'VALIDATION_ERROR')
-    this.name = 'ValidationError'
+    super(message, 400, "VALIDATION_ERROR");
+    this.name = "ValidationError";
   }
 }
 ```
@@ -524,61 +537,61 @@ export class ValidationError extends AppError {
 
 ```typescript
 // composables/useErrorHandler.ts
-import type { AppError } from '~/types/errors'
+import type { AppError } from "~/types/errors";
 
 export function useErrorHandler() {
-  const toastStore = useToastStore()
-  const router = useRouter()
+  const toastStore = useToastStore();
+  const router = useRouter();
 
   const handleError = (error: unknown, context?: string) => {
-    console.error(`[${context || 'Error'}]`, error)
+    console.error(`[${context || "Error"}]`, error);
 
     // エラーの種類に応じた処理
     if (error instanceof ApiError) {
       if (error.statusCode === 401) {
         // 未認証
         toastStore.showToast({
-          message: 'ログインが必要です',
-          color: 'warning'
-        })
-        router.push('/login')
+          message: "ログインが必要です",
+          color: "warning",
+        });
+        router.push("/login");
       } else if (error.statusCode === 403) {
         // 権限なし
         toastStore.showToast({
-          message: '権限がありません',
-          color: 'error'
-        })
+          message: "権限がありません",
+          color: "error",
+        });
       } else if (error.statusCode >= 500) {
         // サーバーエラー
         toastStore.showToast({
-          message: 'サーバーエラーが発生しました',
-          color: 'error'
-        })
+          message: "サーバーエラーが発生しました",
+          color: "error",
+        });
       } else {
         toastStore.showToast({
           message: error.message,
-          color: 'error'
-        })
+          color: "error",
+        });
       }
     } else if (error instanceof ValidationError) {
       toastStore.showToast({
         message: error.message,
-        color: 'warning'
-      })
+        color: "warning",
+      });
     } else if (error instanceof Error) {
       toastStore.showToast({
         message: error.message,
-        color: 'error'
-      })
+        color: "error",
+      });
     } else {
       toastStore.showToast({
-        message: '予期しないエラーが発生しました',
-        color: 'error'
-      })
+        message: "予期しないエラーが発生しました",
+        color: "error",
+      });
     }
-  }
+  };
 
-  return { handleError }
+  return { handleError };
 }
 ```
 
@@ -589,23 +602,23 @@ export function useErrorHandler() {
 export default defineNuxtPlugin(() => {
   const apiFetch = $fetch.create({
     onResponseError({ response }) {
-      const { status, _data } = response
+      const { status, _data } = response;
 
       // APIエラーを統一形式に変換
       throw new ApiError(
-        _data?.message || 'API呼び出しに失敗しました',
+        _data?.message || "API呼び出しに失敗しました",
         status,
-        _data?.errors
-      )
-    }
-  })
+        _data?.errors,
+      );
+    },
+  });
 
   return {
     provide: {
-      api: apiFetch
-    }
-  }
-})
+      api: apiFetch,
+    },
+  };
+});
 ```
 
 #### ステップ4: 使用例
@@ -629,13 +642,13 @@ const fetchSpot = async (id: number) => {
 
 ### 📊 実装手順
 
-| ステップ | 内容 | 期間 |
-|---------|------|------|
-| 1 | エラー型定義 | 0.5日 |
-| 2 | useErrorHandler作成 | 1日 |
-| 3 | APIプラグイン修正 | 0.5日 |
-| 4 | 既存コードの移行 | 2日 |
-| **合計** | - | **4日** |
+| ステップ | 内容                | 期間    |
+| -------- | ------------------- | ------- |
+| 1        | エラー型定義        | 0.5日   |
+| 2        | useErrorHandler作成 | 1日     |
+| 3        | APIプラグイン修正   | 0.5日   |
+| 4        | 既存コードの移行    | 2日     |
+| **合計** | -                   | **4日** |
 
 ### 🎯 期待される効果
 
@@ -649,9 +662,11 @@ const fetchSpot = async (id: number) => {
 ## 4. テストの実装開始
 
 ### 🚨 問題の重大度
+
 **High** - 品質保証の欠如
 
 ### 📍 現状
+
 - **テストファイル数**: 0件
 - **テストカバレッジ**: 0%
 - **目標**: 80%
@@ -661,6 +676,7 @@ const fetchSpot = async (id: number) => {
 プロジェクト指針で「最低80%のテストカバレッジを維持」とあるにも関わらず、テストが1つも存在しません。
 
 **リスク**:
+
 - リグレッションバグの発生
 - リファクタリングが困難
 - 仕様の不明確化
@@ -677,32 +693,28 @@ yarn add -D vitest @vue/test-utils happy-dom @vitest/ui
 
 ```typescript
 // vitest.config.ts
-import { defineConfig } from 'vitest/config'
-import vue from '@vitejs/plugin-vue'
-import { fileURLToPath } from 'node:url'
+import { defineConfig } from "vitest/config";
+import vue from "@vitejs/plugin-vue";
+import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   plugins: [vue()],
   test: {
     globals: true,
-    environment: 'happy-dom',
+    environment: "happy-dom",
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'test/',
-        '*.config.ts',
-      ]
-    }
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      exclude: ["node_modules/", "test/", "*.config.ts"],
+    },
   },
   resolve: {
     alias: {
-      '~': fileURLToPath(new URL('./', import.meta.url)),
-      '@': fileURLToPath(new URL('./', import.meta.url))
-    }
-  }
-})
+      "~": fileURLToPath(new URL("./", import.meta.url)),
+      "@": fileURLToPath(new URL("./", import.meta.url)),
+    },
+  },
+});
 ```
 
 ```json
@@ -718,145 +730,147 @@ export default defineConfig({
 
 #### ステップ2: テストの優先順位
 
-| 優先度 | 対象 | 理由 |
-|--------|------|------|
-| 1 | Stores | ビジネスロジックの中心 |
-| 2 | Composables | 再利用される関数 |
-| 3 | Components（UI） | ユーザーインタラクション |
-| 4 | Pages | 統合テスト |
+| 優先度 | 対象             | 理由                     |
+| ------ | ---------------- | ------------------------ |
+| 1      | Stores           | ビジネスロジックの中心   |
+| 2      | Composables      | 再利用される関数         |
+| 3      | Components（UI） | ユーザーインタラクション |
+| 4      | Pages            | 統合テスト               |
 
 #### ステップ3: Storeのテスト例
 
 ```typescript
 // stores/__tests__/auth.spec.ts
-import { describe, it, expect, beforeEach } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
-import { useAuthStore } from '../auth'
+import { describe, it, expect, beforeEach } from "vitest";
+import { setActivePinia, createPinia } from "pinia";
+import { useAuthStore } from "../auth";
 
-describe('useAuthStore', () => {
+describe("useAuthStore", () => {
   beforeEach(() => {
-    setActivePinia(createPinia())
-  })
+    setActivePinia(createPinia());
+  });
 
-  it('初期状態は未認証', () => {
-    const store = useAuthStore()
-    expect(store.isAuthenticated).toBe(false)
-    expect(store.user).toBeNull()
-    expect(store.token).toBe('')
-  })
+  it("初期状態は未認証", () => {
+    const store = useAuthStore();
+    expect(store.isAuthenticated).toBe(false);
+    expect(store.user).toBeNull();
+    expect(store.token).toBe("");
+  });
 
-  it('setAuthで認証状態を変更できる', () => {
-    const store = useAuthStore()
-    store.setAuth(true)
-    expect(store.isAuthenticated).toBe(true)
-  })
+  it("setAuthで認証状態を変更できる", () => {
+    const store = useAuthStore();
+    store.setAuth(true);
+    expect(store.isAuthenticated).toBe(true);
+  });
 
-  it('setUserでユーザー情報を設定できる', () => {
-    const store = useAuthStore()
+  it("setUserでユーザー情報を設定できる", () => {
+    const store = useAuthStore();
     const user = {
       id: 1,
-      name: 'Test User',
-      email: 'test@example.com'
-    }
-    store.setUser(user)
-    expect(store.user).toEqual(user)
-  })
+      name: "Test User",
+      email: "test@example.com",
+    };
+    store.setUser(user);
+    expect(store.user).toEqual(user);
+  });
 
-  it('logoutで状態がリセットされる', () => {
-    const store = useAuthStore()
-    store.setAuth(true)
-    store.setToken('test-token')
-    store.setUser({ id: 1, name: 'Test', email: 'test@example.com' })
+  it("logoutで状態がリセットされる", () => {
+    const store = useAuthStore();
+    store.setAuth(true);
+    store.setToken("test-token");
+    store.setUser({ id: 1, name: "Test", email: "test@example.com" });
 
-    store.logout()
+    store.logout();
 
-    expect(store.isAuthenticated).toBe(false)
-    expect(store.user).toBeNull()
-    expect(store.token).toBe('')
-  })
-})
+    expect(store.isAuthenticated).toBe(false);
+    expect(store.user).toBeNull();
+    expect(store.token).toBe("");
+  });
+});
 ```
 
 #### ステップ4: Composableのテスト例
 
 ```typescript
 // composables/__tests__/useErrorHandler.spec.ts
-import { describe, it, expect, vi } from 'vitest'
-import { useErrorHandler } from '../useErrorHandler'
-import { ApiError } from '~/types/errors'
+import { describe, it, expect, vi } from "vitest";
+import { useErrorHandler } from "../useErrorHandler";
+import { ApiError } from "~/types/errors";
 
-describe('useErrorHandler', () => {
-  it('ApiErrorを適切に処理する', () => {
-    const { handleError } = useErrorHandler()
-    const error = new ApiError('テストエラー', 400)
+describe("useErrorHandler", () => {
+  it("ApiErrorを適切に処理する", () => {
+    const { handleError } = useErrorHandler();
+    const error = new ApiError("テストエラー", 400);
 
     // toastStoreのモック確認
-    handleError(error)
+    handleError(error);
 
     // toastStore.showToastが呼ばれたことを確認
     // （実際にはtoastStoreをモック化する必要がある）
-  })
+  });
 
-  it('401エラーでログインページにリダイレクト', () => {
-    const { handleError } = useErrorHandler()
-    const error = new ApiError('未認証', 401)
+  it("401エラーでログインページにリダイレクト", () => {
+    const { handleError } = useErrorHandler();
+    const error = new ApiError("未認証", 401);
 
-    handleError(error)
+    handleError(error);
 
     // router.pushが呼ばれたことを確認
-  })
-})
+  });
+});
 ```
 
 #### ステップ5: コンポーネントのテスト例
 
 ```typescript
 // components/__tests__/ui/ToastNotification.spec.ts
-import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
-import ToastNotification from '../ui/ToastNotification.vue'
-import { createPinia, setActivePinia } from 'pinia'
+import { describe, it, expect } from "vitest";
+import { mount } from "@vue/test-utils";
+import ToastNotification from "../ui/ToastNotification.vue";
+import { createPinia, setActivePinia } from "pinia";
 
-describe('ToastNotification', () => {
+describe("ToastNotification", () => {
   beforeEach(() => {
-    setActivePinia(createPinia())
-  })
+    setActivePinia(createPinia());
+  });
 
-  it('メッセージが表示される', () => {
-    const wrapper = mount(ToastNotification)
-    const toastStore = useToastStore()
-
-    toastStore.showToast({
-      message: 'テストメッセージ',
-      color: 'success'
-    })
-
-    expect(wrapper.text()).toContain('テストメッセージ')
-  })
-
-  it('色が正しく設定される', () => {
-    const wrapper = mount(ToastNotification)
-    const toastStore = useToastStore()
+  it("メッセージが表示される", () => {
+    const wrapper = mount(ToastNotification);
+    const toastStore = useToastStore();
 
     toastStore.showToast({
-      message: 'エラー',
-      color: 'error'
-    })
+      message: "テストメッセージ",
+      color: "success",
+    });
+
+    expect(wrapper.text()).toContain("テストメッセージ");
+  });
+
+  it("色が正しく設定される", () => {
+    const wrapper = mount(ToastNotification);
+    const toastStore = useToastStore();
+
+    toastStore.showToast({
+      message: "エラー",
+      color: "error",
+    });
 
     // v-snackbarのcolor propを確認
-    expect(wrapper.findComponent({ name: 'VSnackbar' }).props('color')).toBe('error')
-  })
-})
+    expect(wrapper.findComponent({ name: "VSnackbar" }).props("color")).toBe(
+      "error",
+    );
+  });
+});
 ```
 
 ### 📊 テスト実装計画
 
-| 週 | 対象 | ファイル数 | カバレッジ目標 |
-|----|------|-----------|--------------|
-| 1 | 環境セットアップ + Store | 3ファイル | 20% |
-| 2 | Composables | 5ファイル | 40% |
-| 3 | UI Components | 10ファイル | 60% |
-| 4 | Pages + E2E | 5ファイル | 80% |
+| 週  | 対象                     | ファイル数 | カバレッジ目標 |
+| --- | ------------------------ | ---------- | -------------- |
+| 1   | 環境セットアップ + Store | 3ファイル  | 20%            |
+| 2   | Composables              | 5ファイル  | 40%            |
+| 3   | UI Components            | 10ファイル | 60%            |
+| 4   | Pages + E2E              | 5ファイル  | 80%            |
 
 ### 🎯 期待される効果
 
@@ -870,9 +884,11 @@ describe('ToastNotification', () => {
 ## 5. i18n完全実装
 
 ### 🚨 問題の重大度
+
 **High** - 国際化要件の未達成
 
 ### 📍 現状
+
 - i18nプラグインは設定済み
 - **日本語**: ほとんどハードコード
 - **英語**: 完全に未実装（`en.json`が空）
@@ -979,19 +995,19 @@ describe('ToastNotification', () => {
 ```vue
 <!-- ✅ i18n使用 -->
 <script setup lang="ts">
-const { t } = useI18n()
+const { t } = useI18n();
 </script>
 
 <template>
   <!-- Before: パスワードを忘れた? -->
   <!-- After: -->
   <nuxt-link to="#" class="body-2 text-decoration-none">
-    {{ t('auth.forgotPassword') }}
+    {{ t("auth.forgotPassword") }}
   </nuxt-link>
 
   <!-- Before: お気に入りスポット -->
   <!-- After: -->
-  {{ t('spot.favoriteSpots') }}
+  {{ t("spot.favoriteSpots") }}
 </template>
 ```
 
@@ -1000,22 +1016,25 @@ const { t } = useI18n()
 ```typescript
 // composables/useValidation.ts
 export function useValidation() {
-  const { t } = useI18n()
+  const { t } = useI18n();
 
   const emailRules = [
-    (v: string) => !!v || t('validation.required', { field: t('auth.email') }),
-    (v: string) => /.+@.+\..+/.test(v) || t('validation.email'),
-  ]
+    (v: string) => !!v || t("validation.required", { field: t("auth.email") }),
+    (v: string) => /.+@.+\..+/.test(v) || t("validation.email"),
+  ];
 
   const passwordRules = [
-    (v: string) => !!v || t('validation.required', { field: t('auth.password') }),
-    (v: string) => v.length >= 8 || t('validation.minLength', { field: t('auth.password'), min: 8 }),
-  ]
+    (v: string) =>
+      !!v || t("validation.required", { field: t("auth.password") }),
+    (v: string) =>
+      v.length >= 8 ||
+      t("validation.minLength", { field: t("auth.password"), min: 8 }),
+  ];
 
   return {
     emailRules,
-    passwordRules
-  }
+    passwordRules,
+  };
 }
 ```
 
@@ -1024,15 +1043,15 @@ export function useValidation() {
 ```vue
 <!-- components/ui/LanguageSwitcher.vue -->
 <script setup lang="ts">
-const { locale, locales } = useI18n()
+const { locale, locales } = useI18n();
 
 const switchLanguage = (lang: string) => {
-  locale.value = lang
+  locale.value = lang;
   // LocalStorageに保存
   if (process.client) {
-    localStorage.setItem('locale', lang)
+    localStorage.setItem("locale", lang);
   }
-}
+};
 </script>
 
 <template>
@@ -1057,14 +1076,14 @@ const switchLanguage = (lang: string) => {
 
 ### 📊 実装計画
 
-| フェーズ | 内容 | 期間 |
-|---------|------|------|
-| 1 | 翻訳キーの洗い出し | 1日 |
-| 2 | ja.json完成 | 2日 |
-| 3 | en.json完成 | 2日 |
-| 4 | コンポーネント修正 | 3日 |
-| 5 | 言語切り替えUI | 1日 |
-| **合計** | - | **9日** |
+| フェーズ | 内容               | 期間    |
+| -------- | ------------------ | ------- |
+| 1        | 翻訳キーの洗い出し | 1日     |
+| 2        | ja.json完成        | 2日     |
+| 3        | en.json完成        | 2日     |
+| 4        | コンポーネント修正 | 3日     |
+| 5        | 言語切り替えUI     | 1日     |
+| **合計** | -                  | **9日** |
 
 ### 🎯 期待される効果
 

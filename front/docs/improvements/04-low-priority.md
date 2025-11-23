@@ -18,9 +18,11 @@
 ## 1. Console.logの整理
 
 ### 🚨 問題の重大度
+
 **Low** - デバッグ情報の残存
 
 ### 📍 影響範囲
+
 **23ファイル**でconsole.logが使用されています。
 
 ### 🔍 問題の詳細
@@ -29,12 +31,13 @@
 
 ```typescript
 // 例: components/spot/spotData.vue
-console.log("スポットデータ:", spot)
-console.log("ユーザー情報:", user)
-console.error("エラー:", error)
+console.log("スポットデータ:", spot);
+console.log("ユーザー情報:", user);
+console.error("エラー:", error);
 ```
 
 **問題点**:
+
 - 本番環境で不要な情報が出力される
 - パフォーマンスへの微小な影響
 - セキュリティリスク（機密情報の漏洩可能性）
@@ -45,96 +48,96 @@ console.error("エラー:", error)
 
 ```typescript
 // utils/logger.ts
-type LogLevel = 'debug' | 'info' | 'warn' | 'error'
+type LogLevel = "debug" | "info" | "warn" | "error";
 
 interface LoggerConfig {
-  enabled: boolean
-  minLevel: LogLevel
-  includeTimestamp: boolean
-  includeContext: boolean
+  enabled: boolean;
+  minLevel: LogLevel;
+  includeTimestamp: boolean;
+  includeContext: boolean;
 }
 
 const logLevels: Record<LogLevel, number> = {
   debug: 0,
   info: 1,
   warn: 2,
-  error: 3
-}
+  error: 3,
+};
 
 class Logger {
-  private config: LoggerConfig
+  private config: LoggerConfig;
 
   constructor(config: Partial<LoggerConfig> = {}) {
-    const isDev = process.env.NODE_ENV === 'development'
+    const isDev = process.env.NODE_ENV === "development";
 
     this.config = {
       enabled: isDev,
-      minLevel: isDev ? 'debug' : 'warn',
+      minLevel: isDev ? "debug" : "warn",
       includeTimestamp: true,
       includeContext: true,
-      ...config
-    }
+      ...config,
+    };
   }
 
   private shouldLog(level: LogLevel): boolean {
-    if (!this.config.enabled) return false
-    return logLevels[level] >= logLevels[this.config.minLevel]
+    if (!this.config.enabled) return false;
+    return logLevels[level] >= logLevels[this.config.minLevel];
   }
 
   private format(level: LogLevel, message: string, context?: string): string {
-    const parts: string[] = []
+    const parts: string[] = [];
 
     if (this.config.includeTimestamp) {
-      parts.push(`[${new Date().toISOString()}]`)
+      parts.push(`[${new Date().toISOString()}]`);
     }
 
-    parts.push(`[${level.toUpperCase()}]`)
+    parts.push(`[${level.toUpperCase()}]`);
 
     if (context && this.config.includeContext) {
-      parts.push(`[${context}]`)
+      parts.push(`[${context}]`);
     }
 
-    parts.push(message)
+    parts.push(message);
 
-    return parts.join(' ')
+    return parts.join(" ");
   }
 
   debug(message: string, data?: any, context?: string) {
-    if (!this.shouldLog('debug')) return
-    console.log(this.format('debug', message, context), data || '')
+    if (!this.shouldLog("debug")) return;
+    console.log(this.format("debug", message, context), data || "");
   }
 
   info(message: string, data?: any, context?: string) {
-    if (!this.shouldLog('info')) return
-    console.info(this.format('info', message, context), data || '')
+    if (!this.shouldLog("info")) return;
+    console.info(this.format("info", message, context), data || "");
   }
 
   warn(message: string, data?: any, context?: string) {
-    if (!this.shouldLog('warn')) return
-    console.warn(this.format('warn', message, context), data || '')
+    if (!this.shouldLog("warn")) return;
+    console.warn(this.format("warn", message, context), data || "");
   }
 
   error(message: string, error?: any, context?: string) {
-    if (!this.shouldLog('error')) return
-    console.error(this.format('error', message, context), error || '')
+    if (!this.shouldLog("error")) return;
+    console.error(this.format("error", message, context), error || "");
   }
 }
 
-export const logger = new Logger()
+export const logger = new Logger();
 ```
 
 #### ステップ2: 既存のconsole.logを置き換え
 
 ```typescript
 // ❌ Before
-console.log("スポットデータ:", spot)
-console.error("エラー:", error)
+console.log("スポットデータ:", spot);
+console.error("エラー:", error);
 
 // ✅ After
-import { logger } from '~/utils/logger'
+import { logger } from "~/utils/logger";
 
-logger.debug('スポットデータを取得', spot, 'SpotData')
-logger.error('スポット取得に失敗', error, 'SpotData')
+logger.debug("スポットデータを取得", spot, "SpotData");
+logger.error("スポット取得に失敗", error, "SpotData");
 ```
 
 #### ステップ3: ビルド時の自動削除設定
@@ -144,12 +147,11 @@ logger.error('スポット取得に失敗', error, 'SpotData')
 export default defineNuxtConfig({
   vite: {
     esbuild: {
-      drop: process.env.NODE_ENV === 'production'
-        ? ['console', 'debugger']
-        : []
-    }
-  }
-})
+      drop:
+        process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],
+    },
+  },
+});
 ```
 
 または、プラグインを使用:
@@ -160,36 +162,36 @@ yarn add -D vite-plugin-remove-console
 
 ```typescript
 // nuxt.config.ts
-import removeConsole from 'vite-plugin-remove-console'
+import removeConsole from "vite-plugin-remove-console";
 
 export default defineNuxtConfig({
   vite: {
     plugins: [
       removeConsole({
-        includes: ['log', 'debug', 'info']  // warn, errorは残す
-      })
-    ]
-  }
-})
+        includes: ["log", "debug", "info"], // warn, errorは残す
+      }),
+    ],
+  },
+});
 ```
 
 ### 📋 整理対象ファイル（主要なもの）
 
-| ファイル | console使用箇所 | 優先度 |
-|---------|----------------|--------|
-| stores/spot.ts | 3箇所 | 中 |
-| components/spot/spotData.vue | 5箇所 | 中 |
-| pages/newspots.vue | 4箇所 | 低 |
-| その他 | 約40箇所 | 低 |
+| ファイル                     | console使用箇所 | 優先度 |
+| ---------------------------- | --------------- | ------ |
+| stores/spot.ts               | 3箇所           | 中     |
+| components/spot/spotData.vue | 5箇所           | 中     |
+| pages/newspots.vue           | 4箇所           | 低     |
+| その他                       | 約40箇所        | 低     |
 
 ### 📊 作業量の見積もり
 
-| タスク | 期間 |
-|-------|------|
-| Loggerユーティリティ作成 | 0.5日 |
-| 主要ファイルの置き換え | 1日 |
-| ビルド設定の追加 | 0.5日 |
-| **合計** | **2日** |
+| タスク                   | 期間    |
+| ------------------------ | ------- |
+| Loggerユーティリティ作成 | 0.5日   |
+| 主要ファイルの置き換え   | 1日     |
+| ビルド設定の追加         | 0.5日   |
+| **合計**                 | **2日** |
 
 ### 🎯 期待される効果
 
@@ -203,6 +205,7 @@ export default defineNuxtConfig({
 ## 2. 未使用ファイルの削除
 
 ### 🚨 問題の重大度
+
 **Low** - コードベースの肥大化
 
 ### 📍 影響範囲
@@ -210,6 +213,7 @@ export default defineNuxtConfig({
 #### 未使用のミドルウェアファイル
 
 1. **[front/middleware/authenticator.js](../../middleware/authenticator.js)**
+
    - Nuxt 2用の古いミドルウェア
    - 現在は`auth.ts`が使用されている
 
@@ -222,10 +226,11 @@ export default defineNuxtConfig({
 // middleware/authenticator.js - Nuxt 2スタイル
 export default async ({ $auth, $axios, store, route, redirect }) => {
   // 古いコード...
-}
+};
 ```
 
 **問題点**:
+
 - コードベースの混乱
 - 誤って使用される可能性
 - メンテナンスコストの増加
@@ -273,18 +278,18 @@ git commit -m "chore: 未使用のミドルウェアファイルを削除"
 
 ### 📋 削除候補ファイルリスト
 
-| ファイル | 理由 | 確認方法 |
-|---------|------|---------|
-| middleware/authenticator.js | Nuxt 2用、未使用 | `grep -r "authenticator"` |
-| middleware/loggedInIsRedirects.js | 未使用 | `grep -r "loggedInIsRedirects"` |
+| ファイル                          | 理由             | 確認方法                        |
+| --------------------------------- | ---------------- | ------------------------------- |
+| middleware/authenticator.js       | Nuxt 2用、未使用 | `grep -r "authenticator"`       |
+| middleware/loggedInIsRedirects.js | 未使用           | `grep -r "loggedInIsRedirects"` |
 
 ### 📊 作業量の見積もり
 
-| タスク | 期間 |
-|-------|------|
-| 未使用ファイルの特定 | 0.5日 |
-| 削除とテスト | 0.5日 |
-| **合計** | **1日** |
+| タスク               | 期間    |
+| -------------------- | ------- |
+| 未使用ファイルの特定 | 0.5日   |
+| 削除とテスト         | 0.5日   |
+| **合計**             | **1日** |
 
 ### 🎯 期待される効果
 
@@ -298,6 +303,7 @@ git commit -m "chore: 未使用のミドルウェアファイルを削除"
 ## 3. TODOコメントの解決
 
 ### 🚨 問題の重大度
+
 **Low** - 未完了タスクの残存
 
 ### 📍 影響範囲
@@ -305,6 +311,7 @@ git commit -m "chore: 未使用のミドルウェアファイルを削除"
 #### TODOコメント一覧
 
 1. **[front/components/userPage/followBtn.vue](../../components/userPage/followBtn.vue):83**
+
    ```typescript
    // TODO: 初期フォロー状態を取得する処理を追加
    ```
@@ -317,6 +324,7 @@ git commit -m "chore: 未使用のミドルウェアファイルを削除"
 ### 🔍 問題の詳細
 
 TODOコメントは開発中の備忘録として有用ですが、長期間残ると：
+
 - 実装が忘れられる
 - コードの不完全性が不明確
 - 技術的負債の蓄積
@@ -328,56 +336,56 @@ TODOコメントは開発中の備忘録として有用ですが、長期間残�
 ```vue
 <!-- components/userPage/followBtn.vue -->
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
 interface Props {
-  userId: number
+  userId: number;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const isFollowing = ref(false)
-const loading = ref(false)
+const isFollowing = ref(false);
+const loading = ref(false);
 
 // ✅ TODO解決: 初期フォロー状態を取得
 onMounted(async () => {
-  await fetchFollowStatus()
-})
+  await fetchFollowStatus();
+});
 
 const fetchFollowStatus = async () => {
   try {
-    loading.value = true
+    loading.value = true;
     const { data } = await useFetch<{ is_following: boolean }>(
-      `/api/v1/users/${props.userId}/follow_status`
-    )
-    isFollowing.value = data.value?.is_following || false
+      `/api/v1/users/${props.userId}/follow_status`,
+    );
+    isFollowing.value = data.value?.is_following || false;
   } catch (error) {
-    logger.error('フォロー状態の取得に失敗', error, 'FollowBtn')
+    logger.error("フォロー状態の取得に失敗", error, "FollowBtn");
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 const toggleFollow = async () => {
   try {
-    loading.value = true
+    loading.value = true;
     if (isFollowing.value) {
       await $fetch(`/api/v1/users/${props.userId}/unfollow`, {
-        method: 'DELETE'
-      })
-      isFollowing.value = false
+        method: "DELETE",
+      });
+      isFollowing.value = false;
     } else {
       await $fetch(`/api/v1/users/${props.userId}/follow`, {
-        method: 'POST'
-      })
-      isFollowing.value = true
+        method: "POST",
+      });
+      isFollowing.value = true;
     }
   } catch (error) {
-    logger.error('フォロー操作に失敗', error, 'FollowBtn')
+    logger.error("フォロー操作に失敗", error, "FollowBtn");
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 </script>
 
 <template>
@@ -386,7 +394,7 @@ const toggleFollow = async () => {
     :loading="loading"
     @click="toggleFollow"
   >
-    {{ isFollowing ? 'フォロー中' : 'フォローする' }}
+    {{ isFollowing ? "フォロー中" : "フォローする" }}
   </v-btn>
 </template>
 ```
@@ -423,18 +431,21 @@ const toggleFollow = async () => {
 ### 📋 TODOコメント管理方針
 
 #### 許容されるTODO
+
 ```typescript
 // TODO(username): 2025-12-31までにAPI v2に移行
 // 期限と担当者が明確
 ```
 
 #### 推奨しないTODO
+
 ```typescript
 // TODO: いつか修正する
 // 曖昧で期限なし
 ```
 
 #### GitHub Issueへの移行
+
 ```typescript
 // TODO: → GitHub Issue #123に移行
 // 長期的なタスクはIssueトラッカーで管理
@@ -442,11 +453,11 @@ const toggleFollow = async () => {
 
 ### 📊 作業量の見積もり
 
-| TODO項目 | 期間 |
-|---------|------|
-| フォローボタンの実装 | 1日 |
-| その他のTODO解決 | 0.5日 |
-| **合計** | **1.5日** |
+| TODO項目             | 期間      |
+| -------------------- | --------- |
+| フォローボタンの実装 | 1日       |
+| その他のTODO解決     | 0.5日     |
+| **合計**             | **1.5日** |
 
 ### 🎯 期待される効果
 
@@ -460,9 +471,11 @@ const toggleFollow = async () => {
 ## 4. コード分割の最適化
 
 ### 🚨 問題の重大度
+
 **Low** - 初期読み込み時間への影響
 
 ### 📍 現状
+
 - 動的import（`defineAsyncComponent`）の使用: ほぼなし
 - すべてのコンポーネントが同期的にロード
 - ページレベルのコード分割が不十分
@@ -471,12 +484,13 @@ const toggleFollow = async () => {
 
 ```typescript
 // ❌ すべて同期的にインポート
-import SpotCard from '~/components/spot/spotCard.vue'
-import SpotData from '~/components/spot/spotData.vue'
-import Reviews from '~/components/spot/reviews.vue'
+import SpotCard from "~/components/spot/spotCard.vue";
+import SpotData from "~/components/spot/spotData.vue";
+import Reviews from "~/components/spot/reviews.vue";
 ```
 
 **問題点**:
+
 - 初期バンドルサイズが大きい
 - 使用しないコンポーネントもロード
 - First Contentful Paint (FCP)が遅い
@@ -489,16 +503,16 @@ import Reviews from '~/components/spot/reviews.vue'
 <!-- ✅ pages/spots/_id/index.vue -->
 <script setup lang="ts">
 // 軽いコンポーネントは通常インポート
-import SpotHeader from '~/components/spot/spotHeader.vue'
+import SpotHeader from "~/components/spot/spotHeader.vue";
 
 // 重いコンポーネントは動的インポート
-const GoogleMap = defineAsyncComponent(() =>
-  import('~/components/spot/GoogleMap.vue')
-)
+const GoogleMap = defineAsyncComponent(
+  () => import("~/components/spot/GoogleMap.vue"),
+);
 
-const Reviews = defineAsyncComponent(() =>
-  import('~/components/spot/reviews.vue')
-)
+const Reviews = defineAsyncComponent(
+  () => import("~/components/spot/reviews.vue"),
+);
 </script>
 
 <template>
@@ -539,17 +553,17 @@ export default defineNuxtConfig({
         output: {
           manualChunks: {
             // Vuetifyを別チャンクに
-            'vuetify': ['vuetify'],
+            vuetify: ["vuetify"],
             // Google Maps関連を別チャンクに
-            'maps': ['google-maps-api-loader'],
+            maps: ["google-maps-api-loader"],
             // 大きなライブラリを分割
-            'vendor': ['pinia', 'vue-i18n']
-          }
-        }
-      }
-    }
-  }
-})
+            vendor: ["pinia", "vue-i18n"],
+          },
+        },
+      },
+    },
+  },
+});
 ```
 
 #### パターン3: 条件付き読み込み
@@ -557,23 +571,20 @@ export default defineNuxtConfig({
 ```vue
 <!-- ✅ 管理者のみが使う機能を遅延読み込み -->
 <script setup lang="ts">
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 
 const AdminPanel = computed(() => {
   if (authStore.user?.isAdmin) {
-    return defineAsyncComponent(() =>
-      import('~/components/admin/AdminPanel.vue')
-    )
+    return defineAsyncComponent(
+      () => import("~/components/admin/AdminPanel.vue"),
+    );
   }
-  return null
-})
+  return null;
+});
 </script>
 
 <template>
-  <component
-    v-if="AdminPanel"
-    :is="AdminPanel"
-  />
+  <component v-if="AdminPanel" :is="AdminPanel" />
 </template>
 ```
 
@@ -582,37 +593,32 @@ const AdminPanel = computed(() => {
 ```vue
 <!-- ✅ ユーザーがホバーしたらプリフェッチ -->
 <script setup lang="ts">
-const isHovering = ref(false)
+const isHovering = ref(false);
 
 const prefetchReviews = () => {
   // コンポーネントをプリフェッチ
-  import('~/components/spot/reviews.vue')
-}
+  import("~/components/spot/reviews.vue");
+};
 </script>
 
 <template>
   <div @mouseenter="prefetchReviews">
-    <button @click="isHovering = true">
-      レビューを表示
-    </button>
+    <button @click="isHovering = true">レビューを表示</button>
 
-    <component
-      v-if="isHovering"
-      :is="Reviews"
-    />
+    <component v-if="isHovering" :is="Reviews" />
   </div>
 </template>
 ```
 
 ### 📋 最適化候補コンポーネント
 
-| コンポーネント | サイズ | 優先度 | 方法 |
-|--------------|--------|--------|------|
-| GoogleMap | 大 | 高 | 遅延読み込み |
-| Reviews | 中 | 中 | 遅延読み込み |
-| AdminPanel | 中 | 高 | 条件付き読み込み |
-| ImageGallery | 中 | 中 | プリフェッチ |
-| ChartComponent | 大 | 低 | 遅延読み込み |
+| コンポーネント | サイズ | 優先度 | 方法             |
+| -------------- | ------ | ------ | ---------------- |
+| GoogleMap      | 大     | 高     | 遅延読み込み     |
+| Reviews        | 中     | 中     | 遅延読み込み     |
+| AdminPanel     | 中     | 高     | 条件付き読み込み |
+| ImageGallery   | 中     | 中     | プリフェッチ     |
+| ChartComponent | 大     | 低     | 遅延読み込み     |
 
 ### 📊 バンドル分析
 
@@ -626,29 +632,29 @@ yarn build --analyze
 
 ```typescript
 // nuxt.config.ts
-import { visualizer } from 'rollup-plugin-visualizer'
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineNuxtConfig({
   vite: {
     plugins: [
       visualizer({
-        filename: './dist/stats.html',
-        open: true
-      })
-    ]
-  }
-})
+        filename: "./dist/stats.html",
+        open: true,
+      }),
+    ],
+  },
+});
 ```
 
 ### 📊 作業量の見積もり
 
-| タスク | 期間 |
-|-------|------|
-| バンドル分析 | 0.5日 |
-| 重要コンポーネントの遅延読み込み | 1日 |
-| ルートレベルの最適化 | 0.5日 |
-| パフォーマンス測定 | 0.5日 |
-| **合計** | **2.5日** |
+| タスク                           | 期間      |
+| -------------------------------- | --------- |
+| バンドル分析                     | 0.5日     |
+| 重要コンポーネントの遅延読み込み | 1日       |
+| ルートレベルの最適化             | 0.5日     |
+| パフォーマンス測定               | 0.5日     |
+| **合計**                         | **2.5日** |
 
 ### 🎯 期待される効果
 
@@ -689,12 +695,12 @@ export default defineNuxtConfig({
 
 ### 📈 期待される総合効果
 
-| 指標 | 改善目標 |
-|------|---------|
-| バンドルサイズ | -25% |
-| ビルド時間 | -10% |
-| コード可読性 | 向上 |
-| メンテナンス性 | 向上 |
+| 指標           | 改善目標 |
+| -------------- | -------- |
+| バンドルサイズ | -25%     |
+| ビルド時間     | -10%     |
+| コード可読性   | 向上     |
+| メンテナンス性 | 向上     |
 
 ---
 
@@ -703,18 +709,22 @@ export default defineNuxtConfig({
 以下の状況では、低優先度課題の優先度を上げることを検討してください：
 
 ### Console.log → High
+
 - セキュリティ監査で指摘された場合
 - 本番環境で機密情報が漏洩するリスクがある場合
 
 ### 未使用ファイル → Medium
+
 - リファクタリング中で混乱を招いている場合
 - ビルド時間が著しく長い場合
 
 ### TODO → High
+
 - TODOが重要な機能に関わる場合
 - リリース前の確認で発見された場合
 
 ### コード分割 → High
+
 - Lighthouse スコアが60点以下の場合
 - ユーザーから読み込みが遅いという報告が多い場合
 

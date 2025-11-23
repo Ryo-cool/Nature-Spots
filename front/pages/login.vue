@@ -37,9 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "~/composables/useAuth";
+import { useSecureStorage } from "~/composables/useSecureStorage";
 import { useToastStore } from "~/stores/toast";
 
 definePageMeta({
@@ -49,22 +50,26 @@ definePageMeta({
 const { login: authLogin } = useAuth();
 const toastStore = useToastStore();
 const router = useRouter();
+const config = useRuntimeConfig();
+const secureStorage = useSecureStorage();
 
 const isValid = ref(false);
 const loading = ref(false);
 const params = reactive({
   auth: { email: "", password: "" },
 });
-const guestParams = {
-  auth: { email: "user0@example.com", password: "password" },
-};
+const guestParams = computed(() => ({
+  auth: {
+    email: config.public.guestEmail,
+    password: config.public.guestPassword,
+  },
+}));
 
 // ログイン処理
 async function login() {
   loading.value = true;
   if (isValid.value) {
     try {
-      const config = useRuntimeConfig();
       const response = await $fetch("/api/v1/user_token", {
         method: "POST",
         body: params,
@@ -82,17 +87,25 @@ async function login() {
 async function guestLogin() {
   loading.value = true;
   try {
-    const config = useRuntimeConfig();
+    if (!config.public.guestEmail || !config.public.guestPassword) {
+      toastStore.showToast({
+        message: "ゲストログインが設定されていません",
+        color: "error",
+      });
+      return;
+    }
+
     const response = await $fetch("/api/v1/user_token", {
       method: "POST",
-      body: guestParams,
+      body: guestParams.value,
       baseURL: config.public.apiBaseUrl,
     });
     await authSuccessful(response);
   } catch (error: any) {
     authFailure(error);
+  } finally {
+    loading.value = false;
   }
-  loading.value = false;
 }
 
 // ログイン成功処理
@@ -100,8 +113,8 @@ async function authSuccessful(response: any) {
   await authLogin(response);
 
   // 保存されたルートパスを取得
-  const savedRoute = localStorage.getItem("rememberRoute");
-  const redirectTo = savedRoute ? JSON.parse(savedRoute) : "/";
+  const savedRoute = secureStorage.getItem<string>("rememberRoute");
+  const redirectTo = savedRoute ?? "/";
 
   router.push(redirectTo);
 }

@@ -1,11 +1,13 @@
 import { useAuth } from "~/composables/useAuth";
 import { useAuthStore } from "~/stores/auth";
 import { useToastStore } from "~/stores/toast";
+import { useSecureStorage } from "~/composables/useSecureStorage";
 
 export default defineNuxtRouteMiddleware((to) => {
   const { isAuthenticated } = useAuth();
   const authStore = useAuthStore();
   const toastStore = useToastStore();
+  const { setItem, removeItem } = useSecureStorage();
 
   // トップページかつユーザーが存在しない場合、何もしない(layouts/welcome.vue表示のため)
   if (to.name === "index" && !authStore.user) {
@@ -23,9 +25,7 @@ export default defineNuxtRouteMiddleware((to) => {
       authStore.logout();
     } else {
       // ログイン前ユーザー
-      if (import.meta.client) {
-        localStorage.setItem("rememberRoute", JSON.stringify(to.fullPath));
-      }
+      setItem("rememberRoute", to.fullPath);
     }
 
     // トースター出力
@@ -34,9 +34,7 @@ export default defineNuxtRouteMiddleware((to) => {
   } else if (!authStore.user) {
     // 有効期限内でユーザーが存在しない場合
     authStore.setAuth(false);
-    if (import.meta.client) {
-      localStorage.removeItem("rememberRoute");
-    }
+    removeItem("rememberRoute");
     return navigateTo("/login");
   }
 });

@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+REPO_ROOT="$(cd -- "$(dirname "$0")/.." && pwd)"
+cd "$REPO_ROOT/front"
+
+echo "[pre-commit] type-check (vue-tsc)"
+yarn type-check --pretty false
+
+echo "[pre-commit] lint-staged"
+yarn lint:staged
