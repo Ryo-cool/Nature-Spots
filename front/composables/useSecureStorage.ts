@@ -1,6 +1,6 @@
 // セッションストレージを安全に扱うためのラッパー
 export const useSecureStorage = () => {
-  const isClient = process.client;
+  const isClient = import.meta.client;
 
   const setItem = (key: string, value: unknown) => {
     if (!isClient) return;
