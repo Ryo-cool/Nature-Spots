@@ -1,0 +1,288 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-agent-sdk/main/schemas/agent-config.schema.json",
+  "version": "1.0.0",
+  "agents": [
+    {
+      "id": "code-review-agent",
+      "name": "Code Review Agent",
+      "description": "Nature-Spotsプロジェクト向けの包括的なコードレビューエージェント。セキュリティ、パフォーマンス、コードスタイル、テストカバレッジを分析します。",
+      "enabled": true,
+      "model": "claude-sonnet-4-5-20250929",
+      "temperature": 0.3,
+      "max_tokens": 8192,
+      "system_prompt": "あなたはNature-Spotsプロジェクトの専門コードレビュアーです。TypeScript/Vue.js/Nuxt.js (フロントエンド) と Ruby on Rails (バックエンド) のコードを分析します。\n\n## レビュー基準\n\n### セキュリティ分析\n- 入力値の検証とサニタイゼーション\n- XSS脆弱性 (Vue.jsコンポーネント、API レスポンス)\n- SQLインジェクションリスク (Rails ActiveRecord クエリ)\n- JWT認証の実装確認\n- 機密データの露出\n- 依存関係の脆弱性\n\n### パフォーマンス分析\n- N+1クエリの検出\n- データベースインデックスの最適化\n- メモリリークとリソース管理\n- アルゴリズムの計算量\n- レンダリングパフォーマンス (フロントエンド)\n- APIレスポンスタイムへの影響\n- キャッシング戦略\n\n### コードスタイル分析\nプロジェクト固有の要件:\n- TypeScript: Strict mode有効、明示的な型定義必須\n- フォーマット: Prettier (2スペースインデント)\n- Linting: ESLint (JS/TS)、RuboCop (Ruby)\n- 命名規則: camelCase (変数/関数)、PascalCase (コンポーネント)、UPPER_SNAKE_CASE (定数)\n- コンポーネント構造: Composition API推奨、複数単語のコンポーネント名必須\n- Import順序: Vue/Nuxt → 外部ライブラリ → 内部モジュール (~エイリアス使用)\n\n### テストカバレッジ分析\n- 最低80%のテストカバレッジ必須\n- テスト構成: models、controllers/requests、services\n- FactoryBotの使用\n- 適切なアサーションパターン\n- エッジケースのカバレッジ\n\n### ベストプラクティス\n- 適切なエラーハンドリング\n- 型安全性の確保\n- テスタビリティ\n- コードの可読性と保守性\n- アーキテクチャの明確性\n\n## レビュー出力形式\n1. エグゼクティブサマリー (2-3文)\n2. クリティカルな問題 (ある場合)\n3. 警告と改善点\n4. スタイルとベストプラクティスに関する注意事項\n5. 肯定的な発見\n6. 総合評価と推奨事項\n\n具体的に以下を含めてください:\n- 行番号\n- コードスニペット\n- Before/Afterの例\n- プロジェクトガイドラインへの参照",
+      "tools": [
+        "read_file",
+        "list_files",
+        "search_code",
+        "grep",
+        "glob",
+        "bash"
+      ],
+      "capabilities": {
+        "security_analysis": true,
+        "performance_analysis": true,
+        "style_checking": true,
+        "test_coverage_analysis": true,
+        "git_integration": true
+      },
+      "context_rules": {
+        "include_patterns": [
+          "**/*.ts",
+          "**/*.tsx",
+          "**/*.js",
+          "**/*.jsx",
+          "**/*.vue",
+          "**/*.rb",
+          "**/*.yml",
+          "**/*.yaml"
+        ],
+        "exclude_patterns": [
+          "node_modules/**",
+          "dist/**",
+          ".git/**",
+          "vendor/**",
+          "coverage/**",
+          "tmp/**",
+          "log/**",
+          "*.log",
+          "yarn.lock",
+          "package-lock.json",
+          "Gemfile.lock"
+        ],
+        "max_file_size_kb": 500,
+        "max_files_per_review": 50
+      },
+      "review_config": {
+        "strictness_level": "high",
+        "focus_areas": {
+          "security": {
+            "enabled": true,
+            "priority": "critical",
+            "checks": [
+              "xss_vulnerabilities",
+              "sql_injection",
+              "authentication_issues",
+              "authorization_issues",
+              "sensitive_data_exposure",
+              "dependency_vulnerabilities",
+              "jwt_security"
+            ]
+          },
+          "performance": {
+            "enabled": true,
+            "priority": "high",
+            "checks": [
+              "n_plus_one_queries",
+              "missing_database_indexes",
+              "memory_leaks",
+              "algorithm_complexity",
+              "rendering_performance",
+              "api_response_time",
+              "caching_strategies"
+            ]
+          },
+          "code_style": {
+            "enabled": true,
+            "priority": "medium",
+            "checks": [
+              "typescript_strict_mode",
+              "prettier_formatting",
+              "eslint_rules",
+              "rubocop_rules",
+              "naming_conventions",
+              "import_organization",
+              "component_structure"
+            ]
+          },
+          "testing": {
+            "enabled": true,
+            "priority": "high",
+            "checks": [
+              "test_coverage_minimum_80",
+              "test_organization",
+              "factory_bot_usage",
+              "assertion_patterns",
+              "edge_case_coverage"
+            ]
+          },
+          "best_practices": {
+            "enabled": true,
+            "priority": "medium",
+            "checks": [
+              "error_handling",
+              "type_safety",
+              "code_readability",
+              "maintainability",
+              "architectural_clarity",
+              "over_engineering_prevention"
+            ]
+          }
+        },
+        "issue_severity_levels": {
+          "critical": {
+            "description": "セキュリティ脆弱性、重大なバグ、本番環境への影響大",
+            "requires_immediate_fix": true
+          },
+          "high": {
+            "description": "パフォーマンス問題、テストカバレッジ不足、重要なベストプラクティス違反",
+            "requires_fix_before_merge": true
+          },
+          "medium": {
+            "description": "コードスタイル違反、軽微なベストプラクティス違反",
+            "requires_fix_before_merge": false
+          },
+          "low": {
+            "description": "改善提案、リファクタリング候補",
+            "requires_fix_before_merge": false
+          },
+          "info": {
+            "description": "情報提供、肯定的なフィードバック",
+            "requires_fix_before_merge": false
+          }
+        }
+      },
+      "project_specific": {
+        "frontend": {
+          "framework": "Nuxt.js 3 + Vue.js 3 + TypeScript + Vuetify + Pinia",
+          "linters": ["eslint", "prettier", "tsc"],
+          "test_framework": "Vitest/Jest",
+          "api_integration": "Google Maps API"
+        },
+        "backend": {
+          "framework": "Rails 7.1.3 + Ruby 3.2.3",
+          "database": "MySQL 5.7",
+          "authentication": "JWT",
+          "linters": ["rubocop", "brakeman", "bundle-audit"],
+          "test_framework": "RSpec + FactoryBot"
+        },
+        "i18n": {
+          "enabled": true,
+          "languages": ["ja", "en"],
+          "framework": "Vue I18n"
+        }
+      },
+      "output_preferences": {
+        "language": "ja",
+        "format": "markdown",
+        "include_code_snippets": true,
+        "include_line_numbers": true,
+        "include_suggestions": true,
+        "include_positive_feedback": true
+      }
+    },
+    {
+      "id": "security-review-agent",
+      "name": "Security Review Agent",
+      "description": "セキュリティに特化したコードレビューエージェント。OWASP Top 10の脆弱性を中心に分析します。",
+      "enabled": true,
+      "model": "claude-sonnet-4-5-20250929",
+      "temperature": 0.2,
+      "max_tokens": 8192,
+      "system_prompt": "あなたはセキュリティに特化したコードレビュアーです。OWASP Top 10の脆弱性を中心に、Nature-Spotsプロジェクトのセキュリティリスクを分析します。\n\n## セキュリティチェックリスト\n\n### OWASP Top 10 (2021)\n1. Broken Access Control - 認可の不備\n2. Cryptographic Failures - 暗号化の失敗\n3. Injection - インジェクション (SQL, XSS, コマンドインジェクション)\n4. Insecure Design - 安全でない設計\n5. Security Misconfiguration - セキュリティ設定ミス\n6. Vulnerable and Outdated Components - 脆弱で古いコンポーネント\n7. Identification and Authentication Failures - 識別と認証の失敗\n8. Software and Data Integrity Failures - ソフトウェアとデータの整合性の欠如\n9. Security Logging and Monitoring Failures - セキュリティログとモニタリングの失敗\n10. Server-Side Request Forgery (SSRF) - サーバーサイドリクエストフォージェリ\n\n### プロジェクト固有のセキュリティ\n- JWT認証の実装確認 (署名検証、トークン有効期限、リフレッシュトークン)\n- Google Maps API キーの適切な管理\n- CORS設定の確認\n- CSRFトークンの実装 (Rails)\n- XSS対策 (Vue.jsコンポーネント)\n- SQLインジェクション対策 (ActiveRecord)\n- 機密情報の環境変数管理\n- HTTPS強制\n- レート制限 (Rack::Attack)\n\n## レビュー出力\n各脆弱性について:\n- リスクレベル (Critical/High/Medium/Low)\n- OWASP分類\n- 具体的な攻撃シナリオ\n- 修正方法と推奨コード\n- 参考リンク",
+      "tools": [
+        "read_file",
+        "grep",
+        "bash"
+      ],
+      "capabilities": {
+        "security_analysis": true,
+        "vulnerability_scanning": true,
+        "dependency_audit": true
+      },
+      "context_rules": {
+        "include_patterns": [
+          "**/*.ts",
+          "**/*.tsx",
+          "**/*.vue",
+          "**/*.rb",
+          "**/Gemfile",
+          "**/package.json",
+          "**/*.yml",
+          "**/*.yaml",
+          "**/.env.example"
+        ],
+        "exclude_patterns": [
+          "node_modules/**",
+          "vendor/**",
+          "dist/**",
+          ".git/**"
+        ]
+      },
+      "review_config": {
+        "strictness_level": "critical",
+        "focus_areas": {
+          "owasp_top_10": true,
+          "jwt_authentication": true,
+          "api_security": true,
+          "dependency_vulnerabilities": true
+        }
+      },
+      "output_preferences": {
+        "language": "ja",
+        "format": "markdown",
+        "include_attack_scenarios": true,
+        "include_fix_examples": true,
+        "include_references": true
+      }
+    },
+    {
+      "id": "performance-review-agent",
+      "name": "Performance Review Agent",
+      "description": "パフォーマンスに特化したコードレビューエージェント。データベースクエリ、レンダリング、APIレスポンスタイムを分析します。",
+      "enabled": true,
+      "model": "claude-sonnet-4-5-20250929",
+      "temperature": 0.3,
+      "max_tokens": 8192,
+      "system_prompt": "あなたはパフォーマンスに特化したコードレビュアーです。Nature-Spotsプロジェクトのパフォーマンスボトルネックを特定し、最適化案を提案します。\n\n## パフォーマンスチェックリスト\n\n### バックエンド (Rails)\n- N+1クエリの検出 (includes/joins/preloadの活用)\n- データベースインデックスの最適化\n- 不要なクエリの削除\n- ページネーションの実装\n- キャッシング戦略 (Redis、Fragment caching)\n- バックグラウンドジョブの活用 (Sidekiq)\n- APIレスポンスの最適化 (シリアライザー)\n\n### フロントエンド (Nuxt.js/Vue.js)\n- コンポーネントの遅延ローディング\n- 画像最適化 (WebP形式、lazy loading)\n- 仮想スクロールの実装 (長いリスト)\n- 不要な再レンダリングの防止\n- Vuetifyコンポーネントの適切な使用\n- Piniaストアの最適化\n- バンドルサイズの最適化\n- Google Maps APIの効率的な使用\n\n### データベース (MySQL)\n- インデックスの追加\n- クエリの最適化\n- 外部キー制約の確認\n\n## レビュー出力\n各パフォーマンス問題について:\n- 影響度 (High/Medium/Low)\n- 推定改善率\n- 修正方法と最適化コード\n- ベンチマーク提案",
+      "tools": [
+        "read_file",
+        "grep",
+        "bash"
+      ],
+      "capabilities": {
+        "performance_analysis": true,
+        "query_optimization": true,
+        "rendering_optimization": true
+      },
+      "context_rules": {
+        "include_patterns": [
+          "**/*.ts",
+          "**/*.tsx",
+          "**/*.vue",
+          "**/*.rb",
+          "**/db/schema.rb",
+          "**/db/migrate/**/*.rb"
+        ],
+        "exclude_patterns": [
+          "node_modules/**",
+          "vendor/**",
+          "dist/**"
+        ]
+      },
+      "review_config": {
+        "strictness_level": "high",
+        "focus_areas": {
+          "n_plus_one_queries": true,
+          "database_indexes": true,
+          "caching_strategies": true,
+          "rendering_performance": true,
+          "bundle_size": true
+        }
+      },
+      "output_preferences": {
+        "language": "ja",
+        "format": "markdown",
+        "include_benchmarks": true,
+        "include_optimization_examples": true
+      }
+    }
+  ],
+  "metadata": {
+    "project_name": "Nature-Spots",
+    "project_type": "fullstack",
+    "created_at": "2025-11-24",
+    "updated_at": "2025-11-24",
+    "version": "1.0.0"
+  }
+}
