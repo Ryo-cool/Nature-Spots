@@ -1,328 +1,273 @@
-# Nature-Spots Project Guide
+# Nature-Spots
 
-## 言語設定 / Language Settings
+## 言語設定
 
-**IMPORTANT: このプロジェクトでは、すべてのコミュニケーションを日本語で行ってください。**
-**All communications in this project MUST be in Japanese.**
+**このプロジェクトでは、すべてのコミュニケーションを日本語で行うこと。**
+技術用語は英語のままで構わないが、説明や会話は日本語で行う。
 
-Claude Codeとやり取りする際は、必ず日本語でレスポンスしてください。
-技術用語は英語のままで構いませんが、説明や会話は日本語で行ってください。
+## プロジェクト概要
 
----
+自然スポットの口コミサイト。位置情報付きでスポットを共有し、レビューやいいね機能でユーザー同士の交流を促進する。
 
-## Project Overview
+## 技術スタック
 
-Nature-Spots は自然スポットの口コミサイトです。位置情報付きでスポットを共有し、レビューやいいね機能でユーザー同士の交流を促進します。
+| レイヤー | 技術 | バージョン |
+|---------|------|-----------|
+| Frontend | Nuxt.js + Vue.js + TypeScript | Nuxt 3.10.3, Vue 3.x |
+| UI | Vuetify + Sass | Vuetify 3.7.16 |
+| State | Pinia | 3.0.1 |
+| i18n | Vue I18n | 11.1.2 |
+| Backend | Rails + Ruby | Rails 7.1.5, Ruby 3.2.3 |
+| Database | MySQL | 5.7 |
+| Auth | JWT | jwt 2.2 |
+| Infrastructure | Docker + Docker Compose | - |
+| External API | Google Maps JavaScript API, Geocoding API | - |
 
-### 技術スタック
+## コマンドリファレンス
 
-- **Frontend**: Nuxt.js 3 + Vue.js 3 + TypeScript + Vuetify + Pinia
-- **Backend**: Rails 7.1.3 + Ruby 3.2.3 + MySQL 5.7 + JWT 認証
-- **Infrastructure**: Docker + Docker Compose
-- **API**: Google Maps JavaScript API, Geocoding API
-- **Internationalization**: Vue I18n (日本語・英語対応)
-
-## Development Environment Setup
-
-### Prerequisites
-
-- Docker & Docker Compose
-- Node.js (推奨: v18+)
-- Ruby 3.2.3
-- Yarn
-
-### Initial Setup
+### Docker（推奨）
 
 ```bash
-# 1. Clone and setup
-git clone <repository-url>
-cd Nature-Spots
-
-# 2. Backend environment setup
-cp back/environments/db.env.example back/environments/db.env
-# Edit db.env with actual database credentials
-
-# 3. Start with Docker
-docker compose up
-
-# Or run separately:
-# Frontend: cd front && yarn install && yarn dev
-# Backend: cd back && bundle install && bundle exec rails s
+docker compose up              # アプリケーション全体を起動
+docker compose up --build      # リビルドして起動
+docker compose down            # 全サービス停止
 ```
 
-## Build/Run Commands
+### Frontend
 
-### Docker (Recommended)
-
-- `docker compose up` - Run entire application
-- `docker compose up --build` - Rebuild and run
-- `docker compose down` - Stop all services
-
-### Frontend (Nuxt.js 3)
-
-- `cd front && yarn dev` - Development server (localhost:3000)
-- `cd front && yarn build` - Production build
-- `cd front && yarn start` - Start production server
-- `cd front && yarn lint` - Run ESLint
-- `cd front && yarn lint:fix` - Fix linting errors
-- `cd front && yarn type-check` - TypeScript type checking
-- `cd front && yarn format` - Format code with Prettier
-- `cd front && yarn check` - Run lint + type-check
-
-### Backend (Rails 7)
-
-- `cd back && bundle exec rails s` - Start Rails server
-- `cd back && bundle exec rails c` - Rails console
-- `cd back && bundle exec rspec` - Run all tests
-- `cd back && bundle exec rspec spec/models/user_spec.rb` - Single test file
-- `cd back && bundle exec rspec spec/models/user_spec.rb:25` - Specific test line
-- `cd back && bundle exec brakeman` - Security audit
-- `cd back && bundle exec bundle-audit` - Dependency security check
-
-## Architecture & Project Structure
-
-### Frontend Structure
-
-```
-front/
-├── assets/          # Static assets (SCSS, images)
-├── components/      # Vue components
-│   ├── beforeLogin/ # Pre-authentication components
-│   ├── loggedIn/    # Post-authentication components
-│   ├── spot/        # Spot-related components
-│   ├── ui/          # Reusable UI components
-│   └── user/        # User-related components
-├── composables/     # Vue composition functions
-├── layouts/         # Nuxt layouts
-├── middleware/      # Route middleware
-├── pages/           # File-based routing pages
-├── plugins/         # Nuxt plugins
-├── stores/          # Pinia stores
-└── types/           # TypeScript type definitions
+```bash
+cd front
+yarn dev                       # 開発サーバー (localhost:8080)
+yarn build                     # 本番ビルド
+yarn lint                      # ESLint実行
+yarn lint:fix                  # ESLint自動修正
+yarn type-check                # TypeScript型チェック
+yarn format                    # Prettier整形
+yarn check                     # lint + type-check
+yarn test:unit                 # Vitestユニットテスト
 ```
 
-### Backend Structure
+### Backend
 
-```
-back/
-├── app/
-│   ├── controllers/api/v1/ # API controllers
-│   ├── models/             # ActiveRecord models
-│   ├── serializers/        # JSON serializers
-│   ├── services/           # Service objects
-│   ├── policies/           # Authorization policies
-│   └── validators/         # Custom validators
-├── config/                 # Rails configuration
-├── db/                     # Database migrations & seeds
-└── spec/                   # RSpec tests
+```bash
+cd back
+bundle exec rails s            # Railsサーバー起動 (localhost:3000)
+bundle exec rails c            # Railsコンソール
+bundle exec rspec              # 全テスト実行
+bundle exec rspec spec/models/user_spec.rb      # 単一ファイル
+bundle exec rspec spec/models/user_spec.rb:25   # 特定行
+bundle exec brakeman           # セキュリティ監査
+bundle exec bundle-audit       # 依存関係セキュリティチェック
 ```
 
-## Development Rules & Guidelines
+## プロジェクト構造
 
-### General Principles
+### Frontend (`front/`)
 
-1. **Security First**: セキュリティを最優先に考慮
-2. **Type Safety**: TypeScript の型安全性を活用
-3. **Test Coverage**: 最低 80%のテストカバレッジを維持
-4. **Performance**: パフォーマンスを意識した実装
-5. **Accessibility**: アクセシビリティ対応を考慮
-6. **Internationalization**: 多言語対応を前提とした設計
+```
+components/          # Vueコンポーネント
+  ├── beforeLogin/   # 認証前画面
+  ├── loggedIn/      # 認証後画面
+  ├── spot/          # スポット関連
+  ├── ui/            # 再利用可能UI
+  ├── user/          # ユーザー関連
+  ├── userPage/      # ユーザーページ
+  └── welcome/       # ウェルカムページ
+composables/         # Composition関数 (useAuth, useSecureStorage)
+stores/              # Piniaストア (auth, spot, toast)
+pages/               # ファイルベースルーティング
+layouts/             # レイアウト
+middleware/          # ルートミドルウェア
+plugins/             # Nuxtプラグイン
+locales/             # 多言語ファイル (ja.json, en.json)
+types/               # TypeScript型定義
+```
 
-### Frontend (Nuxt.js/Vue.js) Guidelines
+### Backend (`back/`)
 
-#### Code Style
+```
+app/
+  ├── controllers/api/v1/   # APIコントローラー
+  ├── models/               # ActiveRecordモデル
+  ├── serializers/          # JSONシリアライザー
+  ├── services/             # サービスオブジェクト
+  ├── policies/             # 認可ポリシー
+  └── validators/           # カスタムバリデーター
+config/                     # Rails設定
+db/                         # マイグレーション & seeds
+spec/                       # RSpecテスト
+```
 
-- **TypeScript**: Strict mode enabled, 明示的な型定義必須
-- **Formatting**: Prettier (2-space indentation)
-- **Linting**: ESLint with Vue recommended rules
-- **Components**:
-  - PascalCase naming (e.g., `UserProfile.vue`)
-  - Multi-word component names required
-  - Composition API preferred over Options API
-- **Naming Conventions**:
-  - Variables/Functions: camelCase
-  - Constants: UPPER_SNAKE_CASE
-  - Files: kebab-case or PascalCase for components
+## 開発ガイドライン
 
-#### Import Organization
+### 基本原則（MUST）
 
+1. **セキュリティ最優先** - 入力検証、認可チェック、機密情報の保護
+2. **型安全性** - TypeScriptの型を明示的に定義
+3. **テストカバレッジ** - 最低40%（SimpleCov設定）
+4. **多言語対応** - ハードコードされた文字列はi18nキーを使用
+
+### Frontend規約
+
+**TypeScript（MUST）**
+- `noImplicitAny: true` - 暗黙のanyを禁止
+- 明示的な型定義を使用
+
+**コンポーネント（MUST）**
+- Composition API（`<script setup lang="ts">`）を使用
+- コンポーネント名はPascalCase（例: `UserProfile.vue`）
+- 複数単語のコンポーネント名を使用
+
+**インポート順序（SHOULD）**
 ```typescript
-// 1. Vue/Nuxt imports
+// 1. Vue/Nuxt
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-
-// 2. External libraries
+// 2. 外部ライブラリ
 import { format } from 'date-fns'
-
-// 3. Internal modules
+// 3. 内部モジュール
 import { useAuthStore } from '~/stores/auth'
 import type { User } from '~/types'
 ```
 
-#### State Management (Pinia)
+**State管理（MUST）**
+- グローバル状態はPiniaストアを使用
+- ストア外からの直接的な状態変更を禁止
 
-- Use Pinia stores for global state
-- Define typed stores with explicit interfaces
-- Avoid direct state mutation outside stores
+**命名規則**
+- 変数・関数: camelCase
+- 定数: UPPER_SNAKE_CASE
+- ファイル: kebab-case または PascalCase（コンポーネント）
 
-#### Error Handling
+### Backend規約
 
-- Use typed error responses
-- Implement proper error boundaries
-- Provide user-friendly error messages
-- Log errors appropriately
+**Rails（MUST）**
+- Strong Parametersを使用
+- 複雑なビジネスロジックはServiceオブジェクトに分離
+- APIレスポンスはSerializerを使用
+- N+1クエリを回避（includes/preloadを活用）
 
-### Backend (Rails) Guidelines
+**セキュリティ（MUST）**
+- 認可はPolicyオブジェクトで実装
+- Rack::Attackでレート制限
+- 全ての入力を検証
 
-#### Code Style
+**API設計（MUST）**
+- RESTful設計
+- 一貫したJSONレスポンス形式
+- 適切なHTTPステータスコード
+- APIバージョニング（`/api/v1/`）
 
-- Follow Rails conventions and best practices
-- Use RuboCop for style enforcement
-- Service objects for complex business logic
-- Serializers for API responses
+**テスト（SHOULD）**
+- Model specs: バリデーション、アソシエーション
+- Request specs: APIエンドポイント
+- Service specs: ビジネスロジック
+- FactoryBotでテストデータを生成
 
-#### Security
+### データベース（MUST）
 
-- Use strong parameters
-- Implement proper authorization with policies
-- Validate all inputs
-- Use secure headers
-- Rate limiting with Rack::Attack
+- スキーマ変更はマイグレーションを使用
+- パフォーマンスのためにインデックスを追加
+- 外部キー制約を使用
 
-#### Database
+## Git運用
 
-- Use migrations for schema changes
-- Add proper indexes for performance
-- Use foreign key constraints
-- Follow naming conventions
+### ブランチ戦略
 
-#### API Design
+- `master` - 本番用コード
+- `develop` - 統合ブランチ
+- `feature/*` - 機能開発
+- `bugfix/*` - バグ修正
+- `hotfix/*` - 緊急修正
 
-- RESTful design principles
-- Consistent JSON response format
-- Proper HTTP status codes
-- API versioning (v1, v2, etc.)
-
-#### Testing (RSpec)
-
-- Model specs: validations, associations, methods
-- Controller/Request specs: API endpoints
-- Service specs: business logic
-- Use FactoryBot for test data
-- Maintain minimum 80% coverage
-
-### Git Workflow
-
-#### Branch Strategy
-
-- `master`: Production-ready code
-- `develop`: Integration branch
-- `feature/*`: Feature development
-- `bugfix/*`: Bug fixes
-- `hotfix/*`: Emergency fixes
-
-#### Commit Messages
+### コミットメッセージ形式
 
 ```
 type(scope): description
 
-feat(auth): add JWT refresh token functionality
-fix(spot): resolve location search API error
-docs(readme): update setup instructions
-test(user): add validation specs
-refactor(api): extract common response helpers
+例:
+feat(auth): JWTリフレッシュトークン機能を追加
+fix(spot): 位置検索APIエラーを修正
+docs(readme): セットアップ手順を更新
+test(user): バリデーションspecを追加
+refactor(api): 共通レスポンスヘルパーを抽出
 ```
 
-#### Pull Request Process
+### PRプロセス
 
-1. Create feature branch from `develop`
-2. Implement feature with tests
-3. Ensure all tests pass
-4. Update documentation if needed
-5. Create PR to `develop`
-6. Code review required
-7. Merge after approval
+1. `develop`からfeatureブランチを作成
+2. テスト付きで機能を実装
+3. 全テストがパスすることを確認
+4. `develop`へPRを作成
+5. コードレビュー後にマージ
 
-### Environment Variables
+## CI/CD
 
-#### Frontend (.env)
+### Frontend CI（`.github/workflows/frontend-ci.yml`）
 
-```bash
-GOOGLE_MAPS_API_KEY=your_key_here
-CRYPTO_KEY=your_crypto_key
-NODE_ENV=development
-```
+PRで`front/`変更時に実行:
+- ESLint
+- TypeScript型チェック
+- Prettier形式確認
+- Nuxtビルド
+- バンドルサイズチェック
 
-#### Backend (db.env)
+### Backend CI（`.github/workflows/backend-ci.yml`）
 
-```bash
-MYSQL_ROOT_PASSWORD=root_password
-MYSQL_DATABASE=nature_spots_development
-MYSQL_USER=app_user
-MYSQL_PASSWORD=app_password
-```
+PRで`back/`変更時に実行:
+- RSpec実行
+- Brakeman（セキュリティ監査）
+- bundler-audit（依存関係監査）
+- カバレッジレポート
 
-### Performance Guidelines
+## 環境変数
 
-#### Frontend
+### Frontend
 
-- Use lazy loading for components
-- Optimize images (WebP format)
-- Implement virtual scrolling for long lists
-- Use Nuxt's built-in performance optimizations
+`back/environments/db.env.example`を参照して設定:
+- `GOOGLE_MAPS_API_KEY` - Google Maps API
+- `CRYPTO_KEY` - 暗号化キー
+- `GUEST_EMAIL` / `GUEST_PASSWORD` - ゲストログイン用
 
-#### Backend
+### Backend
 
-- Use database indexes appropriately
-- Implement caching where needed
-- Optimize N+1 queries
-- Use background jobs for heavy processing
+`back/environments/db.env.example`を参照して設定:
+- `MYSQL_ROOT_PASSWORD`
+- `MYSQL_USER` / `MYSQL_PASSWORD`
+- `DB_USERNAME` / `DB_PASSWORD`
 
-### Security Checklist
+## セキュリティチェックリスト
 
-#### Frontend
+デプロイ前に確認:
 
-- [ ] Sanitize user inputs
-- [ ] Use HTTPS in production
-- [ ] Implement CSP headers
-- [ ] Validate API responses
+**Frontend**
+- ユーザー入力のサニタイズ
+- 本番環境でのHTTPS使用
+- CSPヘッダーの実装
 
-#### Backend
+**Backend**
+- Strong Parametersの使用
+- レート制限の実装
+- セキュリティヘッダーの追加
+- 依存関係の定期更新
+- 機密情報は環境変数で管理
 
-- [ ] Use strong parameters
-- [ ] Implement rate limiting
-- [ ] Add security headers
-- [ ] Regular dependency updates
-- [ ] Use environment variables for secrets
+## トラブルシューティング
 
-### Deployment
+| 問題 | 解決策 |
+|------|--------|
+| Docker Build失敗 | `docker system prune`でキャッシュクリア |
+| DB接続エラー | `db.env`の設定を確認 |
+| Frontend Build失敗 | `rm -rf node_modules && yarn install` |
+| 型エラー | `yarn type-check`で詳細確認 |
 
-#### Production Checklist
-
-- [ ] All tests passing
-- [ ] Security audit clean
-- [ ] Performance benchmarks met
-- [ ] Environment variables configured
-- [ ] Database migrations applied
-- [ ] Monitoring setup
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Docker Build Fails**: Clear Docker cache with `docker system prune`
-2. **Database Connection**: Check db.env configuration
-3. **Frontend Build Errors**: Clear node_modules and reinstall
-4. **Type Errors**: Run `yarn type-check` for detailed errors
-
-### Debug Commands
+### デバッグコマンド
 
 ```bash
-# Frontend debugging
+# Frontend
 yarn dev --debug
 yarn type-check --verbose
 
-# Backend debugging
+# Backend
 bundle exec rails console
 bundle exec rspec --format documentation
 ```
