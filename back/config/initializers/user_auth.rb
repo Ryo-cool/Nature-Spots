@@ -13,7 +13,8 @@ module UserAuth
 
   mattr_accessor :token_secret_signature_key
   self.token_secret_signature_key = -> {
-    Rails.application.credentials.secret_key_base
+    # Use credentials if available, otherwise fall back to config (for test environment)
+    Rails.application.credentials.secret_key_base || Rails.application.config.secret_key_base
   }
 
   mattr_accessor :token_public_key

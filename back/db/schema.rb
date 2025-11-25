@@ -10,28 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_01_000000) do
-  create_table "favorites", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "spot_id", null: false
-    t.bigint "user_id", null: false
+ActiveRecord::Schema[7.1].define(version: 2025_01_24_000001) do
+  create_table "favorites", force: :cascade do |t|
+    t.integer "spot_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["spot_id"], name: "index_favorites_on_spot_id"
+    t.index ["user_id", "spot_id"], name: "index_favorites_on_user_id_and_spot_id", unique: true
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
-  create_table "likes", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "review_id", null: false
-    t.bigint "user_id", null: false
+  create_table "likes", force: :cascade do |t|
+    t.integer "review_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["review_id"], name: "index_likes_on_review_id"
+    t.index ["user_id", "review_id"], name: "index_likes_on_user_id_and_review_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
-  create_table "relationships", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "follow_id"
+  create_table "relationships", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "follow_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["follow_id"], name: "index_relationships_on_follow_id"
@@ -39,21 +41,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_000000) do
     t.index ["user_id"], name: "index_relationships_on_user_id"
   end
 
-  create_table "reviews", charset: "utf8mb4", force: :cascade do |t|
+  create_table "reviews", force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.string "wentday"
     t.integer "rating"
     t.string "image"
-    t.bigint "user_id", null: false
-    t.bigint "spot_id"
+    t.integer "user_id", null: false
+    t.integer "spot_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0, null: false
+    t.index ["created_at"], name: "index_reviews_on_created_at"
+    t.index ["likes_count"], name: "index_reviews_on_likes_count"
+    t.index ["rating"], name: "index_reviews_on_rating"
     t.index ["spot_id"], name: "index_reviews_on_spot_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
-  create_table "spots", charset: "utf8mb4", force: :cascade do |t|
+  create_table "spots", force: :cascade do |t|
     t.string "name"
     t.text "introduction"
     t.string "photo"
@@ -64,11 +70,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_000000) do
     t.integer "location_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
+    t.integer "reviews_count", default: 0, null: false
+    t.index ["created_at"], name: "index_spots_on_created_at"
+    t.index ["location_id"], name: "index_spots_on_location_id"
+    t.index ["prefecture_id"], name: "index_spots_on_prefecture_id"
+    t.index ["reviews_count"], name: "index_spots_on_reviews_count"
     t.index ["user_id"], name: "index_spots_on_user_id"
   end
 
-  create_table "users", charset: "utf8mb4", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -78,6 +89,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_01_000000) do
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "followers_count", default: 0, null: false
+    t.integer "followings_count", default: 0, null: false
+    t.index ["email"], name: "index_users_on_email_unique", unique: true
   end
 
   add_foreign_key "favorites", "spots"

@@ -1,35 +1,28 @@
-# MySQL. Versions 5.5.8 and up are supported.
-#
-# Install the MySQL driver
-#   gem install mysql2
-#
-# Ensure the MySQL gem is defined in your Gemfile
-#   gem 'mysql2'
-#
-# And be sure to use new-style password hashing:
-#   https://dev.mysql.com/doc/refman/5.7/en/password-hashing.html
-#
-default: &default
-  adapter: mysql2
-  encoding: utf8mb4
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  host: db
+# SQLite for development and testing (no MySQL server required)
+# MySQL is used in production only
 
+default: &default
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+# Development uses SQLite for easy local setup
 development:
-  <<: *default
-  database: nature_spots_development
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: nature_spots_test
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
+# Production uses MySQL
 production:
-  <<: *default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   database: nature_spots_production
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
