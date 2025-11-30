@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useApi } from "~/composables/useApi";
 
 interface User {
   id: number;
@@ -44,7 +45,7 @@ interface User {
 type UnknownRecord = Record<string, unknown>;
 
 const route = useRoute();
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const user = ref<User | null>(null);
 const userImage = ref<string | null>(null);

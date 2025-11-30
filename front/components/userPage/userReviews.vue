@@ -56,6 +56,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useApi } from "~/composables/useApi";
 
 interface Review {
   id: number;
@@ -78,7 +79,7 @@ interface Like {
 }
 
 const route = useRoute();
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const reviews = ref<Review[]>([]);
 

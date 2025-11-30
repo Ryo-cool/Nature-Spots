@@ -162,4 +162,12 @@ function authFailure(error: unknown) {
     color: "error",
   });
 }
+
+defineExpose({
+  login,
+  guestLogin,
+  params,
+  isValid,
+  loading,
+});
 </script>

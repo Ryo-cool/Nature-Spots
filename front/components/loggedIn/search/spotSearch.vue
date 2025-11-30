@@ -29,13 +29,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useApi } from "~/composables/useApi";
 
 interface Spot {
   id: number;
   name: string;
 }
 
-const { $api } = useNuxtApp();
+const $api = useApi();
 const router = useRouter();
 
 const spots = ref<Spot[]>([]);

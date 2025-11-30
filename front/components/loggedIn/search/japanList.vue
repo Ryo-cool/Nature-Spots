@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useApi } from "~/composables/useApi";
 
 interface Prefecture {
   attributes: {
@@ -35,7 +36,7 @@ interface Prefecture {
   };
 }
 
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const prefectures = ref<Prefecture[]>([]);
 const isExpanded = ref(true);

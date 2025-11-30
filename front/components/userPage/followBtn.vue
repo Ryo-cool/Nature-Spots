@@ -12,11 +12,12 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import { useToastStore } from "~/stores/toast";
+import { useApi } from "~/composables/useApi";
 
 const route = useRoute();
 const authStore = useAuthStore();
 const toastStore = useToastStore();
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const isFollowing = ref(false);
 

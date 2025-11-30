@@ -77,8 +77,7 @@ describe("pages/signup.vue", () => {
   });
 
   afterEach(() => {
-    // $fetch をリセット
-    (global as typeof globalThis & { $fetch?: unknown }).$fetch = undefined;
+    vi.unstubAllGlobals();
   });
 
   test("有効な入力ならサインアップして自動ログインする", async () => {

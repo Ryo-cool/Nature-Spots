@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useApi } from "~/composables/useApi";
 
 interface PopularSpot {
   id: number;
@@ -38,7 +39,7 @@ interface PopularSpot {
   review_count?: number;
 }
 
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const selectedIndex = ref<number | null>(null);
 const popularSpots = ref<PopularSpot[]>([]);
