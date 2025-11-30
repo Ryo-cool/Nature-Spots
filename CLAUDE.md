@@ -179,6 +179,19 @@ import type { User } from '~/types'
 - `bugfix/*` - バグ修正
 - `hotfix/*` - 緊急修正
 
+### コミット前チェック（MUST）
+
+**Frontendのコードを変更した場合、コミット前に以下を実行すること：**
+
+```bash
+cd front
+yarn format          # Prettierでフォーマット
+yarn lint:fix        # ESLint自動修正
+yarn type-check      # 型チェック
+```
+
+これはCIで検証されるため、実行せずにコミットするとCIが失敗する。
+
 ### コミットメッセージ形式
 
 ```
