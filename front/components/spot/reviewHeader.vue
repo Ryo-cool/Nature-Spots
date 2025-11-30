@@ -33,6 +33,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import type { Ref } from "vue";
+import { useApi } from "~/composables/useApi";
 
 interface Spot {
   id: number;
@@ -40,7 +41,7 @@ interface Spot {
 }
 
 const route = useRoute();
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const spot: Ref<Spot | null> = ref(null);
 const prefecture = ref("");

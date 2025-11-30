@@ -77,6 +77,7 @@ import { ref, onMounted } from "vue";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { useAuthStore } from "~/stores/auth";
+import { useApi } from "~/composables/useApi";
 
 interface Review {
   id: number;
@@ -97,7 +98,7 @@ interface Like {
 }
 
 const authStore = useAuthStore();
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const reviews = ref<Review[]>([]);
 

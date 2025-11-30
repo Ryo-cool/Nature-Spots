@@ -63,6 +63,8 @@ type ApiRequestOptions = Omit<RequestInit, "body" | "method"> & {
   params?: Record<string, unknown>;
 };
 
+type RequestBody = Record<string, unknown> | FormData | null;
+
 interface ApiClient {
   get<T = any>(
     url: string,
@@ -70,7 +72,7 @@ interface ApiClient {
   ): Promise<ApiResponse<T>>;
   post<T = any>(
     url: string,
-    body?: unknown,
+    body?: RequestBody,
     options?: ApiRequestOptions,
   ): Promise<ApiResponse<T>>;
   delete<T = any>(

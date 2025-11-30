@@ -14,9 +14,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useApi } from "~/composables/useApi";
 
 const route = useRoute();
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const photo = ref<string | null>(null);
 const spotName = ref("");

@@ -5,6 +5,7 @@ type ApiResponse<T = any> = { data: T };
 type ApiRequestOptions = Omit<RequestInit, "body" | "method"> & {
   params?: Record<string, unknown>;
 };
+type RequestBody = Record<string, unknown> | FormData | null;
 type ApiClient = {
   get<T = any>(
     url: string,
@@ -12,7 +13,7 @@ type ApiClient = {
   ): Promise<ApiResponse<T>>;
   post<T = any>(
     url: string,
-    body?: unknown,
+    body?: RequestBody,
     options?: ApiRequestOptions,
   ): Promise<ApiResponse<T>>;
   delete<T = any>(
@@ -65,7 +66,7 @@ export default defineNuxtPlugin(() => {
     url: string,
     options: ApiRequestOptions & {
       method: "GET" | "POST" | "DELETE";
-      body?: unknown;
+      body?: RequestBody;
     },
   ): Promise<ApiResponse<T>> => {
     const data = await apiFetch<T>(url, options);

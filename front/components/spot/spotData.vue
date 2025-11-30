@@ -107,6 +107,7 @@ import { useRoute } from "vue-router";
 import type { Ref } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { useToastStore } from "~/stores/toast";
+import { useApi } from "~/composables/useApi";
 
 interface Spot {
   id: number;
@@ -125,7 +126,7 @@ interface MarkerItem {
 const route = useRoute();
 const authStore = useAuthStore();
 const toastStore = useToastStore();
-const { $api } = useNuxtApp();
+const $api = useApi();
 
 const spot: Ref<Spot | null> = ref(null);
 const favUserId: Ref<number | null> = ref(null);

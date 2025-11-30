@@ -37,7 +37,10 @@ const guestLogin = async () => {
   isLoading.value = true;
 
   try {
-    if (!guestCredentials.value.email || !guestCredentials.value.password) {
+    const email = guestCredentials.value.email;
+    const password = guestCredentials.value.password;
+
+    if (!email || !password) {
       toastStore.showToast({
         message: "ゲストログインが設定されていません",
         color: "error",
@@ -45,7 +48,7 @@ const guestLogin = async () => {
       return;
     }
 
-    const token = await authStore.login(guestCredentials.value);
+    const token = await authStore.login({ email, password });
 
     if (token) {
       toastStore.showToast({
