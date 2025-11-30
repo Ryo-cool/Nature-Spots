@@ -6,7 +6,9 @@ export const useApi = () => {
   const { $api } = useNuxtApp();
 
   if (!$api) {
-    throw new Error("API client is not available. Make sure the api plugin is loaded.");
+    throw new Error(
+      "API client is not available. Make sure the api plugin is loaded.",
+    );
   }
 
   return $api;
