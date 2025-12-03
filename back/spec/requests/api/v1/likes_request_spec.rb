@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Likes", type: :request do
   let(:user) { create(:user) }
   let(:review) { create(:review) }
-  let(:headers) { { 'Authorization' => "Bearer #{generate_jwt_token(user)}" } }
+  let(:headers) { auth_headers(user) }
 
   describe "POST /api/v1/spots/:spot_id/reviews/:review_id/likes" do
     let(:other_user) { create(:user) }
@@ -40,9 +40,4 @@ RSpec.describe "Api::V1::Likes", type: :request do
     end
   end
 
-  private
-
-  def generate_jwt_token(user)
-    UserAuth::AuthToken.new(payload: { sub: user.id }).token
-  end
 end
