@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Spots", type: :request do
   let(:user) { create(:user) }
   let(:spot) { create(:spot, user: user) }
-  let(:headers) { { 'Authorization' => "Bearer #{generate_jwt_token(user)}" } }
+  let(:headers) { auth_headers(user) }
 
   describe "GET /api/v1/spots" do
     before do
@@ -98,9 +98,4 @@ RSpec.describe "Api::V1::Spots", type: :request do
     end
   end
 
-  private
-
-  def generate_jwt_token(user)
-    UserAuth::AuthToken.new(payload: { sub: user.id }).token
-  end
 end

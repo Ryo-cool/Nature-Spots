@@ -35,7 +35,8 @@ class UserDataService < ApplicationService
   end
 
   def fetch_favorite_spots
-    user.favorite_spots.includes(:prefecture, :location).map do |spot|
+    # Note: prefecture and location are ActiveHash, not ActiveRecord associations
+    user.favorite_spots.includes(:user).map do |spot|
       SpotSerializer.new(spot).as_json
     end
   end

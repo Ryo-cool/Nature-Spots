@@ -3,10 +3,13 @@ class ApplicationController < ActionController::API
   include UserAuth::Authenticator
   include Authorization
 
+  # 順序重要: 後に定義されたものが優先される
+  # StandardErrorは最も一般的なので最初に（最低優先度）
+  rescue_from StandardError, with: :internal_server_error
+  # より具体的なエラーを後に（優先度高）
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActionController::ParameterMissing, with: :parameter_missing
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
-  rescue_from StandardError, with: :internal_server_error
   rescue_from JWT::DecodeError, with: :unauthorized_request
   rescue_from JWT::ExpiredSignature, with: :token_expired
 
