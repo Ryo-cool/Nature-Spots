@@ -18,8 +18,9 @@ class SpotRankingService < ApplicationService
 
   def fetch_ranking_spots
     Rails.cache.fetch("spot_ranking_#{limit}", expires_in: 1.hour) do
+      # Note: prefecture and location are ActiveHash, not ActiveRecord associations
       Spot.joins(:reviews)
-          .includes(:prefecture, :location)
+          .includes(:user)
           .group('spots.id')
           .order('COUNT(reviews.id) DESC')
           .limit(limit)

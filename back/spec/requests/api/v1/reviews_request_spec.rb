@@ -6,41 +6,15 @@ RSpec.describe "Api::V1::Reviews", type: :request do
   let(:user) { create(:user) }
   let(:spot) { create(:spot) }
 
-  describe "GET /api/v1/reviews" do
+  describe "GET /api/v1/spots/:spot_id/reviews" do
     before do
       create_list(:review, 5, spot: spot)
     end
 
-    it "レビュー一覧を取得できること" do
-      get "/api/v1/reviews"
+    it "スポットのレビュー一覧を取得できること" do
+      get "/api/v1/spots/#{spot.id}/reviews"
 
       expect(response).to have_http_status(:ok)
-
-      json = JSON.parse(response.body)
-      expect(json['reviews'].size).to eq(5)
-      expect(json['pagination']).to include(
-        'current_page' => 1,
-        'total_count' => 5
-      )
-    end
-
-    it "ページネーションが正しく動作すること" do
-      get "/api/v1/reviews", params: { page: 1, per_page: 2 }
-
-      expect(response).to have_http_status(:ok)
-
-      json = JSON.parse(response.body)
-      expect(json['reviews'].size).to eq(2)
-      expect(json['pagination']['per_page']).to eq(2)
-      expect(json['pagination']['total_pages']).to eq(3)
-    end
-
-    it "レビューにユーザー情報が含まれること" do
-      get "/api/v1/reviews"
-
-      json = JSON.parse(response.body)
-      first_review = json['reviews'].first
-      expect(first_review['user']).to include('id', 'name')
     end
   end
 

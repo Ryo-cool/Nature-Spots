@@ -26,7 +26,7 @@ RSpec.describe UserDataService do
 
       it "ユーザー情報を含むこと" do
         result = described_class.call(user)
-        expect(result.data[:user]).to include('id' => user.id)
+        expect(result.data[:user][:id]).to eq(user.id)
       end
 
       it "ユーザーのレビュー一覧を含むこと" do
