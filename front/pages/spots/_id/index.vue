@@ -18,29 +18,9 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome";
-  },
-  middleware: "authenticator",
-  data() {
-    return {
-      spot: {},
-      reviews: {},
-    };
-  },
-  mounted() {
-    this.$axios
-      .get(`/api/v1/spots/${this.$route.params.id}`)
-      .then((res) => {
-        const spot = res.data.spot;
-        this.spot = spot;
-        this.reviews = res.data.review;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  },
-};
+<script setup lang="ts">
+definePageMeta({
+  layout: "loggedIn",
+  middleware: "auth",
+});
 </script>
