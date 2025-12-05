@@ -94,6 +94,7 @@ async function login() {
         method: "POST",
         body: params,
         baseURL: config.public.apiBaseUrl,
+        credentials: "include",
       });
       if (!isAuthResponse(response)) {
         throw new Error("認証レスポンスの形式が不正です");
@@ -122,6 +123,7 @@ async function guestLogin() {
       method: "POST",
       body: guestParams.value,
       baseURL: config.public.apiBaseUrl,
+      credentials: "include",
     });
     if (!isAuthResponse(response)) {
       throw new Error("認証レスポンスの形式が不正です");

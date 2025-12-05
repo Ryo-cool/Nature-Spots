@@ -8,6 +8,7 @@ class Api::V1::UserTokenController < ApplicationController
   def create
     cookies[token_access_key] = cookie_token
     render json: {
+      token: auth.token,
       exp: auth.payload[:exp],
       user: entity.my_json
     }

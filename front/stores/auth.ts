@@ -3,7 +3,7 @@ import type { User } from "~/types";
 
 interface TokenResponse {
   token: string;
-  exp?: number;
+  exp: number;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -37,8 +37,9 @@ export const useAuthStore = defineStore("auth", {
         const config = useRuntimeConfig();
         const response = await $fetch<TokenResponse>("/api/v1/user_token", {
           method: "POST",
-          body: credentials,
+          body: { auth: credentials },
           baseURL: config.public.apiBaseUrl,
+          credentials: "include",
         });
 
         this.setToken(response.token);
@@ -58,6 +59,7 @@ export const useAuthStore = defineStore("auth", {
         await $fetch("/api/v1/user_token", {
           method: "DELETE",
           baseURL: config.public.apiBaseUrl,
+          credentials: "include",
         });
 
         this.setToken(null);
