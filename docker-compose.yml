@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
   db:
@@ -9,35 +9,41 @@ services:
     restart: always
     volumes:
       - db-data:/var/lib/mysql:cached
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   back:
     build: back/
-    # rm -f tmp/pids/server.pidしとくとrailsのサーバ消し損ねたときに便利
-    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'" 
+    command: /bin/sh -c "rm -f tmp/pids/server.pid && (bundle check || bundle install) && bundle exec rails s -p 3000 -b '0.0.0.0'" 
     env_file:
       - ./back/environments/db.env
-    # environment:
-    #   RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+    environment:
+      RAILS_ENV: development
+      NODE_ENV: development
     volumes:
       - ./back:/app:cached
+      - bundle-cache:/app/vendor/bundle
     depends_on:
       - db
-    # ホストコンピュータのポート：Docker内のポート
+    restart: unless-stopped
     ports:
       - 3000:3000
 
   front:
     build: front/
-    command: yarn run dev
+    command: /bin/sh -c "yarn install --frozen-lockfile && yarn dev"
     volumes:
       - ./front:/app:cached
+      - front-node-modules:/app/node_modules
     ports:
-      # ホストコンピュータのポート：Docker内のポート
       - 8080:3000
     depends_on:
       - back
+    restart: unless-stopped
 volumes:
-  public-data:
-  tmp-data:
-  log-data:
   db-data:
+  bundle-cache:
+  front-node-modules:

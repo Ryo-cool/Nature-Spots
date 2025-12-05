@@ -1,4 +1,4 @@
-FROM node:12.5.0-alpine
+FROM node:20-alpine
 
 ENV HOME="/app" \
     LANG=C.UTF-8 \
@@ -8,15 +8,20 @@ ENV HOST 0.0.0.0
 
 WORKDIR ${HOME}
 
-
 RUN apk update && \
     apk upgrade && \
-    npm install -g n && \
-    yarn install &&\
+    apk add --no-cache git openssh && \
     rm -rf /var/cache/apk/*
 
-# RUN  yarn run build 
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-# EXPOSE 3000
+COPY . .
 
-# CMD ["yarn", "start"]
+# 非rootで実行してセキュリティを高める
+RUN chown -R node:node ${HOME}
+USER node
+
+EXPOSE 3000
+
+CMD ["yarn", "dev"]
