@@ -29,17 +29,22 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useAuth } from "~/composables/useAuth";
-
-// 認証状態に応じてレイアウトを動的に設定
+import { setPageLayout } from "#imports";
 
 definePageMeta({
-  layout: () => {
-    return useAuth().loggedIn.value ? "loggedIn" : "welcome";
-  },
+  layout: "welcome",
 });
 
-// homeImgのpath指定
+const { loggedIn } = useAuth();
+
+onMounted(() => {
+  if (loggedIn.value) {
+    setPageLayout("loggedIn");
+  }
+});
+
 const homeImg = "/images/loggedIn/adventure__isometric.png";
 </script>
 

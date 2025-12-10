@@ -10,6 +10,7 @@ if (!cryptoKey) {
 }
 
 export default defineNuxtConfig({
+  compatibilityDate: "2025-12-10",
   ssr: false,
   devtools: { enabled: true },
 
@@ -80,7 +81,7 @@ export default defineNuxtConfig({
       apiBaseUrl:
         process.env.NODE_ENV === "production"
           ? "https://www.nature-spots-api.work"
-          : "http://localhost:3000",
+          : "http://localhost:3001",
     },
   },
 
