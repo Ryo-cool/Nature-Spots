@@ -1,0 +1,8 @@
+{
+  "projectId": "604d63e4-e704-47e0-a327-5a1a9676afad",
+  "createdAt": 1765369746423,
+  "startupCommands": [
+    "cd back && export PATH=/opt/homebrew/opt/ruby@3.2/bin:$PATH && bundle install --without production && bundle exec rails s -p 3001",
+    "cd front && yarn install && yarn dev"
+  ]
+}

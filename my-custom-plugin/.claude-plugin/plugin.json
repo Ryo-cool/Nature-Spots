@@ -1,0 +1,22 @@
+{
+  "name": "nature-spots-custom",
+  "version": "1.0.0",
+  "description": "Nature-Spotsプロジェクト専用の拡張パック。コードレビュー、ドキュメント処理、スタイル強制、Rails/Nuxt開発支援を提供",
+  "author": "Nature-Spots Team",
+  "components": {
+    "agents": [
+      "general-code-reviewer.md",
+      "doc-processor.md"
+    ],
+    "skills": [
+      "pdf-extractor",
+      "rails-helper"
+    ],
+    "rules": [
+      "coding-style.md",
+      "security.md"
+    ]
+  },
+  "dependencies": [],
+  "compatibleWith": ">=2.0.0"
+}
