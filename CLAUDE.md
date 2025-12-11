@@ -98,6 +98,181 @@ db/                         # マイグレーション & seeds
 spec/                       # RSpecテスト
 ```
 
+## Claude Code 拡張機能スタック
+
+このプロジェクトは、Claude Code 2.0の最新機能（非同期Subagents、モジュラーRules、プログレッシブディスクロージャー対応Skills）を活用した拡張機能スタックを実装しています。
+
+### 📁 ディレクトリ構成
+
+```
+.claude/
+├── agents/           # Subagents（非同期実行可能）
+│   ├── general-code-reviewer.md    # 汎用コードレビュアー（async）
+│   ├── doc-processor.md            # ドキュメント処理（async）
+│   ├── security-reviewer.md        # セキュリティ専門レビュアー
+│   ├── architecture-reviewer.md    # アーキテクチャレビュアー
+│   └── performance-reviewer.md     # パフォーマンスレビュアー
+├── skills/           # Skills（再利用可能な知識・ツール）
+│   ├── pdf-extractor/              # PDF抽出スキル
+│   ├── rails-helper/               # Rails開発支援
+│   ├── coding-standards/           # コーディング規約
+│   └── review-output-format/       # レビュー出力形式
+├── rules/            # Rules（自動適用されるルール）
+│   ├── coding-style.md             # コーディングスタイル（動的リロード）
+│   └── security.md                 # セキュリティ基準（動的リロード）
+└── commands/         # カスタムスラッシュコマンド
+    ├── review-pr.md                # 包括的PRレビュー
+    ├── review-quick.md             # 簡易レビュー
+    └── review-security.md          # セキュリティレビュー
+```
+
+### 🤖 Subagents（エージェント）
+
+#### 非同期対応エージェント
+
+**general-code-reviewer** (async)
+- **用途**: 差分コードの総合レビュー（セキュリティ、パフォーマンス、アーキテクチャ）
+- **呼び出し方**: `@general-code-reviewer Review the changes in [file]`
+- **特徴**: `async: true` でバックグラウンド実行、メインタスクをブロックしない
+- **モデル**: sonnet
+- **権限**: 読み取り専用（plan mode）
+
+**doc-processor** (async)
+- **用途**: PDF、Excel、Markdownの抽出・分析
+- **呼び出し方**: `@doc-processor Extract text from [file.pdf]`
+- **特徴**: 時間のかかる処理を非同期で実行
+- **モデル**: haiku（コスト効率重視）
+- **権限**: 確認モード（ask）
+
+#### 専門レビュアー（既存）
+
+- **security-reviewer**: セキュリティ脆弱性検出
+- **architecture-reviewer**: アーキテクチャ設計レビュー
+- **performance-reviewer**: パフォーマンス最適化提案
+
+### 🧩 Skills（スキル）
+
+**pdf-extractor**
+- PDFファイルからテキスト・フォームデータを抽出
+- Ruby `pdf-reader` gemを使用
+- `meta: true` で内部実装を隠蔽
+
+**rails-helper**
+- Rails開発を効率化（モデル、コントローラー、テスト生成）
+- ベストプラクティスのガイド
+- Nature-Spots固有の規約に対応
+
+**coding-standards**
+- TypeScript/Vue.js と Ruby/Rails のコーディング規約
+- 命名規則、禁止パターン、インポート順序
+- レビュー時に自動参照
+
+**review-output-format**
+- レビュー結果の出力形式を統一
+- 重要度レベル（Critical/High/Medium/Low）
+- GitHub互換のMarkdown形式
+
+### 📏 Rules（ルール）
+
+#### coding-style.md（自動適用）
+
+**適用タイミング**:
+- コード生成時: ルールに従ったコードを自動生成
+- コードレビュー時: 違反を検出して警告
+- 動的リロード: ファイル変更時に自動再読み込み
+
+**主な規則**:
+- インデント: 2スペース（TypeScript/Ruby共通）
+- 命名規則: camelCase（変数）、PascalCase（クラス/コンポーネント）
+- 禁止パターン: `any`型、`console.log`、マジックナンバー
+- インポート順序: Vue/Nuxt → 外部ライブラリ → 内部モジュール → 型定義
+
+#### security.md（必須チェック）
+
+**適用タイミング**:
+- コード生成時: セキュアなコードパターンを使用
+- コードレビュー時: 脆弱性を即座に警告
+
+**主な規則**:
+- 🔴 Critical: SQLインジェクション、XSS、機密情報のハードコーディング
+- 🟠 High: 認可チェック欠如、CSRF、不適切なCORS
+- 🟡 Medium: レート制限なし、セキュリティヘッダー欠如
+- プロジェクト固有: JWT署名検証、Strong Parameters、Policyオブジェクト必須
+
+### 🔧 スラッシュコマンド
+
+**PR レビューコマンド**:
+```bash
+/review-pr       # 包括的なコードレビュー（セキュリティ+パフォーマンス+アーキテクチャ）
+/review-quick    # 簡易レビュー（Critical/High のみ）
+/review-security # セキュリティ専門レビュー
+```
+
+これらのコマンドは、対応するSubagentsを自動的に呼び出し、結果をGitHub互換形式で返します。
+
+### 🎁 カスタムプラグイン
+
+**nature-spots-custom v1.0.0**
+
+プロジェクト固有の拡張機能をバンドルしたプラグインパッケージ:
+
+- **場所**: `my-custom-plugin/`
+- **内容**:
+  - Agents: general-code-reviewer, doc-processor
+  - Skills: pdf-extractor, rails-helper
+  - Rules: coding-style, security
+- **インストール方法**: 既に `.claude/` に配置済み
+- **GitHub共有**: `my-custom-plugin/README.md` を参照
+
+### 💡 使用例
+
+#### 非同期コードレビュー
+```
+# バックグラウンドでレビュー実行
+@general-code-reviewer Review all changes in the current PR
+
+# メインタスクは継続可能
+# レビュー完了時に通知を受け取る
+```
+
+#### Rulesの自動適用
+```
+# 以下のコード生成リクエストは自動的にルールに従う
+User: Create a new TypeScript component for displaying spot cards
+Agent: [coding-style.md と security.md に従ったコードを生成]
+```
+
+#### Skillsの活用
+```
+User: How do I create a new Rails model with proper associations?
+Agent: [rails-helper スキルを参照して、ベストプラクティスに従った手順を提示]
+```
+
+### 🔄 動的リロード
+
+**Rulesの更新**:
+1. `.claude/rules/coding-style.md` または `security.md` を編集
+2. 自動的に次回のコード生成/レビューから適用
+3. 再起動不要
+
+**優先順位**: プロジェクト固有Rules > ユーザー設定 > デフォルト
+
+### 📊 安全性とパフォーマンス
+
+- **読み取り専用モード**: Subagentsは `permissionMode: plan` で実行（変更提案のみ）
+- **コンパクトモード**: `--compact` フラグで効率的な出力
+- **Progressive Disclosure**: Skills は `meta: true` で詳細を隠蔽
+- **最小コンテキスト**: 2-8個のコンポーネントに抑制（コンテキスト肥大化を防止）
+
+### 🚀 拡張機能の更新
+
+新しいAgent、Skill、Ruleを追加する場合：
+
+1. 対応するディレクトリに `.md` ファイルを作成
+2. フロントマター（`---`）でメタデータを定義
+3. CLAUDE.mdに使用方法を記載（オプション）
+4. 自動的に次回起動時から利用可能
+
 ## 開発ガイドライン
 
 ### 基本原則（MUST）

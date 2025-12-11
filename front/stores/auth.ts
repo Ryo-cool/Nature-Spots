@@ -74,13 +74,16 @@ export const useAuthStore = defineStore("auth", {
       try {
         const config = useRuntimeConfig();
 
-        const response = await $fetch<{ user: User }>("/api/v1/users/current_user", {
-          method: "GET",
-          baseURL: config.public.apiBaseUrl,
-          headers: {
-            Authorization: `Bearer ${this.token}`,
+        const response = await $fetch<{ user: User }>(
+          "/api/v1/users/current_user",
+          {
+            method: "GET",
+            baseURL: config.public.apiBaseUrl,
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
           },
-        });
+        );
 
         this.setUser(response.user);
         return response.user;
