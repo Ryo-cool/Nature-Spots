@@ -41,9 +41,12 @@ yarn dev                       # 開発サーバー (localhost:8080)
 yarn build                     # 本番ビルド
 yarn lint                      # ESLint実行
 yarn lint:fix                  # ESLint自動修正
+yarn lint:ox                   # oxlint実行（高速Linter）
+yarn lint:ox:fix               # oxlint自動修正
 yarn type-check                # TypeScript型チェック
 yarn format                    # Prettier整形
 yarn check                     # lint + type-check
+yarn check:ox                  # oxlint + type-check（高速）
 yarn test:unit                 # Vitestユニットテスト
 ```
 
