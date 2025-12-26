@@ -1,0 +1,63 @@
+{
+  // Oxlint設定ファイル
+  // https://oxc.rs/docs/guide/usage/linter.html
+
+  "plugins": [
+    "vue",
+    "import",
+    "typescript"
+  ],
+
+  "categories": {
+    // デフォルトで有効化されているカテゴリー
+    "correctness": "warn",  // 明らかに間違っているコード
+    "suspicious": "warn",   // 疑わしいコード
+    "pedantic": "off",      // 厳格すぎるルール（必要に応じて有効化）
+    "perf": "warn",         // パフォーマンスの問題
+    "style": "off",         // コードスタイル（Prettierに任せる）
+    "restriction": "off",   // 言語機能の制限
+    "nursery": "off"        // 開発中のルール
+  },
+
+  "rules": {
+    // TypeScript固有のルール
+    "typescript/no-explicit-any": "off",  // .eslintrc.jsと同じ設定
+
+    // Vue固有のルール
+    "vue/multi-word-component-names": "off",  // .eslintrc.jsと同じ設定
+
+    // コンソールログの許可（開発環境）
+    "no-console": "off",
+    "no-debugger": "off"
+  },
+
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2021": true
+  },
+
+  "globals": {
+    // Nuxt 3のグローバル変数
+    "useHead": "readonly",
+    "useRuntimeConfig": "readonly",
+    "useNuxtApp": "readonly",
+    "useRoute": "readonly",
+    "useRouter": "readonly",
+    "navigateTo": "readonly",
+    "useError": "readonly",
+    "definePageMeta": "readonly",
+    "$fetch": "readonly",
+    "google": "readonly"
+  },
+
+  "ignorePatterns": [
+    ".nuxt",
+    ".output",
+    "dist",
+    "node_modules",
+    "coverage",
+    "*.config.js",
+    ".oxlintrc.json"
+  ]
+}
