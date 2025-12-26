@@ -1308,6 +1308,46 @@
   resolved "https://registry.yarnpkg.com/@oxc-project/types/-/types-0.56.5.tgz#ff3f2a2b09e493e3eab6c8e403de2eb02c3efe67"
   integrity sha512-skY3kOJwp22W4RkaadH1hZ3hqFHjkRrIIE0uQ4VUg+/Chvbl+2pF+B55IrIk2dgsKXS57YEUsJuN6I6s4rgFjA==
 
+"@oxfmt/darwin-arm64@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@oxfmt/darwin-arm64/-/darwin-arm64-0.20.0.tgz#feb544289d2e355bd6087e153136ff3ffb46ba56"
+  integrity sha512-bjR5dqvrd9gxKYfYR0ljUu3/T3+TuDVWcwA7d+tsfmx9lqidlw3zhgBTblnjF1mrd1zkPMoc5zzq86GeSEt1cA==
+
+"@oxfmt/darwin-x64@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@oxfmt/darwin-x64/-/darwin-x64-0.20.0.tgz#352b215f7354af0e39db8a47bfeb897c63182a54"
+  integrity sha512-esUDes8FlJX3IY4TVjFLgZrnZlIIyPDlhkCaHgGR3+z2eHFZOvQu68kTSpZLCEJmGXdSpU5rlveycQ6n8tk9ew==
+
+"@oxfmt/linux-arm64-gnu@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@oxfmt/linux-arm64-gnu/-/linux-arm64-gnu-0.20.0.tgz#37c86d442c2f6abb15e95d974efa590d9850cbcd"
+  integrity sha512-irE0RO9B0R6ziQE6kUVZtZ6IuTdRyuumn1cPWhDfpa0XUa5sE0ly8pjVsvJbj/J9qerVtidU05txeXBB5CirQg==
+
+"@oxfmt/linux-arm64-musl@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@oxfmt/linux-arm64-musl/-/linux-arm64-musl-0.20.0.tgz#b3d4439ed5cfea7e8fd0a0005088124fb9eb9530"
+  integrity sha512-eXPBLwYJm26DCmwMwhelEwQMRwuGNaYhYZOhd+CYYsmVoF+h6L6dtjwj0Ovuu0Gqh18EL8vfsaoUvb+jr3vEBg==
+
+"@oxfmt/linux-x64-gnu@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@oxfmt/linux-x64-gnu/-/linux-x64-gnu-0.20.0.tgz#288c0790fe2a3363848fd69d5a69cff0f01139a4"
+  integrity sha512-dTPW38Hjgb7LoD2mNgyQGBaJ1hu5YgPrxImhl5Eb04eiws+ETCM0wrb2TWGduA+Nv3rHKn3vZEkMTEjklZXgRw==
+
+"@oxfmt/linux-x64-musl@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@oxfmt/linux-x64-musl/-/linux-x64-musl-0.20.0.tgz#d21483357b8e529075fc1046e6d1a09808547ac2"
+  integrity sha512-b4duw9JGDK/kZoqrPNU9tBOOZQdUW8KJPZ7gW7z54X1eGSqCJ1PT0XLNmZ7SOA1BzQwQ0a3qmQWfFVOsH3a5bw==
+
+"@oxfmt/win32-arm64@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@oxfmt/win32-arm64/-/win32-arm64-0.20.0.tgz#5fdc6d72b60c7e89fdd2e7b24f31d345126dcdf7"
+  integrity sha512-XAzvBhw4K+Fe16dBaFgYAdob9WaM8RYEXl0ibbm5NlNaQEq+5bH9xwc0oaYlHFnLfcgXWmn9ceTAYqNlONQRNA==
+
+"@oxfmt/win32-x64@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@oxfmt/win32-x64/-/win32-x64-0.20.0.tgz#0ec86d53b1905bc434aed56f34f3ea0ca869e590"
+  integrity sha512-fkJqHbJaoOMRmrjHSljyb4/7BgXO3xPLBsJSFGtm3mpfW0HHFbAKvd4/6njhqJz9KY+b3RWP1WssjFshcqQQ4w==
+
 "@oxlint/darwin-arm64@1.35.0":
   version "1.35.0"
   resolved "https://registry.yarnpkg.com/@oxlint/darwin-arm64/-/darwin-arm64-1.35.0.tgz#16dac55766a4dde82894216b8335d64caf56ccda"
@@ -6480,6 +6520,22 @@ oxc-parser@^0.56.3:
     "@oxc-parser/binding-win32-arm64-msvc" "0.56.5"
     "@oxc-parser/binding-win32-x64-msvc" "0.56.5"
 
+oxfmt@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/oxfmt/-/oxfmt-0.20.0.tgz#0b8d467b4cc1972fda5cd33e15540cc98943759e"
+  integrity sha512-+7f8eV8iaK3tENN/FUVxZM1g78HjPehybN8/+/dvEA1O893Dcvk6O7/Q1wTQOHMD7wvdwWdujKl+Uo8QMiKDrQ==
+  dependencies:
+    tinypool "2.0.0"
+  optionalDependencies:
+    "@oxfmt/darwin-arm64" "0.20.0"
+    "@oxfmt/darwin-x64" "0.20.0"
+    "@oxfmt/linux-arm64-gnu" "0.20.0"
+    "@oxfmt/linux-arm64-musl" "0.20.0"
+    "@oxfmt/linux-x64-gnu" "0.20.0"
+    "@oxfmt/linux-x64-musl" "0.20.0"
+    "@oxfmt/win32-arm64" "0.20.0"
+    "@oxfmt/win32-x64" "0.20.0"
+
 oxlint@^1.35.0:
   version "1.35.0"
   resolved "https://registry.yarnpkg.com/oxlint/-/oxlint-1.35.0.tgz#04a653b70394a4cdea4401a379354e8688f7d281"
@@ -8049,6 +8105,11 @@ tinyglobby@0.2.12, tinyglobby@^0.2.11, tinyglobby@^0.2.12:
   dependencies:
     fdir "^6.4.3"
     picomatch "^4.0.2"
+
+tinypool@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tinypool/-/tinypool-2.0.0.tgz#7eaea50341e1026cecb75e04d4e6ea6ede68b7ca"
+  integrity sha512-/RX9RzeH2xU5ADE7n2Ykvmi9ED3FBGPAjw9u3zucrNNaEBIO0HPSYgL0NT7+3p147ojeSdaVu08F6hjpv31HJg==
 
 tinypool@^0.8.3:
   version "0.8.4"
