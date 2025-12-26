@@ -44,11 +44,13 @@ yarn lint:fix                  # ESLint自動修正
 yarn lint:ox                   # oxlint実行（高速Linter）
 yarn lint:ox:fix               # oxlint自動修正
 yarn type-check                # TypeScript型チェック
+yarn type-check:fast           # tsgo型チェック（高速TypeScriptコンパイラ）
 yarn format                    # Prettier整形
 yarn format:ox                 # oxfmt整形（高速Formatter）
 yarn format:ox:check           # oxfmtチェックのみ
 yarn check                     # lint + type-check
 yarn check:ox                  # oxlint + type-check（高速）
+yarn check:fast                # oxlint + tsgo（最速）
 yarn test:unit                 # Vitestユニットテスト
 ```
 

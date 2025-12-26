@@ -17,6 +17,7 @@
     "lint:ox": "oxlint --vue-plugin --import-plugin --tsconfig ./tsconfig.json .",
     "lint:ox:fix": "oxlint --vue-plugin --import-plugin --tsconfig ./tsconfig.json --fix .",
     "type-check": "vue-tsc --noEmit",
+    "type-check:fast": "tsgo --noEmit",
     "test:unit": "vitest",
     "format": "prettier --write \"**/*.{js,ts,vue,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,ts,vue,json,md}\"",
@@ -24,6 +25,7 @@
     "format:ox:check": "oxfmt --check .",
     "check": "yarn lint && yarn type-check",
     "check:ox": "yarn lint:ox && yarn type-check",
+    "check:fast": "yarn lint:ox && yarn type-check:fast",
     "lint:staged": "lint-staged"
   },
   "dependencies": {
@@ -42,6 +44,7 @@
     "@types/crypto-js": "^4.2.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@typescript/native-preview": "^7.0.0-dev.20251226.1",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-typescript": "^14.4.0",
     "@vue/test-utils": "^2.4.6",
