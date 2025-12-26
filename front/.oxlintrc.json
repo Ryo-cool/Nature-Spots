@@ -48,7 +48,6 @@
     "useError": "readonly",
     "definePageMeta": "readonly",
     "$fetch": "readonly",
-    "useAuthStore": "readonly",
     "google": "readonly"
   },
 
