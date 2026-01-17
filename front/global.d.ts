@@ -28,13 +28,9 @@ declare module "#app" {
 }
 
 declare module "nuxt/schema" {
-  interface RuntimeConfig {
-    cryptoKey: string;
-  }
   interface PublicRuntimeConfig {
     apiBaseUrl: string;
     appName: string;
-    cryptoKey: string;
     guestEmail?: string;
     guestPassword?: string;
     googleMapsApiKey: string;

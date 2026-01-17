@@ -1,4 +1,3 @@
-import cryptoJs from "crypto-js";
 import { computed } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import type { User } from "~/types";
@@ -11,33 +10,15 @@ interface AuthPayload {
 
 export const useAuth = () => {
   const authStore = useAuthStore();
-  const config = useRuntimeConfig();
   const keys = { exp: "exp" } as const;
 
   // LocalStorageはクライアントサイドでのみ利用可能
   const storage: Storage | null = import.meta.client ? localStorage : null;
 
-  // 有効期限を暗号化
-  const encrypt = (exp: number): string => {
-    const expire = String(exp * 1000);
-    return cryptoJs.AES.encrypt(expire, config.public.cryptoKey).toString();
-  };
-
-  // 有効期限を複合化
-  const decrypt = (exp: string): number | null => {
-    try {
-      const bytes = cryptoJs.AES.decrypt(exp, config.public.cryptoKey);
-      const expire = bytes.toString(cryptoJs.enc.Utf8);
-      return expire ? Number(expire) : removeStorage();
-    } catch (e) {
-      return removeStorage();
-    }
-  };
-
-  // storageに保存
+  // storageに保存（ミリ秒に変換してJSON保存）
   const setStorage = (exp: number): void => {
     if (storage) {
-      storage.setItem(keys.exp, encrypt(exp));
+      storage.setItem(keys.exp, JSON.stringify(exp * 1000));
     }
   };
 
@@ -51,11 +32,20 @@ export const useAuth = () => {
     return null;
   };
 
-  // storageの有効期限を複合して返す
+  // storageの有効期限を取得して返す
   const getExpire = (): number | null => {
     if (!storage) return null;
     const expire = storage.getItem(keys.exp);
-    return expire ? decrypt(expire) : null;
+    if (!expire) return null;
+    try {
+      const parsed = JSON.parse(expire);
+      if (typeof parsed !== "number" || !Number.isFinite(parsed)) {
+        return removeStorage();
+      }
+      return parsed;
+    } catch {
+      return removeStorage();
+    }
   };
 
   // 有効期限内の場合はtrueを返す
