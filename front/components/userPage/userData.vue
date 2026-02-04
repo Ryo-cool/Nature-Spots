@@ -71,8 +71,8 @@ onMounted(async () => {
           : res.data.reviews;
     }
 
-    follow.value = res.data.follow || [];
-    follower.value = res.data.follower || [];
+    follow.value = res.data.followings || [];
+    follower.value = res.data.followers || [];
   } catch (error) {
     console.error("ユーザーデータの取得に失敗しました:", error);
   }

@@ -113,7 +113,7 @@ const formatDate = (dateString: string) => {
 onMounted(async () => {
   try {
     const res = await $api.get("/api/v1/users/user_data");
-    reviews.value = res.data.review || [];
+    reviews.value = res.data.reviews || [];
   } catch (error) {
     console.error("ユーザーデータの取得に失敗しました:", error);
   }

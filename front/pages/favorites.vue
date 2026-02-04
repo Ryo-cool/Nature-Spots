@@ -19,13 +19,13 @@ export default {
   },
   data() {
     return {
-      fspots: {},
+      fspots: [],
     };
   },
   mounted() {
     this.$axios.get("/api/v1/users/user_data").then((res) => {
       if (res.data) {
-        this.fspots = res.data.favorite;
+        this.fspots = res.data.favorites || [];
       }
     });
   },
