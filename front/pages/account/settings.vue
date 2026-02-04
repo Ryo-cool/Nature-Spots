@@ -126,33 +126,33 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-        <v-card-text v-for="v in followUser" :key="v.id">
-          <v-avatar size="100">
-            <v-img :src="v.image.url" />
-          </v-avatar>
-          <nuxt-link :to="`/user/${v.id}`" class="text-decoration-none">
-            <v-card-title>{{ v.name }}</v-card-title>
-          </nuxt-link>
-          <follow-btn :user-id="v.id" :initial-is-following="true" />
-        </v-card-text>
-      </v-card>
-    </v-tab-item>
-    <v-tab-item>
-      <v-card flat>
-        <v-card-text v-for="t in follower" :key="t.id">
-          <v-avatar size="100">
-            <v-img :src="t.image.url" />
-          </v-avatar>
-          <nuxt-link :to="`/user/${t.id}`" class="text-decoration-none">
-            <v-card-title>{{ t.name }}</v-card-title>
-          </nuxt-link>
-          <follow-btn
-            :user-id="t.id"
-            :initial-is-following="isFollowingUser(t.id)"
-          />
-        </v-card-text>
-      </v-card>
-    </v-tab-item>
+          <v-card-text v-for="v in followUser" :key="v.id">
+            <v-avatar size="100">
+              <v-img :src="v.image.url" />
+            </v-avatar>
+            <nuxt-link :to="`/user/${v.id}`" class="text-decoration-none">
+              <v-card-title>{{ v.name }}</v-card-title>
+            </nuxt-link>
+            <follow-btn :user-id="v.id" :initial-is-following="true" />
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text v-for="t in follower" :key="t.id">
+            <v-avatar size="100">
+              <v-img :src="t.image.url" />
+            </v-avatar>
+            <nuxt-link :to="`/user/${t.id}`" class="text-decoration-none">
+              <v-card-title>{{ t.name }}</v-card-title>
+            </nuxt-link>
+            <follow-btn
+              :user-id="t.id"
+              :initial-is-following="isFollowingUser(t.id)"
+            />
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
   </v-card>
 </template>
