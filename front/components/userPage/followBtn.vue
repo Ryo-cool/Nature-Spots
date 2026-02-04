@@ -8,18 +8,59 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "~/stores/auth";
 import { useToastStore } from "~/stores/toast";
 import { useApi } from "~/composables/useApi";
+
+type UserId = number | string;
+
+const props = withDefaults(
+  defineProps<{
+    userId?: UserId | null;
+    initialIsFollowing?: boolean;
+  }>(),
+  {
+    userId: null,
+    initialIsFollowing: false,
+  },
+);
 
 const route = useRoute();
 const authStore = useAuthStore();
 const toastStore = useToastStore();
 const $api = useApi();
 
-const isFollowing = ref(false);
+const isFollowing = ref(props.initialIsFollowing ?? false);
+
+watch(
+  () => props.initialIsFollowing,
+  (value) => {
+    if (typeof value === "boolean") {
+      isFollowing.value = value;
+    }
+  },
+);
+
+const targetUserId = computed<UserId | null>(() => {
+  const candidate = props.userId ?? route.params.id;
+  if (Array.isArray(candidate)) return candidate[0] ?? null;
+  if (candidate === null || candidate === undefined) return null;
+  return candidate as UserId;
+});
+
+const resolveTargetUserId = (): UserId | null => {
+  const followId = targetUserId.value;
+  if (followId === null || followId === undefined || followId === "") {
+    toastStore.showToast({
+      message: "フォロー対象のユーザーが見つかりません",
+      color: "error",
+    });
+    return null;
+  }
+  return followId;
+};
 
 const follow = async () => {
   if (!authStore.user) {
@@ -30,10 +71,13 @@ const follow = async () => {
     return;
   }
 
+  const followId = resolveTargetUserId();
+  if (!followId) return;
+
   try {
     await $api.post("/api/v1/relationships", {
       user_id: authStore.user.id,
-      follow_id: route.params.id,
+      follow_id: followId,
     });
 
     isFollowing.value = true;
@@ -59,11 +103,15 @@ const unFollow = async () => {
     return;
   }
 
+  const followId = resolveTargetUserId();
+  if (!followId) return;
+
   try {
-    await $api.delete("/api/v1/relationships/delete/", {
+    const followIdPath = encodeURIComponent(String(followId));
+    await $api.delete(`/api/v1/relationships/${followIdPath}`, {
       params: {
         user_id: authStore.user.id,
-        follow_id: route.params.id,
+        follow_id: followId,
       },
     });
 

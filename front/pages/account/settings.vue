@@ -126,30 +126,33 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-card-text v-for="v in followUser" :key="v.id">
-            <v-avatar size="100">
-              <v-img :src="v.image.url" />
-            </v-avatar>
-            <nuxt-link :to="`/user/${v.id}`" class="text-decoration-none">
-              <v-card-title>{{ v.name }}</v-card-title>
-            </nuxt-link>
-            <follow-btn />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <v-card-text v-for="t in follower" :key="t.id">
-            <v-avatar size="100">
-              <v-img :src="t.image.url" />
-            </v-avatar>
-            <nuxt-link :to="`/user/${t.id}`" class="text-decoration-none">
-              <v-card-title>{{ t.name }}</v-card-title>
-            </nuxt-link>
-            <follow-btn />
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
+        <v-card-text v-for="v in followUser" :key="v.id">
+          <v-avatar size="100">
+            <v-img :src="v.image.url" />
+          </v-avatar>
+          <nuxt-link :to="`/user/${v.id}`" class="text-decoration-none">
+            <v-card-title>{{ v.name }}</v-card-title>
+          </nuxt-link>
+          <follow-btn :user-id="v.id" :initial-is-following="true" />
+        </v-card-text>
+      </v-card>
+    </v-tab-item>
+    <v-tab-item>
+      <v-card flat>
+        <v-card-text v-for="t in follower" :key="t.id">
+          <v-avatar size="100">
+            <v-img :src="t.image.url" />
+          </v-avatar>
+          <nuxt-link :to="`/user/${t.id}`" class="text-decoration-none">
+            <v-card-title>{{ t.name }}</v-card-title>
+          </nuxt-link>
+          <follow-btn
+            :user-id="t.id"
+            :initial-is-following="isFollowingUser(t.id)"
+          />
+        </v-card-text>
+      </v-card>
+    </v-tab-item>
     </v-tabs>
   </v-card>
 </template>
@@ -159,12 +162,12 @@ export default {
   data() {
     return {
       tab: null,
-      reviews: {},
-      myReview: {},
-      likeSpot: {},
-      followUser: {},
-      follower: {},
-      user: {},
+      reviews: [],
+      myReview: [],
+      likeSpot: [],
+      followUser: [],
+      follower: [],
+      user: null,
       photo: null,
     };
   },
@@ -174,15 +177,20 @@ export default {
       .then((res) => {
         this.user = res.data.user;
         this.photo = res.data.user.image.url;
-        this.reviews = JSON.parse(res.data.like_reviews);
-        this.myReview = JSON.parse(res.data.review);
-        this.likeSpot = res.data.favorite;
-        this.followUser = res.data.follow;
-        this.follower = res.data.follower;
+        this.reviews = res.data.liked_reviews || [];
+        this.myReview = res.data.reviews || [];
+        this.likeSpot = res.data.favorites || [];
+        this.followUser = res.data.followings || [];
+        this.follower = res.data.followers || [];
       })
       .catch((error) => {
         console.error(error);
       });
+  },
+  methods: {
+    isFollowingUser(userId) {
+      return this.followUser.some((user) => user.id === userId);
+    },
   },
 };
 </script>
