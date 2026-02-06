@@ -7,14 +7,32 @@ RSpec.describe "Api::V1::Reviews", type: :request do
   let(:spot) { create(:spot) }
 
   describe "GET /api/v1/spots/:spot_id/reviews" do
-    before do
-      create_list(:review, 5, spot: spot)
-    end
+    let(:other_spot) { create(:spot) }
+    let!(:spot_reviews) { create_list(:review, 5, spot: spot) }
+    let!(:other_spot_reviews) { create_list(:review, 2, spot: other_spot) }
 
-    it "スポットのレビュー一覧を取得できること" do
+    it "対象スポットのレビューのみを取得し、pagination件数も一致すること" do
       get "/api/v1/spots/#{spot.id}/reviews"
 
       expect(response).to have_http_status(:ok)
+
+      json = JSON.parse(response.body)
+      response_review_ids = json['reviews'].map { |review| review['id'] }
+      spot_review_ids = spot_reviews.map(&:id)
+      other_spot_review_ids = other_spot_reviews.map(&:id)
+
+      expect(json['reviews'].size).to eq(5)
+      expect(response_review_ids).to match_array(spot_review_ids)
+      expect(response_review_ids & other_spot_review_ids).to be_empty
+      expect(Review.where(id: response_review_ids).distinct.pluck(:spot_id)).to eq([spot.id])
+      expect(json.dig('pagination', 'total_count')).to eq(5)
+      expect(json.dig('pagination', 'total_pages')).to eq(1)
+    end
+
+    it "存在しないスポットIDの場合は404を返すこと" do
+      get "/api/v1/spots/999999/reviews"
+
+      expect(response).to have_http_status(:not_found)
     end
   end
 
