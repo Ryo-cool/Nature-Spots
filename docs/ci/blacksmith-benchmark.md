@@ -13,8 +13,10 @@ Compare CI runtime between GitHub-hosted runners and Blacksmith runners using su
 - Exclusions: any non-successful runs (`failure`, `cancelled`, `timed_out`, etc.)
 
 ## Runner Configuration
-- Blacksmith runner tag: `blacksmith-4vcpu-ubuntu-2204`
-- Note: use one fixed tag from the Blacksmith dashboard for the entire benchmark window.
+- `BLACKSMITH_RUNNER_LABEL` repository variable controls the runner label.
+- Default label in workflows: `blacksmith-4vcpu-ubuntu-2404`
+- Note: set a fixed label from the Blacksmith dashboard for the entire benchmark window.
+- Optional: set `RUN_FRONTEND_TESTS=true` when including `yarn test` in both frontend workflows.
 
 ## Baseline Snapshot (2026-02-14)
 - Backend CI successful runs (last 50): avg `61s`

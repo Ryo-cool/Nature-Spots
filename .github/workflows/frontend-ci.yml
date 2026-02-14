@@ -43,7 +43,7 @@ jobs:
 
       - name: Run tests
         run: yarn test
-        if: ${{ false }} # テストが設定されたら有効化
+        if: ${{ vars.RUN_FRONTEND_TESTS == 'true' }}
 
       - name: Check bundle size
         run: |

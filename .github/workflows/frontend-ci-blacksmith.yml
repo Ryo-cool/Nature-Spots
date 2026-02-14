@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    runs-on: blacksmith-4vcpu-ubuntu-2204
+    runs-on: ${{ vars.BLACKSMITH_RUNNER_LABEL || 'blacksmith-4vcpu-ubuntu-2404' }}
 
     defaults:
       run:
@@ -44,7 +44,7 @@ jobs:
 
       - name: Run tests
         run: yarn test
-        if: ${{ false }} # テストが設定されたら有効化
+        if: ${{ vars.RUN_FRONTEND_TESTS == 'true' }}
 
       - name: Check bundle size
         run: |
