@@ -5,6 +5,7 @@ on:
     paths:
       - 'front/**'
       - '.github/workflows/frontend-ci.yml'
+      - '.github/workflows/frontend-ci-blacksmith.yml'
 
 jobs:
   test:

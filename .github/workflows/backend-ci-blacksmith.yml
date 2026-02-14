@@ -5,6 +5,7 @@ on:
     paths:
       - 'back/**'
       - '.github/workflows/backend-ci.yml'
+      - '.github/workflows/backend-ci-blacksmith.yml'
 
 jobs:
   test:
