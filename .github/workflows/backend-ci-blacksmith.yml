@@ -1,0 +1,92 @@
+name: Backend CI (Blacksmith)
+
+on:
+  pull_request:
+    paths:
+      - 'back/**'
+      - '.github/workflows/backend-ci.yml'
+
+jobs:
+  test:
+    runs-on: blacksmith-4vcpu-ubuntu-2204
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: nature_spots_test
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    defaults:
+      run:
+        working-directory: ./back
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.3'
+          bundler-cache: true
+          working-directory: ./back
+
+      - name: Create database.yml for CI
+        run: |
+          cat << EOF > config/database.yml
+          test:
+            adapter: mysql2
+            encoding: utf8mb4
+            collation: utf8mb4_unicode_ci
+            pool: 5
+            username: test_user
+            password: test_password
+            host: 127.0.0.1
+            port: 3306
+            database: nature_spots_test
+          EOF
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          DATABASE_HOST: 127.0.0.1
+          DATABASE_PORT: 3306
+          DATABASE_USER: test_user
+          DATABASE_PASSWORD: test_password
+          DATABASE_NAME: nature_spots_test
+        run: |
+          bundle exec rails db:create
+          mysql -h 127.0.0.1 -u root -proot -e "ALTER DATABASE nature_spots_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          bundle exec rails db:migrate
+
+      - name: Run RSpec tests
+        env:
+          RAILS_ENV: test
+          DATABASE_HOST: 127.0.0.1
+          DATABASE_PORT: 3306
+          DATABASE_USER: test_user
+          DATABASE_PASSWORD: test_password
+          DATABASE_NAME: nature_spots_test
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: bundle exec rspec
+
+      - name: Run security audit
+        run: |
+          bundle exec brakeman --no-pager
+          bundle exec bundle-audit check --update
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: back/coverage/
