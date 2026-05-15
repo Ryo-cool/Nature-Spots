@@ -48,14 +48,25 @@ class Spot < ApplicationRecord
     Season.where(id: spot_seasons.map(&:season_id))
   end
 
+  # バリデーション通過後に同期させるためペンディングリストに保留する
   def season_ids=(ids)
-    season_id_set = Array(ids).reject(&:blank?).map(&:to_i).uniq
-    existing = spot_seasons.map(&:season_id)
-    (existing - season_id_set).each do |sid|
+    @pending_season_ids = Array(ids).reject(&:blank?).map(&:to_i).uniq
+  end
+
+  after_save :sync_spot_seasons
+
+  private
+
+  def sync_spot_seasons
+    return if @pending_season_ids.nil?
+
+    existing = spot_seasons.reload.map(&:season_id)
+    (existing - @pending_season_ids).each do |sid|
       spot_seasons.where(season_id: sid).destroy_all
     end
-    (season_id_set - existing).each do |sid|
-      spot_seasons.build(season_id: sid)
+    (@pending_season_ids - existing).each do |sid|
+      spot_seasons.create!(season_id: sid)
     end
+    @pending_season_ids = nil
   end
 end

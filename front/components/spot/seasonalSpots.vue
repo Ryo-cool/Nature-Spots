@@ -84,21 +84,27 @@ const selectedIndex = ref<number | null>(null);
 const spots = ref<SeasonalSpot[]>([]);
 const loading = ref(false);
 const error = ref(false);
+let latestRequestId = 0;
 
 const fetchSeasonalSpots = async (season: SeasonKey) => {
+  const requestId = ++latestRequestId;
   loading.value = true;
   error.value = false;
   try {
     const res = await $api.get<SeasonalResponse>(
       `/api/v1/spots/seasonal?season=${season}`,
     );
+    if (requestId !== latestRequestId) return;
     spots.value = Array.isArray(res.data?.spots) ? res.data.spots : [];
   } catch (e) {
+    if (requestId !== latestRequestId) return;
     console.error("季節別スポットの取得に失敗しました:", e);
     error.value = true;
     spots.value = [];
   } finally {
-    loading.value = false;
+    if (requestId === latestRequestId) {
+      loading.value = false;
+    }
   }
 };
 

@@ -21,7 +21,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <h1>{{ $t("spot.seasonal.title") }}</h1>
+        <h2>{{ $t("spot.seasonal.title") }}</h2>
         <seasonal-spots />
       </v-col>
     </v-row>

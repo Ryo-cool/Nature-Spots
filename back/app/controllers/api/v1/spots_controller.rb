@@ -11,8 +11,9 @@ class Api::V1::SpotsController < ApplicationController
     
     # Fix: Include nested user associations for reviews and favorites to prevent N+1 queries
     # Note: prefecture and location are ActiveHash, not ActiveRecord, so don't include them
-    @spots = Spot.includes(:user, 
-                          reviews: :user, 
+    @spots = Spot.includes(:user,
+                          :spot_seasons,
+                          reviews: :user,
                           favorites: :user)
                  .offset(offset)
                  .limit(per_page)
@@ -74,8 +75,9 @@ class Api::V1::SpotsController < ApplicationController
       return
     end
 
+    # in_season が joins(:spot_seasons) を使うため includes との干渉を避けるため preload を使用
     spots = Spot.in_season(season.id)
-                .includes(:user, :spot_seasons)
+                .preload(:user, :spot_seasons)
                 .order(reviews_count: :desc)
                 .limit(20)
 
