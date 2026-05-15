@@ -11,8 +11,9 @@ class Api::V1::SpotsController < ApplicationController
     
     # Fix: Include nested user associations for reviews and favorites to prevent N+1 queries
     # Note: prefecture and location are ActiveHash, not ActiveRecord, so don't include them
-    @spots = Spot.includes(:user, 
-                          reviews: :user, 
+    @spots = Spot.includes(:user,
+                          :spot_seasons,
+                          reviews: :user,
                           favorites: :user)
                  .offset(offset)
                  .limit(per_page)
@@ -60,6 +61,35 @@ class Api::V1::SpotsController < ApplicationController
     }
   end
   
+  # 季節別おすすめスポットを表示する
+  # GET /api/v1/spots/seasonal[?season=spring|summer|autumn|winter]
+  # season未指定の場合は現在月から判定する
+  def seasonal
+    season = resolve_season(params[:season])
+
+    if season.nil?
+      render json: {
+        errors: ['無効な季節が指定されました'],
+        status: :unprocessable_entity
+      }, status: :unprocessable_entity
+      return
+    end
+
+    # in_season が joins(:spot_seasons) を使うため includes との干渉を避けるため preload を使用
+    spots = Spot.in_season(season.id)
+                .preload(:user, :spot_seasons)
+                .order(reviews_count: :desc)
+                .limit(20)
+
+    serialized_spots = spots.map { |spot| SpotSerializer.new(spot).as_json }
+
+    render json: {
+      spots: serialized_spots,
+      season: { id: season.id, key: season.key, name_ja: season.name_ja },
+      status: :ok
+    }
+  end
+
   # レビュー数順にスポットを表示する
   def ranking
     result = SpotRankingService.call
@@ -151,8 +181,15 @@ class Api::V1::SpotsController < ApplicationController
       :longitude,
       :latitude,
       :address,
-      :prefecture_id
+      :prefecture_id,
+      season_ids: []
     )
+  end
+
+  def resolve_season(key)
+    return Season.current if key.blank?
+
+    Season.find_by_key(key)
   end
 
   def favorite_user_id_for_current_user

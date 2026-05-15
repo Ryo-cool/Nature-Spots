@@ -1,1 +1,38 @@
-{}
+{
+  "menus": {
+    "about": "About",
+    "products": "Products",
+    "price": "Pricing",
+    "contact": "Contact",
+    "company": "Company"
+  },
+  "pages": {
+    "signup": "Sign up",
+    "login": "Log in",
+    "logout": "Log out",
+    "account": {
+      "settings": "Profile",
+      "password": "Edit profile"
+    },
+    "prefecture": {
+      "id": "Prefecture"
+    },
+    "location": {
+      "id": "Genre"
+    },
+    "spots": {
+      "id": "Spot"
+    }
+  },
+  "spot": {
+    "seasonal": {
+      "title": "Recommended for this season",
+      "spring": "Spring",
+      "summer": "Summer",
+      "autumn": "Autumn",
+      "winter": "Winter",
+      "empty": "No recommended spots for this season yet",
+      "error": "Failed to load seasonal spots"
+    }
+  }
+}

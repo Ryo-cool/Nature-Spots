@@ -13,5 +13,15 @@ FactoryBot.define do
         create_list(:review, 3, spot: spot)
       end
     end
+
+    trait :with_season do
+      transient do
+        season_id { 1 }
+      end
+
+      after(:create) do |spot, evaluator|
+        spot.spot_seasons.create!(season_id: evaluator.season_id)
+      end
+    end
   end
 end

@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '>= 3.2.0', '< 4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.1.5', '>= 7.1.5.2'
+gem 'rails', '~> 7.2.3', '>= 7.2.3.1'
 # Use mysql as the database for Active Record (production only)
 gem 'mysql2', '>= 0.4.4', group: :production
 # Use SQLite3 for development and testing (no MySQL server required)
