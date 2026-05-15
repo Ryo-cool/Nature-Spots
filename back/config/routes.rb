@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :spots do
         collection do
           get 'ranking'
+          get 'seasonal'
         end
         resources :favorites, only: [:create, :destroy]
         resources :reviews do

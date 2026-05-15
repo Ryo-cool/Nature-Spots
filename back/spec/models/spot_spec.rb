@@ -59,11 +59,44 @@ RSpec.describe Spot, type: :model do
     it { should belong_to(:user) }
     it { should have_many(:reviews) }
     it { should have_many(:favorites) }
-    
+    it { should have_many(:spot_seasons).dependent(:destroy) }
+
     it 'belongs to prefecture through ActiveHash' do
       spot = create(:spot)
       expect(spot.prefecture).to be_present
       expect(spot.prefecture_id).to eq(13) # 東京都
+    end
+  end
+
+  describe '#seasons / #season_ids=' do
+    let(:spot) { create(:spot) }
+
+    it 'season_ids= で関連を作成・更新・削除できること' do
+      spot.season_ids = [1, 2]
+      spot.save!
+      expect(spot.reload.seasons.map(&:id)).to match_array([1, 2])
+
+      spot.season_ids = [3]
+      spot.save!
+      expect(spot.reload.seasons.map(&:id)).to eq([3])
+
+      spot.season_ids = []
+      spot.save!
+      expect(spot.reload.seasons).to be_empty
+    end
+  end
+
+  describe '.in_season' do
+    let!(:spring_spot) { create(:spot, :with_season, season_id: 1) }
+    let!(:autumn_spot) { create(:spot, :with_season, season_id: 3) }
+
+    it '指定した季節のスポットのみを返すこと' do
+      expect(Spot.in_season(1)).to contain_exactly(spring_spot)
+      expect(Spot.in_season(3)).to contain_exactly(autumn_spot)
+    end
+
+    it '該当スポットがない場合は空であること' do
+      expect(Spot.in_season(4)).to be_empty
     end
   end
 end

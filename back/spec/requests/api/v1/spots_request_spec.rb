@@ -98,4 +98,35 @@ RSpec.describe "Api::V1::Spots", type: :request do
     end
   end
 
+  describe "GET /api/v1/spots/seasonal" do
+    let!(:spring_spot) { create(:spot, :with_season, season_id: 1, user: user) }
+    let!(:summer_spot) { create(:spot, :with_season, season_id: 2, user: user) }
+
+    it "指定された季節のスポットのみを返すこと" do
+      get "/api/v1/spots/seasonal", params: { season: 'spring' }
+      expect(response).to have_http_status(:ok)
+
+      json = JSON.parse(response.body)
+      expect(json['season']['key']).to eq('spring')
+      expect(json['spots'].map { |s| s['id'] }).to contain_exactly(spring_spot.id)
+      expect(json['spots'].first['seasons']).to be_an(Array)
+      expect(json['spots'].first['seasons'].first['key']).to eq('spring')
+    end
+
+    it "季節未指定の場合は現在月の季節を返すこと" do
+      travel_to Date.new(2026, 7, 15) do
+        get "/api/v1/spots/seasonal"
+        expect(response).to have_http_status(:ok)
+
+        json = JSON.parse(response.body)
+        expect(json['season']['key']).to eq('summer')
+        expect(json['spots'].map { |s| s['id'] }).to contain_exactly(summer_spot.id)
+      end
+    end
+
+    it "無効な季節が指定された場合は422を返すこと" do
+      get "/api/v1/spots/seasonal", params: { season: 'invalid' }
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 end

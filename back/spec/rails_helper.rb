@@ -33,6 +33,9 @@ end
 RSpec.configure do |config|
   # FactoryBot設定
   config.include FactoryBot::Syntax::Methods
+
+  # ActiveSupport::Testing::TimeHelpers (travel_to, freeze_time等)
+  config.include ActiveSupport::Testing::TimeHelpers
   
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]

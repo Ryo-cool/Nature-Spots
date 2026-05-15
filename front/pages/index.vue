@@ -21,6 +21,12 @@
     </v-row>
     <v-row>
       <v-col>
+        <h1>{{ $t("spot.seasonal.title") }}</h1>
+        <seasonal-spots />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
         <h1>人気のスポット一覧</h1>
         <popular-spots />
       </v-col>

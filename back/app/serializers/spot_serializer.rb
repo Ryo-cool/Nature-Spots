@@ -12,9 +12,19 @@ class SpotSerializer < ApplicationSerializer
       prefecture_id: object.prefecture_id,
       location: object.location&.name,
       location_id: object.location_id,
+      seasons: serialize_seasons,
       created_at: object.created_at,
       updated_at: object.updated_at
     }
+  end
+
+  def serialize_seasons
+    object.spot_seasons.map do |spot_season|
+      season = Season.find_by(id: spot_season.season_id)
+      next unless season
+
+      { id: season.id, key: season.key, name_ja: season.name_ja }
+    end.compact
   end
 
   def with_details
