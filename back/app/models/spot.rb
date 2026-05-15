@@ -3,8 +3,8 @@ class Spot < ApplicationRecord
   belongs_to_active_hash :prefecture
   belongs_to_active_hash :location
   mount_uploader :photo, ImageUploader
-  has_many :reviews, dependent: :destroy, counter_cache: true
   belongs_to :user
+  has_many :reviews, dependent: :destroy, counter_cache: true
   has_many :favorites, dependent: :destroy
   has_many :spot_seasons, dependent: :destroy
 
@@ -24,6 +24,11 @@ class Spot < ApplicationRecord
                      length: { maximum: 255 }
 
   validates :introduction, length: { maximum: 1000 }
+
+  validate :validate_pending_season_ids
+
+  # コールバック
+  after_save :sync_spot_seasons
 
   # スコープ
   scope :recent, -> { order(created_at: :desc) }
@@ -53,9 +58,17 @@ class Spot < ApplicationRecord
     @pending_season_ids = Array(ids).reject(&:blank?).map(&:to_i).uniq
   end
 
-  after_save :sync_spot_seasons
-
   private
+
+  def validate_pending_season_ids
+    return if @pending_season_ids.nil?
+
+    valid_ids = Season.all.map(&:id)
+    invalid_ids = @pending_season_ids - valid_ids
+    return if invalid_ids.empty?
+
+    errors.add(:season_ids, "に無効な値が含まれています: #{invalid_ids.join(', ')}")
+  end
 
   def sync_spot_seasons
     return if @pending_season_ids.nil?

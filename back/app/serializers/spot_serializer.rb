@@ -19,8 +19,9 @@ class SpotSerializer < ApplicationSerializer
   end
 
   def serialize_seasons
+    seasons_by_id = Season.all.index_by(&:id)
     object.spot_seasons.map do |spot_season|
-      season = Season.find_by(id: spot_season.season_id)
+      season = seasons_by_id[spot_season.season_id]
       next unless season
 
       { id: season.id, key: season.key, name_ja: season.name_ja }
