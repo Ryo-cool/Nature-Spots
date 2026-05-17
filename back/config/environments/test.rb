@@ -8,6 +8,7 @@ Rails.application.configure do
 
   # Secret key base for test environment (required for JWT authentication)
   config.secret_key_base = 'test_secret_key_base_for_jwt_authentication_only_used_in_test_environment'
+  config.hosts << "www.example.com"
 
   config.cache_classes = false
   config.action_view.cache_template_loading = true

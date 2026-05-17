@@ -1,178 +1,119 @@
 import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 import type { Spot } from "~/types";
-import { useAuthStore } from "./auth";
+import { useApi } from "~/composables/useApi";
 
-export const useSpotStore = defineStore("spot", {
-  state: () => ({
-    spots: [] as Spot[],
-    currentSpot: null as Spot | null,
-    loading: false,
-    error: null as string | null,
-  }),
+export const useSpotStore = defineStore("spot", () => {
+  const spots = ref<Spot[]>([]);
+  const currentSpot = ref<Spot | null>(null);
+  const loading = ref(false);
+  const error = ref<string | null>(null);
 
-  getters: {
-    allSpots: (state) => state.spots,
-    getSpotById: (state) => (id: number) =>
-      state.spots.find((spot) => spot.id === id),
-    getCurrentSpot: (state) => state.currentSpot,
-    isLoading: (state) => state.loading,
-    getError: (state) => state.error,
-  },
+  const allSpots = computed(() => spots.value);
+  const getSpotById = computed(
+    () => (id: number) => spots.value.find((spot) => spot.id === id),
+  );
+  const getCurrentSpot = computed(() => currentSpot.value);
+  const isLoading = computed(() => loading.value);
+  const getError = computed(() => error.value);
 
-  actions: {
-    setSpots(spots: Spot[]) {
-      this.spots = spots;
-    },
+  async function withLoading<T>(
+    fn: () => Promise<T>,
+    errorMessage: string,
+  ): Promise<T> {
+    loading.value = true;
+    error.value = null;
+    try {
+      return await fn();
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : errorMessage;
+      error.value = message;
+      throw e;
+    } finally {
+      loading.value = false;
+    }
+  }
 
-    setCurrentSpot(spot: Spot | null) {
-      this.currentSpot = spot;
-    },
+  async function fetchSpots() {
+    await withLoading(async () => {
+      const api = useApi();
+      const { data } = await api.get<Spot[]>("/api/v1/spots");
+      spots.value = data;
+    }, "Failed to fetch spots");
+  }
 
-    setLoading(loading: boolean) {
-      this.loading = loading;
-    },
+  async function fetchSpot(id: number) {
+    await withLoading(async () => {
+      const api = useApi();
+      const { data } = await api.get<Spot>(`/api/v1/spots/${id}`);
+      currentSpot.value = data;
+    }, `Failed to fetch spot with id ${id}`);
+  }
 
-    setError(error: string | null) {
-      this.error = error;
-    },
+  async function createSpot(spot: Partial<Spot>) {
+    return await withLoading(async () => {
+      const api = useApi();
+      const { data } = await api.post<Spot>("/api/v1/spots", spot);
+      spots.value.push(data);
+      return data;
+    }, "Failed to create spot");
+  }
 
-    async fetchSpots() {
-      this.setLoading(true);
-      try {
-        const config = useRuntimeConfig();
-        const response = await $fetch<Spot[]>("/api/v1/spots", {
-          method: "GET",
-          baseURL: config.public.apiBaseUrl,
-        });
+  async function updateSpot({ id, spot }: { id: number; spot: Partial<Spot> }) {
+    return await withLoading(async () => {
+      const api = useApi();
+      const { data } = await api.put<Spot>(`/api/v1/spots/${id}`, spot);
 
-        this.spots = response;
-        this.error = null;
-      } catch (error: unknown) {
-        this.error =
-          error instanceof Error ? error.message : "Failed to fetch spots";
-      } finally {
-        this.loading = false;
+      const index = spots.value.findIndex((s) => s.id === id);
+      if (index !== -1) {
+        spots.value[index] = data;
       }
-    },
 
-    async fetchSpot(id: number) {
-      this.setLoading(true);
-      try {
-        const config = useRuntimeConfig();
-        const response = await $fetch<Spot>(`/api/v1/spots/${id}`, {
-          method: "GET",
-          baseURL: config.public.apiBaseUrl,
-        });
-
-        this.currentSpot = response;
-        this.error = null;
-      } catch (error: unknown) {
-        this.error =
-          error instanceof Error
-            ? error.message
-            : `Failed to fetch spot with id ${id}`;
-      } finally {
-        this.loading = false;
+      if (currentSpot.value?.id === id) {
+        currentSpot.value = data;
       }
-    },
 
-    async createSpot(spot: Partial<Spot>) {
-      this.setLoading(true);
-      try {
-        const config = useRuntimeConfig();
-        const authStore = useAuthStore();
+      return data;
+    }, `Failed to update spot with id ${id}`);
+  }
 
-        const response = await $fetch<Spot>("/api/v1/spots", {
-          method: "POST",
-          body: spot,
-          baseURL: config.public.apiBaseUrl,
-          headers: {
-            Authorization: `Bearer ${authStore.token}`,
-          },
-        });
+  async function deleteSpot(id: number) {
+    await withLoading(async () => {
+      const api = useApi();
+      await api.delete(`/api/v1/spots/${id}`);
 
-        // Add the new spot to the spots array
-        this.spots.push(response);
-        this.error = null;
-        return response;
-      } catch (error: unknown) {
-        this.error =
-          error instanceof Error ? error.message : "Failed to create spot";
-        throw error;
-      } finally {
-        this.loading = false;
+      spots.value = spots.value.filter((spot) => spot.id !== id);
+
+      if (currentSpot.value?.id === id) {
+        currentSpot.value = null;
       }
-    },
+    }, `Failed to delete spot with id ${id}`);
+  }
 
-    async updateSpot({ id, spot }: { id: number; spot: Partial<Spot> }) {
-      this.setLoading(true);
-      try {
-        const config = useRuntimeConfig();
-        const authStore = useAuthStore();
+  function setSpots(newSpots: Spot[]) {
+    spots.value = newSpots;
+  }
 
-        const response = await $fetch<Spot>(`/api/v1/spots/${id}`, {
-          method: "PUT",
-          body: spot,
-          baseURL: config.public.apiBaseUrl,
-          headers: {
-            Authorization: `Bearer ${authStore.token}`,
-          },
-        });
+  function setCurrentSpot(spot: Spot | null) {
+    currentSpot.value = spot;
+  }
 
-        // Update the spot in the spots array
-        const index = this.spots.findIndex((s) => s.id === id);
-        if (index !== -1) {
-          this.spots[index] = response;
-        }
-
-        if (this.currentSpot?.id === id) {
-          this.currentSpot = response;
-        }
-
-        this.error = null;
-        return response;
-      } catch (error: unknown) {
-        this.error =
-          error instanceof Error
-            ? error.message
-            : `Failed to update spot with id ${id}`;
-        throw error;
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async deleteSpot(id: number) {
-      this.setLoading(true);
-      try {
-        const config = useRuntimeConfig();
-        const authStore = useAuthStore();
-
-        await $fetch(`/api/v1/spots/${id}`, {
-          method: "DELETE",
-          baseURL: config.public.apiBaseUrl,
-          headers: {
-            Authorization: `Bearer ${authStore.token}`,
-          },
-        });
-
-        // Remove the spot from the spots array
-        this.spots = this.spots.filter((spot) => spot.id !== id);
-
-        if (this.currentSpot?.id === id) {
-          this.currentSpot = null;
-        }
-
-        this.error = null;
-      } catch (error: unknown) {
-        this.error =
-          error instanceof Error
-            ? error.message
-            : `Failed to delete spot with id ${id}`;
-        throw error;
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
+  return {
+    spots,
+    currentSpot,
+    loading,
+    error,
+    allSpots,
+    getSpotById,
+    getCurrentSpot,
+    isLoading,
+    getError,
+    fetchSpots,
+    fetchSpot,
+    createSpot,
+    updateSpot,
+    deleteSpot,
+    setSpots,
+    setCurrentSpot,
+  };
 });

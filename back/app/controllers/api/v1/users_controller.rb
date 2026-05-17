@@ -1,6 +1,24 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, except: [:create]
   before_action :set_user, only: [:show, :update]
+
+  def create
+    user = User.new(user_params)
+    user.activated = true
+
+    if user.save
+      serialized_user = UserSerializer.new(user).as_json
+      render json: {
+        user: serialized_user,
+        status: :created
+      }, status: :created
+    else
+      render json: {
+        errors: user.errors.full_messages,
+        status: :unprocessable_entity
+      }, status: :unprocessable_entity
+    end
+  end
 
   def show
     result = UserDataService.call(@user)
