@@ -16,6 +16,11 @@ type ApiClient = {
     body?: RequestBody,
     options?: ApiRequestOptions,
   ): Promise<ApiResponse<T>>;
+  put<T = any>(
+    url: string,
+    body?: RequestBody,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
   delete<T = any>(
     url: string,
     options?: ApiRequestOptions,
@@ -65,7 +70,7 @@ export default defineNuxtPlugin(() => {
   const request = async <T = any>(
     url: string,
     options: ApiRequestOptions & {
-      method: "GET" | "POST" | "DELETE";
+      method: "GET" | "POST" | "PUT" | "DELETE";
       body?: RequestBody;
     },
   ): Promise<ApiResponse<T>> => {
@@ -77,6 +82,8 @@ export default defineNuxtPlugin(() => {
     get: (url, options) => request(url, { ...options, method: "GET" }),
     post: (url, body, options) =>
       request(url, { ...options, method: "POST", body }),
+    put: (url, body, options) =>
+      request(url, { ...options, method: "PUT", body }),
     delete: (url, options) => request(url, { ...options, method: "DELETE" }),
   };
 

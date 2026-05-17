@@ -71,6 +71,11 @@ interface ApiClient {
     body?: RequestBody,
     options?: ApiRequestOptions,
   ): Promise<ApiResponse<T>>;
+  put<T = any>(
+    url: string,
+    body?: RequestBody,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
   delete<T = any>(
     url: string,
     options?: ApiRequestOptions,
