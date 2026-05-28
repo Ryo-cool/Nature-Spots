@@ -25,6 +25,9 @@ class Review < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
   scope :popular, -> { order(likes_count: :desc) }
 
+  # スポット投稿者へレビュー投稿を通知（自己通知は除外）
+  after_create_commit :notify_spot_owner
+
   # Use counter cache column instead of database count
   def like_count
     likes_count
@@ -33,5 +36,16 @@ class Review < ApplicationRecord
   # いいね済みかどうか
   def liked_by?(user)
     likes.exists?(user_id: user.id)
+  end
+
+  private
+
+  def notify_spot_owner
+    Notifications::CreateNotification.call(
+      recipient: spot.user,
+      actor: user,
+      action: :review_posted,
+      notifiable: self
+    )
   end
 end

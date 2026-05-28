@@ -65,4 +65,23 @@ RSpec.describe Review, type: :model do
     it { should belong_to(:spot) }
     it { should have_many(:likes) }
   end
+
+  describe '通知の生成' do
+    it 'レビュー投稿時にスポット投稿者へ通知が生成されること' do
+      spot_owner = create(:user)
+      reviewer = create(:user)
+      spot = create(:spot, user: spot_owner)
+      expect {
+        create(:review, spot: spot, user: reviewer)
+      }.to change { spot_owner.notifications.where(action: :review_posted).count }.by(1)
+    end
+
+    it '自分のスポットに自分でレビューした場合は通知が生成されないこと（自己通知の除外）' do
+      owner = create(:user)
+      spot = create(:spot, user: owner)
+      expect {
+        create(:review, spot: spot, user: owner)
+      }.not_to change(Notification, :count)
+    end
+  end
 end

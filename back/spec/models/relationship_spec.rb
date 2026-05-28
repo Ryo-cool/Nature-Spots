@@ -30,4 +30,14 @@ RSpec.describe Relationship, type: :model do
     it { should belong_to(:user) }
     it { should belong_to(:follow).class_name('User') }
   end
+
+  describe '通知の生成' do
+    it 'フォロー作成時にフォローされたユーザーへ通知が生成されること' do
+      user = create(:user)
+      follow_user = create(:user)
+      expect {
+        create(:relationship, user: user, follow: follow_user)
+      }.to change { follow_user.notifications.where(action: :followed).count }.by(1)
+    end
+  end
 end

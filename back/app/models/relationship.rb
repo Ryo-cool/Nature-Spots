@@ -9,10 +9,22 @@ class Relationship < ApplicationRecord
   
   validate :cannot_follow_self
 
+  # フォローされたユーザーへ通知
+  after_create_commit :notify_followed
+
   private
 
   def cannot_follow_self
     errors.add(:follow_id, "自分自身をフォローすることはできません") if user_id == follow_id
   end
-  
+
+  def notify_followed
+    Notifications::CreateNotification.call(
+      recipient: follow,
+      actor: user,
+      action: :followed,
+      notifiable: self
+    )
+  end
+
 end

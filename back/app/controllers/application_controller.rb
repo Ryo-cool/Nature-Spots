@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
   include UserAuth::Authenticator
-  include Authorization
 
   # 順序重要: 後に定義されたものが優先される
   # StandardErrorは最も一般的なので最初に（最低優先度）
@@ -12,6 +11,11 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
   rescue_from JWT::DecodeError, with: :unauthorized_request
   rescue_from JWT::ExpiredSignature, with: :token_expired
+
+  # Authorization の rescue_from(NotAuthorizedError) を StandardError より後に
+  # 登録するため、include はここで行う（先に include すると StandardError に
+  # 上書きされ、認可失敗が 500 になってしまう）
+  include Authorization
 
   private
 

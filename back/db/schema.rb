@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_24_000001) do
+ActiveRecord::Schema[7.2].define(version: 2026_05_15_000001) do
+  create_table "announcements", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.string "title", null: false
+    t.text "body", null: false
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_announcements_on_author_id"
+    t.index ["published_at"], name: "index_announcements_on_published_at"
+  end
+
   create_table "favorites", force: :cascade do |t|
     t.integer "spot_id", null: false
     t.integer "user_id", null: false
@@ -29,6 +40,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_000001) do
     t.index ["review_id"], name: "index_likes_on_review_id"
     t.index ["user_id", "review_id"], name: "index_likes_on_user_id_and_review_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer "recipient_id", null: false
+    t.integer "actor_id"
+    t.integer "action", default: 0, null: false
+    t.string "notifiable_type"
+    t.integer "notifiable_id"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["actor_id"], name: "index_notifications_on_actor_id"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["recipient_id", "created_at"], name: "index_notifications_on_recipient_id_and_created_at"
+    t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -57,6 +84,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_000001) do
     t.index ["rating"], name: "index_reviews_on_rating"
     t.index ["spot_id"], name: "index_reviews_on_spot_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
+  create_table "spot_seasons", force: :cascade do |t|
+    t.integer "spot_id", null: false
+    t.integer "season_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["season_id"], name: "index_spot_seasons_on_season_id"
+    t.index ["spot_id", "season_id"], name: "index_spot_seasons_on_spot_id_and_season_id", unique: true
   end
 
   create_table "spots", force: :cascade do |t|
@@ -94,13 +130,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_000001) do
     t.index ["email"], name: "index_users_on_email_unique", unique: true
   end
 
+  add_foreign_key "announcements", "users", column: "author_id"
   add_foreign_key "favorites", "spots"
   add_foreign_key "favorites", "users"
   add_foreign_key "likes", "reviews"
   add_foreign_key "likes", "users"
+  add_foreign_key "notifications", "users", column: "actor_id"
+  add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "relationships", "users"
   add_foreign_key "relationships", "users", column: "follow_id"
   add_foreign_key "reviews", "spots"
   add_foreign_key "reviews", "users"
+  add_foreign_key "spot_seasons", "spots"
   add_foreign_key "spots", "users"
 end

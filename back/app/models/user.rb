@@ -16,6 +16,9 @@ class User < ApplicationRecord
   has_many :followings, through: :relationships, source: :follow
   has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: 'follow_id'
   has_many :followers, through: :reverse_of_relationships, source: :user
+  # 通知機能関係
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :announcements, foreign_key: :author_id, dependent: :destroy
   # 画像アップロード
   mount_uploader :image, ImageUploader
 
