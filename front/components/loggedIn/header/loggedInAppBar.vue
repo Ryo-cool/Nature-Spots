@@ -6,6 +6,7 @@
 
     <app-title />
     <v-spacer />
+    <notification-bell />
     <nuxt-link
       to="/favorites"
       class="text-decoration-none mr-4 hidden-ipad-and-down"
