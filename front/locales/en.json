@@ -34,5 +34,17 @@
       "empty": "No recommended spots for this season yet",
       "error": "Failed to load seasonal spots"
     }
+  },
+  "notification": {
+    "bell": "Notifications",
+    "title": "Notifications",
+    "empty": "No notifications",
+    "markAllRead": "Mark all as read",
+    "viewAll": "View all notifications",
+    "loadMore": "Load more",
+    "someone": "Someone",
+    "reviewPosted": "{actor} posted a review on your spot",
+    "followed": "{actor} started following you",
+    "announcement": "There is an announcement from the team"
   }
 }

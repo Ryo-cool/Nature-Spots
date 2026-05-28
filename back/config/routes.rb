@@ -24,6 +24,18 @@ Rails.application.routes.draw do
       resources :locations
       resources :prefectures
       resources :relationships, only: [:create, :destroy]
+
+      # 通知機能
+      resources :notifications, only: [:index] do
+        collection do
+          get :unread_count
+          patch :read_all
+        end
+        member do
+          patch :read
+        end
+      end
+      resources :announcements, only: [:index, :create]
     end
   end
 end

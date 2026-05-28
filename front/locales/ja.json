@@ -34,5 +34,17 @@
       "empty": "この季節のおすすめスポットはまだありません",
       "error": "季節別スポットの取得に失敗しました"
     }
+  },
+  "notification": {
+    "bell": "通知",
+    "title": "通知",
+    "empty": "通知はありません",
+    "markAllRead": "すべて既読にする",
+    "viewAll": "すべての通知を見る",
+    "loadMore": "もっと見る",
+    "someone": "誰か",
+    "reviewPosted": "{actor}さんがあなたのスポットにレビューを投稿しました",
+    "followed": "{actor}さんがあなたをフォローしました",
+    "announcement": "運営からのお知らせがあります"
   }
 }

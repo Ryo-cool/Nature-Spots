@@ -1,6 +1,7 @@
 export * from "./auth";
 export * from "./spot";
 export * from "./common";
+export * from "./notification";
 
 // APIのベースURL設定の型
 export interface ApiConfig {
