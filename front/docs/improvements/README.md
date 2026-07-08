@@ -1,13 +1,33 @@
 # Nature-Spots フロントエンド改善ガイド
 
+> **⚠️ ステータス更新（2026-07-08）**  
+> このドキュメント群は **2025-11-22 時点の調査** です。  
+> Critical 項目（TypeScript strict、Signup、ゲスト認証の環境変数化など）の多くは **完了済み** です。  
+> **現行の優先順位・全体計画はリポジトリ直下の [`REFACTORING_PLAN.md`](../../../REFACTORING_PLAN.md) を正としてください。**  
+> 本ディレクトリは詳細な問題説明・コード例の参考アーカイブとして残しています。
+
 ## 📋 概要
 
 このドキュメント群は、Nature-Spotsプロジェクトのフロントエンド（Nuxt.js 3）における改善点を優先度別に整理したものです。
 
-**調査日**: 2025-11-22
+**調査日**: 2025-11-22（現状同期: 2026-07-08 → `REFACTORING_PLAN.md`）
 **対象**: `/front` ディレクトリ全体
 **総Vueコンポーネント数**: 62ファイル
 **総TypeScriptファイル数**: 25ファイル
+
+### 完了済み（再実施不要）
+
+- TypeScript `strict: true` / `noImplicitAny`
+- Signup 実装、ゲスト認証の環境変数化、`useSecureStorage`
+- 一部ページの Composition API 化（login / signup / spot 詳細）
+
+### 未完了の主な項目（詳細は `REFACTORING_PLAN.md`）
+
+- `$axios` / `$auth` 残存ページの移行
+- Options API 残存の解消
+- API 層・認証フローの統一
+- テスト拡充と CI 有効化
+- i18n / a11y / 画像最適化
 
 ---
 
@@ -127,6 +147,7 @@ Low (低優先度):       4項目 (10%)
 | 日付       | 内容     |
 | ---------- | -------- |
 | 2025-11-22 | 初版作成 |
+| 2026-07-08 | Critical 完了状況を注記し、全体計画を `REFACTORING_PLAN.md` へ誘導 |
 
 ---
 
