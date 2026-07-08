@@ -4,23 +4,29 @@ class Api::V1::RelationshipsController < ApplicationController
 
   def create
     @relationship = current_user.relationships.build(follow_id: @user.id)
+    authorize @relationship
+
     if @relationship.save
-      render json: {
-        relationship: RelationshipSerializer.new(@relationship).as_json,
-        user: UserSerializer.new(@user).with_associations
-      }, status: :created
+      render_success(
+        {
+          relationship: RelationshipSerializer.new(@relationship).as_json,
+          user: UserSerializer.new(@user).with_associations
+        },
+        status: :created
+      )
     else
-      render json: { error: @relationship.errors.full_messages }, status: :unprocessable_entity
+      render_error(@relationship.errors.full_messages)
     end
   end
 
   def destroy
     @relationship = current_user.relationships.find_by!(follow_id: @user.id)
+    authorize @relationship
     @relationship.destroy!
-    render json: {
+    render_success(
       message: "フォローを解除しました",
       user: UserSerializer.new(@user).with_associations
-    }, status: :ok
+    )
   end
 
   private

@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   include ActionController::Cookies
   include UserAuth::Authenticator
   include Authorization
+  include Api::Response
 
   # 順序重要: 後に定義されたものが優先される
   # StandardErrorは最も一般的なので最初に（最低優先度）

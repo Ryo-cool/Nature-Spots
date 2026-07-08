@@ -15,7 +15,7 @@ class Api::V1::ReviewsController < ApplicationController
     total_count = @spot.reviews.count
     total_pages = (total_count.to_f / per_page).ceil
 
-    render json: {
+    render_success(
       reviews: @reviews.map { |review| ReviewSerializer.new(review).with_user },
       pagination: {
         current_page: page,
@@ -23,15 +23,20 @@ class Api::V1::ReviewsController < ApplicationController
         total_pages: total_pages,
         total_count: total_count
       }
-    }
+    )
   end
 
   def create
     @review = Review.new(review_params)
+    authorize @review
+
     if @review.save
-      render json: { review: ReviewSerializer.new(@review).with_user }, status: :created
+      render_success(
+        { review: ReviewSerializer.new(@review).with_user },
+        status: :created
+      )
     else
-      render json: { error: @review.errors.full_messages }, status: :unprocessable_entity
+      render_error(@review.errors.full_messages)
     end
   end
 
