@@ -79,22 +79,19 @@
       </h3>
       <v-row>
         <v-col>
-          <GmapMap
-            v-if="spot?.latitude && spot?.longitude"
-            ref="mapRef"
-            :center="{ lat: spot.latitude, lng: spot.longitude }"
+          <GoogleMap
+            v-if="mapCenter && googleMapsKey"
+            :api-key="googleMapsKey"
+            :center="mapCenter"
             :zoom="12"
             style="width: 100%; height: 300px"
           >
-            <GmapMarker
+            <Marker
               v-for="(m, id) in markerItems"
               :key="id"
-              :position="{ lat: spot.latitude, lng: spot.longitude }"
-              :title="m.title"
-              :clickable="true"
-              :draggable="false"
+              :options="{ position: m.position, title: m.title }"
             />
-          </GmapMap>
+          </GoogleMap>
         </v-col>
       </v-row>
     </v-container>
@@ -105,6 +102,7 @@
 import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import type { Ref } from "vue";
+import { GoogleMap, Marker } from "vue3-google-map";
 import { useAuthStore } from "~/stores/auth";
 import { useToastStore } from "~/stores/toast";
 import { useApi } from "~/composables/useApi";
@@ -123,10 +121,28 @@ interface MarkerItem {
   title: string;
 }
 
+interface ActiveHashResource {
+  attributes?: {
+    name?: string;
+  };
+}
+
+interface SpotShowResponse {
+  spot?: Spot;
+  prefecture?: ActiveHashResource;
+  location?: ActiveHashResource;
+  favuser?: number | null;
+  reviews_count?: number;
+  average_rating?: number;
+}
+
 const route = useRoute();
 const authStore = useAuthStore();
 const toastStore = useToastStore();
 const $api = useApi();
+const { $googleMapsKey } = useNuxtApp();
+
+const googleMapsKey = typeof $googleMapsKey === "string" ? $googleMapsKey : "";
 
 const spot: Ref<Spot | null> = ref(null);
 const favUserId: Ref<number | null> = ref(null);
@@ -136,11 +152,13 @@ const rating = ref(2.6);
 const reviewCount = ref(0);
 const alert = ref(false);
 const likeDelete = ref(false);
-const mapRef = ref(null);
 
-const markerItems: Ref<MarkerItem[]> = ref([
-  { position: { lat: 35.71, lng: 139.72 }, title: "marker_1" },
-]);
+const markerItems: Ref<MarkerItem[]> = ref([]);
+
+const mapCenter = computed(() => {
+  if (!spot.value?.latitude || !spot.value?.longitude) return null;
+  return { lat: spot.value.latitude, lng: spot.value.longitude };
+});
 
 const isFavorite = computed(() => {
   if (!authStore.user || !favUserId.value) return true;
@@ -149,11 +167,13 @@ const isFavorite = computed(() => {
 
 const fetchSpotData = async () => {
   try {
-    const res = await $api.get(`/api/v1/spots/${route.params.id}`);
-    spot.value = res.data.spot;
+    const res = await $api.get<SpotShowResponse>(
+      `/api/v1/spots/${route.params.id}`,
+    );
+    spot.value = res.data.spot || null;
     prefecture.value = res.data.prefecture?.attributes?.name || "";
     location.value = res.data.location?.attributes?.name || "";
-    favUserId.value = res.data.favuser;
+    favUserId.value = res.data.favuser ?? null;
     reviewCount.value = res.data.reviews_count || 0;
     rating.value = res.data.average_rating || 2.6;
 

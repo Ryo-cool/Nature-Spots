@@ -19,3 +19,5 @@ front/.nitro
 front/dist
 front/node_modules
 front/.cache
+# Bundler local path
+/back/vendor/bundle/

@@ -71,6 +71,16 @@ interface ApiClient {
     body?: RequestBody,
     options?: ApiRequestOptions,
   ): Promise<ApiResponse<T>>;
+  put<T = any>(
+    url: string,
+    body?: RequestBody,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
+  patch<T = any>(
+    url: string,
+    body?: RequestBody,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
   delete<T = any>(
     url: string,
     options?: ApiRequestOptions,
@@ -118,6 +128,7 @@ declare module "nuxt/app" {
   interface NuxtApp {
     $api?: ApiClient;
     $imageOptimization?: ImageOptimizationService;
+    $googleMapsKey?: string;
     $my?: {
       pageTitle(routeName: string): string;
       format(date: string | Date): string;

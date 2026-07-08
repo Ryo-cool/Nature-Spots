@@ -3,28 +3,22 @@
     <v-row justify="center">
       <v-col cols="12" sm="6" class="my-6 text-center" align-self="center">
         <h1 class="mb-4">スポット投稿</h1>
-        <div class="red--text">
+        <div class="text-error">
           {{ alert }}
         </div>
         <v-text-field
           v-model="name"
           label="スポット名(必須)"
-          prepend-icon=""
           type="text"
-          outlined
+          variant="outlined"
           @change="onChange"
         />
-
-        <!-- <div>緯度{{ lat }}</div>
-        <div>{{ locations }}</div>
-        <div>{{ address }}</div> -->
 
         <v-text-field
           v-model="introduction"
           label="説明(必須)"
-          prepend-icon=""
           type="text"
-          outlined
+          variant="outlined"
         />
         <v-img :src="preview" />
         <v-file-input
@@ -34,143 +28,235 @@
           label="画像(任意)"
           accept="image/png, image/jpeg, image/bmp"
           prepend-icon="mdi-camera"
-          @change="setImage"
+          @update:model-value="setImage"
         />
         <v-select
-          v-model="prefectures"
+          v-model="selectedPrefectureId"
           label="都道府県(必須)"
-          item-text="attributes.name"
-          item-value="attributes.id"
-          :items="prefecture"
-          outlined
+          item-title="name"
+          item-value="id"
+          :items="prefectureOptions"
+          variant="outlined"
         />
 
         <v-text-field
           v-model="address"
           label="住所(必須)"
-          prepend-icon=""
           type="text"
-          outlined
+          variant="outlined"
         />
 
         <v-select
-          v-model="locations"
+          v-model="selectedLocationId"
           label="ジャンル(必須)"
-          item-text="attributes.name"
-          item-value="attributes.id"
-          :items="location"
-          outlined
+          item-title="name"
+          item-value="id"
+          :items="locationOptions"
+          variant="outlined"
         />
-        <v-btn color="primary" @click="createSpot"> スポットを投稿する </v-btn>
+        <v-btn color="primary" :loading="loading" @click="createSpot">
+          スポットを投稿する
+        </v-btn>
       </v-col>
-      <!-- <v-col cols="12" sm="6">
-        <v-card class="mx-auto" tile>
-          <v-list rounded>
-            <v-subheader>SPOTS</v-subheader>
-            <v-list-item-group color="primary">
-              <v-list-item v-for="spot in spots" :key="spots.id" @click="">
-                <v-list-item-content>
-                  <nuxt-link
-                    :to="$my.spotLinkTo(spot.id)"
-                    class="text-decoration-none"
-                  >
-                    <v-list-item-title v-text="spot.id" />
-                    <v-list-item-title v-text="spot.name" />
-                  </nuxt-link>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
-      </v-col> -->
     </v-row>
   </v-container>
 </template>
 
-<script>
-export default {
-  layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome";
-  },
-  data() {
-    return {
-      name: "",
-      introduction: "",
-      prefectures: "",
-      address: "",
-      locations: "",
-      lat: "",
-      lng: "",
-      alert: "",
-      image: null,
-      preview: "",
-      geocoder: {},
-      spots: [],
-      prefecture: [],
-      location: [],
-    };
-  },
-  mounted() {
-    this.$axios.get("/api/v1/spots").then((res) => {
-      if (res.data) {
-        this.spots = res.data.spots;
-        this.prefecture = res.data.prefecture;
-        this.location = res.data.location;
-      }
-    }),
-      this.$gmapApiPromiseLazy().then(() => {
-        this.geocoder = new google.maps.Geocoder();
-      });
-  },
-  methods: {
-    // 入力されたスポット名を住所変換
-    onChange() {
-      this.geocoder.geocode(
-        {
-          address: this.name,
-        },
-        (results, status) => {
-          if (status === google.maps.GeocoderStatus.OK) {
-            this.alert = "";
-            this.lat = results[0].geometry.location.lat();
-            this.lng = results[0].geometry.location.lng();
-            const ad = results[0].formatted_address.replace("日本、", "");
-            this.address = ad;
-          } else {
-            this.alert = "正しいスポットを入力してください";
-          }
-        },
-      );
-    },
-    setImage(e) {
-      this.image = e;
-      this.preview = URL.createObjectURL(e);
-    },
-    // スポットをaxiosで登録
-    createSpot(_e) {
-      const formData = new FormData();
-      formData.append("photo", this.image);
-      formData.append("name", this.name);
-      formData.append("introduction", this.introduction);
-      formData.append("prefecture_id", this.prefectures);
-      formData.append("latitude", this.lat);
-      formData.append("longitude", this.lng);
-      formData.append("address", this.address);
-      formData.append("location_id", this.locations);
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      };
-      this.$axios.post("/api/v1/spots", formData, config).then((res) => {
-        if (res.data) {
-          this.spots.push(res.data);
-          this.$router.push("/");
-        }
-      });
-    },
-  },
-};
-</script>
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useApi } from "~/composables/useApi";
+import { useToastStore } from "~/stores/toast";
 
-<style></style>
+definePageMeta({
+  layout: "loggedIn",
+  middleware: "auth",
+});
+
+interface ActiveHashItem {
+  id: number;
+  name: string;
+}
+
+interface SpotsIndexResponse {
+  spots?: unknown[];
+  prefectures?: ActiveHashItem[];
+  locations?: ActiveHashItem[];
+}
+
+interface GeocoderResult {
+  formatted_address: string;
+  geometry: {
+    location: {
+      lat: () => number;
+      lng: () => number;
+    };
+  };
+}
+
+interface GeocoderLike {
+  geocode: (
+    request: { address: string },
+    callback: (results: GeocoderResult[] | null, status: string) => void,
+  ) => void;
+}
+
+interface GoogleMapsWindow {
+  google?: {
+    maps?: {
+      Geocoder: new () => GeocoderLike;
+      GeocoderStatus?: { OK: string };
+    };
+  };
+}
+
+const $api = useApi();
+const router = useRouter();
+const toastStore = useToastStore();
+const { $googleMapsKey } = useNuxtApp();
+
+const name = ref("");
+const introduction = ref("");
+const selectedPrefectureId = ref<number | null>(null);
+const address = ref("");
+const selectedLocationId = ref<number | null>(null);
+const lat = ref<number | null>(null);
+const lng = ref<number | null>(null);
+const alert = ref("");
+const image = ref<File | null>(null);
+const preview = ref("");
+const loading = ref(false);
+const prefectureOptions = ref<ActiveHashItem[]>([]);
+const locationOptions = ref<ActiveHashItem[]>([]);
+const geocoder = ref<GeocoderLike | null>(null);
+
+const getGoogleMaps = () => {
+  return (window as unknown as GoogleMapsWindow).google?.maps;
+};
+
+const loadGoogleMapsScript = (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    if (getGoogleMaps()?.Geocoder) {
+      resolve();
+      return;
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[data-google-maps="true"]',
+    );
+    if (existing) {
+      existing.addEventListener("load", () => resolve());
+      existing.addEventListener("error", () =>
+        reject(new Error("Google Maps script failed to load")),
+      );
+      return;
+    }
+
+    const apiKey = typeof $googleMapsKey === "string" ? $googleMapsKey : "";
+    if (!apiKey) {
+      reject(new Error("Google Maps API key is not configured"));
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+    script.async = true;
+    script.defer = true;
+    script.dataset.googleMaps = "true";
+    script.onload = () => resolve();
+    script.onerror = () =>
+      reject(new Error("Google Maps script failed to load"));
+    document.head.appendChild(script);
+  });
+};
+
+const onChange = () => {
+  if (!geocoder.value || !name.value) return;
+
+  geocoder.value.geocode(
+    { address: name.value },
+    (results: GeocoderResult[] | null, status: string) => {
+      const okStatus = getGoogleMaps()?.GeocoderStatus?.OK ?? "OK";
+      if (status === okStatus && results?.[0]) {
+        alert.value = "";
+        lat.value = results[0].geometry.location.lat();
+        lng.value = results[0].geometry.location.lng();
+        address.value = results[0].formatted_address.replace("日本、", "");
+      } else {
+        alert.value = "正しいスポットを入力してください";
+      }
+    },
+  );
+};
+
+const setImage = (value: File | File[] | null) => {
+  const file = Array.isArray(value) ? value[0] : value;
+  if (!file) {
+    image.value = null;
+    preview.value = "";
+    return;
+  }
+  image.value = file;
+  preview.value = URL.createObjectURL(file);
+};
+
+const createSpot = async () => {
+  loading.value = true;
+  try {
+    const formData = new FormData();
+    if (image.value) {
+      formData.append("photo", image.value);
+    }
+    formData.append("name", name.value);
+    formData.append("introduction", introduction.value);
+    if (selectedPrefectureId.value != null) {
+      formData.append("prefecture_id", String(selectedPrefectureId.value));
+    }
+    if (lat.value != null) {
+      formData.append("latitude", String(lat.value));
+    }
+    if (lng.value != null) {
+      formData.append("longitude", String(lng.value));
+    }
+    formData.append("address", address.value);
+    if (selectedLocationId.value != null) {
+      formData.append("location_id", String(selectedLocationId.value));
+    }
+
+    await $api.post("/api/v1/spots", formData);
+    router.push("/");
+  } catch (error) {
+    console.error(error);
+    toastStore.showToast({
+      message: "スポットの投稿に失敗しました",
+      color: "error",
+    });
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(async () => {
+  try {
+    const res = await $api.get<SpotsIndexResponse>("/api/v1/spots");
+    prefectureOptions.value = res.data.prefectures || [];
+    locationOptions.value = res.data.locations || [];
+  } catch (error) {
+    console.error(error);
+    toastStore.showToast({
+      message: "スポット情報の取得に失敗しました",
+      color: "error",
+    });
+  }
+
+  try {
+    await loadGoogleMapsScript();
+    const maps = getGoogleMaps();
+    if (maps?.Geocoder) {
+      geocoder.value = new maps.Geocoder();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+</script>

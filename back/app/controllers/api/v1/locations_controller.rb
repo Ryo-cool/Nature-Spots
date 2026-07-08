@@ -1,31 +1,38 @@
 class Api::V1::LocationsController < ApplicationController
   before_action :set_location, only: [:show]
-  before_action :set_spot, only: [:show]
-  # before_action :set_prefecture, only: [:show]
+
   def index
-    @locations= Location.all
+    @locations = Location.all
     render json: @locations
   end
 
   def show
-    @jspot= Spot.where(location_id: @location.id)
-    @prefecture = Spot.includes(:prefecture)
-    @prefecture= Prefecture.all
-    render json:{
-      location: @location,
-      spot: @jspot,
-      prefecture: @prefecture
-    } 
+    @spots = Spot.where(location_id: @location.id)
+    @prefectures = Prefecture.all
+    render json: {
+      location: serialize_active_hash(@location),
+      spot: @spots,
+      prefecture: @prefectures.map { |p| serialize_active_hash(p) }
+    }
   end
 
   private
 
   def set_location
-    @location = Location.find(params[:id])
+    @location = Location.find_by(id: params[:id])
+    raise ActiveRecord::RecordNotFound.new("Couldn't find Location", "Location") if @location.nil?
   end
 
-  def set_spot
-    @spot = Spot.find(params[:id])
-  end
+  def serialize_active_hash(resource)
+    return nil if resource.blank?
 
+    {
+      id: resource.id,
+      type: resource.class.name.demodulize.underscore,
+      attributes: {
+        id: resource.id,
+        name: resource.name
+      }
+    }
+  end
 end

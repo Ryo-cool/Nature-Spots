@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_24_000001) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_15_000001) do
   create_table "favorites", force: :cascade do |t|
     t.integer "spot_id", null: false
     t.integer "user_id", null: false
@@ -59,6 +59,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_000001) do
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
+  create_table "spot_seasons", force: :cascade do |t|
+    t.integer "spot_id", null: false
+    t.integer "season_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["season_id"], name: "index_spot_seasons_on_season_id"
+    t.index ["spot_id", "season_id"], name: "index_spot_seasons_on_spot_id_and_season_id", unique: true
+  end
+
   create_table "spots", force: :cascade do |t|
     t.string "name"
     t.text "introduction"
@@ -102,5 +111,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_24_000001) do
   add_foreign_key "relationships", "users", column: "follow_id"
   add_foreign_key "reviews", "spots"
   add_foreign_key "reviews", "users"
+  add_foreign_key "spot_seasons", "spots"
   add_foreign_key "spots", "users"
 end

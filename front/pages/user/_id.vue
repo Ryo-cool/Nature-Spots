@@ -19,10 +19,20 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  layout({ $auth }) {
-    return $auth.loggedIn ? "loggedIn" : "welcome";
-  },
-};
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { setPageLayout } from "#imports";
+import { useAuth } from "~/composables/useAuth";
+
+definePageMeta({
+  layout: "welcome",
+});
+
+const { loggedIn } = useAuth();
+
+onMounted(() => {
+  if (loggedIn.value) {
+    setPageLayout("loggedIn");
+  }
+});
 </script>
