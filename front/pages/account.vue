@@ -1,16 +1,17 @@
 <template>
   <v-container>
-    <nuxt-child />
+    <NuxtPage />
   </v-container>
 </template>
 
-<script>
-export default {
+<script setup lang="ts">
+definePageMeta({
   layout: "loggedIn",
-  middleware({ route, redirect }) {
-    if (route.name === "account") {
-      return redirect("/");
-    }
-  },
-};
+  middleware: "auth",
+});
+
+const route = useRoute();
+if (route.name === "account") {
+  await navigateTo("/");
+}
 </script>

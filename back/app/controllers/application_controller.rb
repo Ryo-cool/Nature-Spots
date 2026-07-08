@@ -12,12 +12,19 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
   rescue_from JWT::DecodeError, with: :unauthorized_request
   rescue_from JWT::ExpiredSignature, with: :token_expired
+  # StandardErrorより後に定義し、認可エラーが500にならないようにする
+  rescue_from Authorization::NotAuthorizedError, with: :user_not_authorized
 
   private
 
   def record_not_found(exception)
+    model_name = if exception.respond_to?(:model) && exception.model.present?
+                   exception.model
+                 else
+                   "Resource"
+                 end
     render json: {
-      error: "#{exception.model} not found",
+      error: "#{model_name} not found",
       status: :not_found
     }, status: :not_found
   end
@@ -39,21 +46,21 @@ class ApplicationController < ActionController::API
   def internal_server_error(exception)
     Rails.logger.error "Internal Server Error: #{exception.message}"
     Rails.logger.error exception.backtrace.join("\n")
-    
+
     render json: {
       error: "内部サーバーエラーが発生しました",
       status: :internal_server_error
     }, status: :internal_server_error
   end
 
-  def unauthorized_request(exception)
+  def unauthorized_request(_exception)
     render json: {
       error: "認証に失敗しました",
       status: :unauthorized
     }, status: :unauthorized
   end
 
-  def token_expired(exception)
+  def token_expired(_exception)
     render json: {
       error: "トークンの有効期限が切れています",
       status: :unauthorized

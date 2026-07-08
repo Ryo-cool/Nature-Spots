@@ -6,12 +6,23 @@ type ApiRequestOptions = Omit<RequestInit, "body" | "method"> & {
   params?: Record<string, unknown>;
 };
 type RequestBody = Record<string, unknown> | FormData | null;
+type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 type ApiClient = {
   get<T = any>(
     url: string,
     options?: ApiRequestOptions,
   ): Promise<ApiResponse<T>>;
   post<T = any>(
+    url: string,
+    body?: RequestBody,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
+  put<T = any>(
+    url: string,
+    body?: RequestBody,
+    options?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>>;
+  patch<T = any>(
     url: string,
     body?: RequestBody,
     options?: ApiRequestOptions,
@@ -27,27 +38,30 @@ export default defineNuxtPlugin(() => {
   const isDev = process.env.NODE_ENV !== "production";
   const authStore = useAuthStore();
 
-  // Nuxt 3ではaxiosではなく組み込みのfetchを使用
   const apiFetch = $fetch.create({
     baseURL: config.public.apiBaseUrl,
     headers: {
       "Content-Type": "application/json",
     },
     onRequest({ options }: FetchContext<unknown>) {
-      // リクエストにトークンを添付
+      const headers = new Headers(options.headers as HeadersInit | undefined);
+
       if (authStore.token) {
-        const headers = new Headers(options.headers as HeadersInit | undefined);
         headers.set("Authorization", `Bearer ${authStore.token}`);
-        options.headers = headers;
       }
 
-      // リクエストログ
+      // FormData のときはブラウザに Content-Type (boundary付き) を任せる
+      if (options.body instanceof FormData) {
+        headers.delete("Content-Type");
+      }
+
+      options.headers = headers;
+
       if (isDev) {
         console.log("API Request:", options);
       }
     },
     onResponse({ response }: { response: FetchResponse<unknown> }) {
-      // レスポンスログ
       if (isDev) {
         console.log("API Response:", response);
       }
@@ -57,7 +71,6 @@ export default defineNuxtPlugin(() => {
     }: {
       response: FetchResponse<unknown> | undefined;
     }) {
-      // エラーログ
       console.error("API Error:", response?.status, response?._data);
     },
   });
@@ -65,7 +78,7 @@ export default defineNuxtPlugin(() => {
   const request = async <T = any>(
     url: string,
     options: ApiRequestOptions & {
-      method: "GET" | "POST" | "DELETE";
+      method: HttpMethod;
       body?: RequestBody;
     },
   ): Promise<ApiResponse<T>> => {
@@ -77,6 +90,10 @@ export default defineNuxtPlugin(() => {
     get: (url, options) => request(url, { ...options, method: "GET" }),
     post: (url, body, options) =>
       request(url, { ...options, method: "POST", body }),
+    put: (url, body, options) =>
+      request(url, { ...options, method: "PUT", body }),
+    patch: (url, body, options) =>
+      request(url, { ...options, method: "PATCH", body }),
     delete: (url, options) => request(url, { ...options, method: "DELETE" }),
   };
 

@@ -3,7 +3,7 @@ class Api::V1::RelationshipsController < ApplicationController
   before_action :set_user
 
   def create
-    @relationship = current_user.active_relationships.build(follow_id: @user.id)
+    @relationship = current_user.relationships.build(follow_id: @user.id)
     if @relationship.save
       render json: {
         relationship: RelationshipSerializer.new(@relationship).as_json,
@@ -15,7 +15,7 @@ class Api::V1::RelationshipsController < ApplicationController
   end
 
   def destroy
-    @relationship = current_user.active_relationships.find_by!(follow_id: @user.id)
+    @relationship = current_user.relationships.find_by!(follow_id: @user.id)
     @relationship.destroy!
     render json: {
       message: "フォローを解除しました",
