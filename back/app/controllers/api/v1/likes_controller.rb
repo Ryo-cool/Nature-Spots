@@ -4,16 +4,18 @@ class Api::V1::LikesController < ApplicationController
 
   def create
     like = current_user.likes.new(review: @review)
+    authorize like
 
     if like.save
       render_likes(status: :created)
     else
-      render json: { errors: like.errors.full_messages }, status: :unprocessable_entity
+      render_error(like.errors.full_messages)
     end
   end
 
   def destroy
     like = current_user.likes.find_by!(review_id: @review.id)
+    authorize like
     like.destroy
 
     render_likes
@@ -31,6 +33,9 @@ class Api::V1::LikesController < ApplicationController
               .order(created_at: :asc)
               .select(:id, :review_id, :user_id)
 
-    render json: { likes: likes.as_json(only: %i[id review_id user_id]) }, status: status
+    render_success(
+      { likes: likes.as_json(only: %i[id review_id user_id]) },
+      status: status
+    )
   end
 end

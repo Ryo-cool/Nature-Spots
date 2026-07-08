@@ -5,16 +5,17 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.new(create_user_params)
     @user.activated = true
+    authorize @user
 
     if @user.save
-      serialized_user = UserSerializer.new(@user).as_json
-      render json: {
-        user: serialized_user,
+      render_success(
+        { user: UserSerializer.new(@user).as_json },
         status: :created
-      }, status: :created
+      )
     else
       render json: {
         errors: @user.errors.messages,
+        error: @user.errors.full_messages,
         message: @user.errors.full_messages.first,
         status: :unprocessable_entity
       }, status: :unprocessable_entity
@@ -26,15 +27,9 @@ class Api::V1::UsersController < ApplicationController
     result = UserDataService.call(@user)
 
     if result.success?
-      render json: {
-        **result.data,
-        status: :ok
-      }
+      render_success({ **result.data, status: :ok })
     else
-      render json: {
-        errors: result.errors,
-        status: :unprocessable_entity
-      }, status: :unprocessable_entity
+      render_error(result.errors)
     end
   end
 
@@ -42,40 +37,29 @@ class Api::V1::UsersController < ApplicationController
     authorize @user
 
     if @user.update(user_params)
-      serialized_user = UserSerializer.new(@user).as_json
-      render json: {
-        user: serialized_user,
+      render_success(
+        user: UserSerializer.new(@user).as_json,
         status: :ok
-      }
+      )
     else
-      render json: {
-        errors: @user.errors.full_messages,
-        status: :unprocessable_entity
-      }, status: :unprocessable_entity
+      render_error(@user.errors.full_messages)
     end
   end
 
   def my_page
-    serialized_user = UserSerializer.new(current_user).as_json
-    render json: {
-      user: serialized_user,
+    render_success(
+      user: UserSerializer.new(current_user).as_json,
       status: :ok
-    }
+    )
   end
 
   def user_data
     result = UserDataService.call(current_user)
 
     if result.success?
-      render json: {
-        **result.data,
-        status: :ok
-      }
+      render_success({ **result.data, status: :ok })
     else
-      render json: {
-        errors: result.errors,
-        status: :unprocessable_entity
-      }, status: :unprocessable_entity
+      render_error(result.errors)
     end
   end
 

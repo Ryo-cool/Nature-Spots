@@ -75,5 +75,11 @@ RSpec.describe "Api::V1::Users", type: :request do
       expect(json['user']['id']).to eq(user.id)
       expect(json).to include('reviews', 'liked_reviews', 'favorites', 'followings', 'followers')
     end
+
+    it "未アクティベートユーザーのトークンは401になること" do
+      inactive = create(:user, :inactive)
+      get "/api/v1/users/user_data", headers: auth_headers(inactive)
+      expect(response).to have_http_status(:unauthorized)
+    end
   end
 end

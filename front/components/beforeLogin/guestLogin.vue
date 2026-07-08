@@ -16,11 +16,13 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { FetchError } from "ofetch";
+import { useAuth } from "~/composables/useAuth";
 import { useAuthStore } from "~/stores/auth";
 import { useToastStore } from "~/stores/toast";
 
 const router = useRouter();
 const authStore = useAuthStore();
+const { login: authLogin } = useAuth();
 const toastStore = useToastStore();
 const config = useRuntimeConfig();
 
@@ -48,19 +50,18 @@ const guestLogin = async () => {
       return;
     }
 
-    const token = await authStore.login({ email, password });
+    const response = await authStore.login({ email, password });
 
-    if (token) {
-      toastStore.showToast({
-        message: "ゲストログインしました",
-        color: "success",
-      });
-
-      // ホームページにリダイレクト
-      await router.push("/");
-    } else {
+    if (!response) {
       throw new Error("ログインに失敗しました");
     }
+
+    await authLogin(response);
+    toastStore.showToast({
+      message: "ゲストログインしました",
+      color: "success",
+    });
+    await router.push("/");
   } catch (error: unknown) {
     console.error("ゲストログインエラー:", error);
 

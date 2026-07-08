@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 import type { User } from "~/types";
 
-interface TokenResponse {
+interface AuthResponse {
   token: string;
   exp: number;
+  user: User | null;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -32,10 +33,13 @@ export const useAuthStore = defineStore("auth", {
       this.isAuthenticated = isAuth;
     },
 
-    async login(credentials: { email: string; password: string }) {
+    async login(credentials: {
+      email: string;
+      password: string;
+    }): Promise<AuthResponse | null> {
       try {
         const config = useRuntimeConfig();
-        const response = await $fetch<TokenResponse>("/api/v1/user_token", {
+        const response = await $fetch<AuthResponse>("/api/v1/user_token", {
           method: "POST",
           body: { auth: credentials },
           baseURL: config.public.apiBaseUrl,
@@ -43,11 +47,15 @@ export const useAuthStore = defineStore("auth", {
         });
 
         this.setToken(response.token);
+        this.setUser(response.user);
         this.setAuth(true);
-        await this.fetchUser();
 
-        return response.token;
-      } catch (error) {
+        if (!response.user) {
+          await this.fetchUser();
+        }
+
+        return response;
+      } catch {
         this.setAuth(false);
         return null;
       }
@@ -61,12 +69,10 @@ export const useAuthStore = defineStore("auth", {
           baseURL: config.public.apiBaseUrl,
           credentials: "include",
         });
-
+      } finally {
         this.setToken(null);
         this.setUser(null);
         this.setAuth(false);
-      } catch (error) {
-        throw error;
       }
     },
 
@@ -87,7 +93,7 @@ export const useAuthStore = defineStore("auth", {
 
         this.setUser(response.user);
         return response.user;
-      } catch (error) {
+      } catch {
         return null;
       }
     },
